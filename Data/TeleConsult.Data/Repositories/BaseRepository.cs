@@ -10,7 +10,7 @@
 
     public class BaseRepository<T> : IRepository<T> where T : class, IDeletableEntity
     {
-        private readonly ITeleConsultDbContext context;
+        protected readonly ITeleConsultDbContext context;
         private readonly IDbSet<T> set;
 
         public BaseRepository(ITeleConsultDbContext context)
@@ -21,17 +21,17 @@
 
         public IQueryable<T> All()
         {
-            return this.set.AsQueryable().Where(s => !s.Deleted);
+            return this.set.AsQueryable();
+        }
+
+        public IQueryable<T> AllActive()
+        {
+            return this.set.AsQueryable().Where(s => !s.IsDeleted);
         }
 
         public virtual T GetById(object id)
         {
             return this.set.Find(id);
-        }
-
-        public IQueryable<T> AllWithDeleted()
-        {
-            return this.set.AsQueryable();
         }
 
         public IQueryable<T> SearchFor(Expression<Func<T, bool>> conditions)

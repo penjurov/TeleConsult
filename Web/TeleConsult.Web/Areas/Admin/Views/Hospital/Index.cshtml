@@ -1,0 +1,74 @@
+﻿@using TeleConsult.Common
+@using TeleConsult.Web.Areas.Admin.Models
+@model HospitalModel
+
+@{ 
+    ViewBag.Title = SiteMap.CurrentNode.Title;
+}
+
+@section scripts {
+    <script type="text/javascript" src="@Url.Content("~/Areas/Admin/Scripts/Hospital.js")"></script>
+}
+
+<div>
+    <div class="row well">
+        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-12 form-group">
+            <label for="searchName">Лечебно заведение </label>
+            <input type="text" id="searchName" class="form-control" />
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-group">
+            <label for="searchStatus">Статус</label>
+            @Html.DropDownList("searchStatus", Model.Statuses, GlobalConstants.Statuses.All, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-10 col-md-3 col-sm-8 col-xs-12 form-group">
+            <button id="btnSearch" type="button" class="btn btn-primary">Търси</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div data-role="wrapper">
+            <div data-role="toolbar" class="clearfix">
+                <h4 data-role="title" class="pull-md-left">Лечебни заведения</h4>
+                <div class="pull-md-left toolbar-btn-group">
+                    <button id="btnAddHospital" type="button" class="btn btn-primary">Добави лечебно заведение</button>
+                </div>
+            </div>
+            <table id="hospitalsGrid" data-source="@Url.Action("GetHospitals")" data-url-delete="@Url.Action("Delete", "Hospital")" data-url-activate="@Url.Action("Activate", "Hospital")"></table>
+        </div>
+    </div>
+</div>
+
+<div id="hospitalDialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Title</h4>
+            </div>
+            <div class="modal-body">
+                <form class="modal-form" id="hospitalForm">
+                    <div class="contentTable dialog auto-overflow-dialog">
+                        @Html.Hidden("Id")
+
+                        @Html.EditorFor(m => m.ViewModel.Name)
+                        @Html.EditorFor(m => m.ViewModel.Address)
+                        @Html.EditorFor(m => m.ViewModel.Phone)
+                        @Html.EditorFor(m => m.ViewModel.Latitude)
+                        @Html.EditorFor(m => m.ViewModel.Longitude)
+                        <div class="form-group row">
+                            @Html.Label(" ", htmlAttributes: new { @class = "col-lg-4 col-md-5 col-sm-5 col-xs-5 modal-label" })
+                            <div class="col-lg-8 col-md-7 col-sm-7 col-xs-7">
+                                <input type="button" id="btnGetLocation" class="btn btn-primary" value=@GlobalConstants.GetLocation>
+                                <input type="button" id="btnShowLocation" class="btn btn-primary" value="Покажи на карта">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnSaveHospital" type="button" class="btn btn-primary" data-url="@Url.Action("Save")">Запис</button>
+                            <button id="btnCancel" type="button" class="btn btn-default">Отказ</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

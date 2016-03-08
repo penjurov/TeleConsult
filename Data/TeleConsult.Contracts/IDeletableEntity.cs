@@ -4,7 +4,7 @@
 
     public interface IDeletableEntity
     {
-        bool Deleted { get; set; }
+        bool IsDeleted { get; set; }
 
         DateTime? DeletedOn { get; set; }
     }

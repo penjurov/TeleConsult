@@ -1,0 +1,18 @@
+﻿@using TeleConsult.Common
+@{
+    const string ControllerName = "Menu";
+    const string ActionName = "Index";
+}
+
+<ul class="nav navbar-nav">
+    @if (User.IsInRole(GlobalConstants.SpecialistRoleName))
+    {
+        <li>@Html.ActionLink(GlobalConstants.ConsultationsControllerTitle, ActionName, ControllerName, new { area = "Consultations" }, null)</li>
+    }
+    @if (User.IsInRole(GlobalConstants.AdministratorRoleName))
+    {
+        <li>@Html.ActionLink(GlobalConstants.AdministrationControllerTitle, ActionName, ControllerName, new { area = GlobalConstants.AdminAreaName }, null)</li>
+    }
+</ul>
+
+

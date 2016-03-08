@@ -10,7 +10,7 @@
     {
         IQueryable<T> All();
 
-        IQueryable<T> AllWithDeleted();
+        IQueryable<T> AllActive();
 
         IQueryable<T> SearchFor(Expression<Func<T, bool>> conditions);
 

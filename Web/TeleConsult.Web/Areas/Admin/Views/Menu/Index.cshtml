@@ -1,0 +1,42 @@
+﻿@using TeleConsult.Common;
+@{
+    ViewBag.Title = GlobalConstants.AdministrationControllerTitle;
+}
+
+<div class="row well down menu">
+    <div class="row">
+        <div class="col-md-10">
+            <h2>@GlobalConstants.AdministrationControllerTitle</h2>
+        </div>
+        <div class="col-md-2">
+            <div class="menu-logo pull-right">
+                @Html.Partial("_LogoPartial")
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-3 text-center">
+            @Html.ActionLink(GlobalConstants.HospitalsControllerTitle, "Index", "Hospital", null, new { @class = "hospital image" })
+            @Html.ActionLink(GlobalConstants.HospitalsControllerTitle, "Index", "Hospital", null, new { @class = "link" })
+        </div>
+        <div class="col-md-3 text-center">
+            @Html.ActionLink(GlobalConstants.SpecialistsControllerTitle, "Index", "Specialists", null, new { @class = "specialist image" })
+            @Html.ActionLink(GlobalConstants.SpecialistsControllerTitle, "Index", "Specialists", null, new { @class = "link" })
+        </div>
+        <div class="col-md-3 text-center">
+            @Html.ActionLink(GlobalConstants.SpecialtiesControllerTitle, "Index", "Speciality", null, new { @class = "specialties image" })
+            @Html.ActionLink(GlobalConstants.SpecialtiesControllerTitle, "Index", "Speciality", null, new { @class = "link" })
+        </div>
+        <div class="col-md-3 text-center">
+            @Html.ActionLink(GlobalConstants.SchedulesControllerTitle, "Index", "Schedules", null, new { @class = "schedule image" })
+            @Html.ActionLink(GlobalConstants.SchedulesControllerTitle, "Index", "Schedules", null, new { @class = "link" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 text-center">
+            @Html.ActionLink(GlobalConstants.LogsControllerTitle, "Index", "Logs", null, new { @class = "logs image" })
+            @Html.ActionLink(GlobalConstants.LogsControllerTitle, "Index", "Logs", null, new { @class = "link" })
+        </div>
+    </div>
+</div>

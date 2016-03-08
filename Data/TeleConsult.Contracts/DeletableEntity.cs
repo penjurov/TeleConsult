@@ -4,7 +4,7 @@
 
     public class DeletableEntity : IDeletableEntity
     {
-        public bool Deleted { get; set; }
+        public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
     }

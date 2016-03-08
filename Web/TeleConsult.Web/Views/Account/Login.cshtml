@@ -3,6 +3,7 @@
 @model LoginViewModel
 @{
     ViewBag.Title = GlobalConstants.Login;
+    ViewBag.HideSiteMap = true;
 }
 
 <h2>@GlobalConstants.Login</h2>
@@ -47,9 +48,9 @@
         </section>
     </div>
     <div class="col-md-4">
-        <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-        </section>
+        <div class="login-logo">
+            @Html.Partial("_LogoPartial")
+        </div>
     </div>
 </div>
 

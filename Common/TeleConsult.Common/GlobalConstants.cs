@@ -1,8 +1,10 @@
 ﻿namespace TeleConsult.Common
 {
+    using System.Collections.Generic;
+
     public class GlobalConstants
     {
-        public const string ConnectionName = "TeleConsultDb";
+        public const string ProjectTitle = "Теле Консулт";
         public const string AdministratorRoleName = "Admin";
         public const string SpecialistRoleName = "Specialist";
         public const string InitialPassword = "123456";
@@ -23,10 +25,12 @@
         public const string Mammography = "Мамография";
         public const string Other = "Друго";
 
+        // Areas
+        public const string AdminAreaName = "Admin";
+
         // Controllers
-        public const string ProjectTitle = "Health Consult";
         public const string AdministrationControllerTitle = "Администрация";
-        public const string HospitalsControllerTitle = "Болници";
+        public const string HospitalsControllerTitle = "Лечебни заведения";
         public const string SpecialistsControllerTitle = "Специалисти";
         public const string SpecialtiesControllerTitle = "Специалности";
         public const string SchedulesControllerTitle = "График";
@@ -55,8 +59,8 @@
         public const string Update = "Обнови";
         public const string Delete = "Изтрий";
         public const string Cancel = "Отказ";
-        public const string GroupMessage = "Провлачете заглавие на колона тук, за да групирате по нея";
         public const string GetLocation = "Локация";
+        public const string ShowLocation = "Покажи на карта";
 
         // Scheduler
         public const string Specialist = "Специалист";
@@ -93,8 +97,8 @@
         public const string SpecialistTitleDisplay = "Титла";
         public const string SpecialityDisplay = "Специалност";
         public const string SpecialityRequireText = "Специалността е задължителна";
-        public const string HospitalDisplay = "Болница";
-        public const string HospitalRequireText = "Болницата е задължителна";
+        public const string HospitalDisplay = "Лечебно заведение";
+        public const string HospitalRequireText = "Лечебното заведение е задължително";
         public const string UserRequireText = "Потребителското име е задължително";
 
         // Blood Examination
@@ -150,5 +154,27 @@
         public const string UrinalysisLink = "Изследвания урина";
         public const string VisualExaminationLink = "Образни изследвания";
         public const string View = "Разгледай";
+
+        public static class SortDirections
+        {
+            public const string None = "None";
+            public const string Asc = "Asc";
+            public const string Ascending = "Ascending";
+            public const string Desc = "Desc";
+            public static List<string> AllSortDirections = new List<string> { None, Asc, Desc };
+        }
+
+        public static class Statuses
+        {
+            public const string All = "Всички";
+            public const string Active = "Активни";
+            public const string Deleted = "Изтрити";
+        }
+
+        public static class Errors
+        {
+            public const string General = "Грешка с данните";
+            public const string HospitalExist = "Лечебно заведение с такова име вече съществува";
+        }
     }
 }

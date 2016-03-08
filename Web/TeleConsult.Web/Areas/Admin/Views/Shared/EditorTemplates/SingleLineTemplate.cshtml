@@ -1,0 +1,9 @@
+﻿@model string
+
+<div class="form-group row">
+    @Html.LabelFor(m => m, htmlAttributes: new { @class = "col-lg-4 col-md-5 col-sm-5 col-xs-5 modal-label" })
+    <div class="col-lg-8 col-md-7 col-sm-7 col-xs-7">
+        @Html.TextBoxFor(m => m, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })
+    </div>
+</div>

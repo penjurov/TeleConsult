@@ -102,14 +102,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Filters\Admin\HospitalFilter.cs" />
+    <Compile Include="Filters\PagingFilter.cs" />
+    <Compile Include="Helpers\Sort.cs" />
     <Compile Include="ITeleConsultDbContext.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proxies\HospitalProxy.cs" />
+    <Compile Include="Proxies\SpecialityProxy.cs" />
     <Compile Include="RepoFactory\IRepoFactory.cs" />
     <Compile Include="RepoFactory\RepoFactory.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\HospitalRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\SpecialityRepository.cs" />
     <Compile Include="TeleConsultDbContext.cs" />
   </ItemGroup>
   <ItemGroup>
