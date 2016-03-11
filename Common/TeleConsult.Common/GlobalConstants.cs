@@ -92,14 +92,20 @@
         public const string EndRequireText = "Крайния час е задължителен";
 
         // Specialist
-        public const string NamesDisplay = "Имена";
-        public const string NamesRequireText = "Имената са задължителни";
+        public const string LastNameDisplay = "Фамилия";
+        public const string LastNameRequireText = "Фамилията е задължителна";
+        public const string UinDisplay = "УИН";
+        public const string UinRequireText = "УИН е задължителен";
         public const string SpecialistTitleDisplay = "Титла";
         public const string SpecialityDisplay = "Специалност";
         public const string SpecialityRequireText = "Специалността е задължителна";
         public const string HospitalDisplay = "Лечебно заведение";
         public const string HospitalRequireText = "Лечебното заведение е задължително";
         public const string UserRequireText = "Потребителското име е задължително";
+        public const string PasswordDisplay = "Парола";
+        public const string PasswordRequireText = "Паролата е задължителна";
+        public const string EmailDisplay = "Имейл";
+        public const string EmailRequireText = "Имейлът е задължителен";
 
         // Blood Examination
         public const string HemoglobinDisplay = "Хемоглобин";
@@ -155,15 +161,6 @@
         public const string VisualExaminationLink = "Образни изследвания";
         public const string View = "Разгледай";
 
-        public static class SortDirections
-        {
-            public const string None = "None";
-            public const string Asc = "Asc";
-            public const string Ascending = "Ascending";
-            public const string Desc = "Desc";
-            public static List<string> AllSortDirections = new List<string> { None, Asc, Desc };
-        }
-
         public static class Statuses
         {
             public const string All = "Всички";
@@ -175,6 +172,8 @@
         {
             public const string General = "Грешка с данните";
             public const string HospitalExist = "Лечебно заведение с такова име вече съществува";
+            public const string SpecialityExist = "Специалност с такова име вече съществува";
+            public const string SpecialistExist = "Специалист с такова име вече съществува";
         }
     }
 }

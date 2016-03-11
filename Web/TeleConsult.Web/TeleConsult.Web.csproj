@@ -230,9 +230,11 @@
     <Compile Include="Areas\Admin\Controllers\AdminBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\HospitalController.cs" />
     <Compile Include="Areas\Admin\Controllers\MenuController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SpecialistController.cs" />
     <Compile Include="Areas\Admin\Controllers\SpecialityController.cs" />
     <Compile Include="Areas\Admin\Models\Base\AdminModel.cs" />
     <Compile Include="Areas\Admin\Models\HospitalModel.cs" />
+    <Compile Include="Areas\Admin\Models\SpecialistModel.cs" />
     <Compile Include="Areas\Admin\Models\SpecialtyModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
@@ -259,6 +261,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Admin\Scripts\Specialist.js" />
     <Content Include="Areas\Admin\Scripts\Hospital.js" />
     <Content Include="Areas\Admin\Scripts\Speciality.js" />
     <Content Include="Content\bootstrap-dialog.css" />
@@ -296,6 +299,10 @@
     <Content Include="Content\bootstrap-dialog.less" />
     <Content Include="Mvc.sitemap" />
     <Content Include="Areas\Admin\Views\Speciality\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Specialist\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\EnumTemplate.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\DropDownTemplate.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\PasswordTemplate.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

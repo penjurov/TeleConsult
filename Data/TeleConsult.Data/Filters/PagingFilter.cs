@@ -7,7 +7,9 @@
     public class PagingFilter
     {
         public int Limit { get; set; }
+
         public int Page { get; set; }
+
         public int Start
         {
             get
@@ -17,7 +19,9 @@
         }
 
         public string SortBy { get; set; }
+
         public string Direction { get; set; }
+
         public SortDirection SortDirection
         {
             get

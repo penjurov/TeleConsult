@@ -1,14 +1,15 @@
 ﻿namespace TeleConsult.Data.Repositories
 {
+    using System.Collections.Generic;
     using System.Linq;
 
-    using Microsoft.Practices.Unity;
-    using TeleConsult.Data.Models;
-    using Proxies;
     using Filters.Admin;
-    using System.Collections.Generic;
+    using Helpers;
+    using Microsoft.Practices.Unity;
+    using Proxies;
     using TeleConsult.Common.Helpers;
-
+    using TeleConsult.Data.Models;
+    
     public class SpecialityRepository : BaseRepository<Speciality>
     {
         [InjectionConstructor]
@@ -17,29 +18,36 @@
         {
         }
 
-        public List<SpecialityProxy> Get(AdminFilter filter)
+        public IEnumerable<SpecialityProxy> Get(AdminFilter filter)
         {
             var result = this.All()
-                .Where(filter.Name, h => h.Name.Contains(filter.Name))
-                .Where(filter.IsDeleted.HasValue, h => h.IsDeleted == filter.IsDeleted.Value);
+                .Where(filter.Name, s => s.Name.Contains(filter.Name))
+                .Where(filter.IsDeleted.HasValue, s => s.IsDeleted == filter.IsDeleted.Value)
+                .OrderBy(s => s.Id);
 
             filter.Count = result.Count();
+            return this.GetProxy(result.OrderByFilter(filter).PageByFilter(filter));
+        }
+
+        public IEnumerable<SpecialityProxy> GetActive()
+        {
+            var result = this.All().Where(s => !s.IsDeleted).ToList();
             return this.GetProxy(result);
         }
 
         public bool SpecialityExist(string name, int? id)
         {
-            return this.All().Any(h => h.Name == name && h.Id != id);
+            return this.All().Any(s => s.Name == name && s.Id != id);
         }
 
-        private List<SpecialityProxy> GetProxy(IQueryable<Speciality> result)
+        private IEnumerable<SpecialityProxy> GetProxy(List<Speciality> result)
         {
-            return result.Select(h => new SpecialityProxy
+            return result.Select(s => new SpecialityProxy
             {
-                Id = h.Id,
-                Name = h.Name,
-                IsDeleted = h.IsDeleted
-            }).ToList();
+                Id = s.Id,
+                Name = s.Name,
+                IsDeleted = s.IsDeleted
+            });
         }
     }
 }

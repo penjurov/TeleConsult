@@ -1,11 +1,13 @@
 ﻿namespace TeleConsult.Data.Helpers
 {
-    using Common;
-    using Filters;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+
+    using Common;
+    using Filters;
+
     [Flags]
     public enum SortDirection
     {
@@ -35,18 +37,6 @@
             return OrderingHelper(source, propertyName, true, true);
         }
 
-        public static IOrderedQueryable<T> OrderQCGrids<T>(this IQueryable<T> source, IOrderedQueryable<T> ascendingOrder, IOrderedQueryable<T> descendingOrder, string sortOrder)
-        {
-            if (sortOrder == GlobalConstants.SortDirections.Ascending)
-            {
-                return ascendingOrder;
-            }
-            else
-            {
-                return descendingOrder;
-            }
-        }
-
         public static SortDirection GetDirection(string direction)
         {
             SortDirection sortDirection;
@@ -67,32 +57,6 @@
             }
 
             return sortDirection;
-        }
-
-        private static IOrderedQueryable<T> OrderingHelper<T>(IQueryable<T> source, string propertyName, bool descending, bool anotherLevel)
-        {
-            ParameterExpression param = Expression.Parameter(typeof(T), string.Empty);
-            MemberExpression property = Expression.PropertyOrField(param, propertyName);
-            LambdaExpression sort = Expression.Lambda(property, param);
-
-            MethodCallExpression call = Expression.Call(
-                typeof(Queryable),
-                (!anotherLevel ? "OrderBy" : "ThenBy") + (descending ? "Descending" : string.Empty),
-                new[] { typeof(T), property.Type },
-                source.Expression,
-                Expression.Quote(sort));
-
-            return (IOrderedQueryable<T>)source.Provider.CreateQuery<T>(call);
-        }
-
-        public static List<T> SortAndFilterList<T>(List<T> source, int start, int limit, string sortBy, SortDirection sortDirection)
-        {
-            var list = !string.IsNullOrEmpty(sortBy)
-                ? OrderingHelper(source.AsQueryable(), sortBy, (sortDirection == SortDirection.Desc), false).ToList()
-                : source;
-
-            return ((start == 0) && (limit <= 0 || limit == int.MaxValue))
-                ? list : list.Skip(start).Take(limit > 0 ? limit : int.MaxValue).ToList();
         }
 
         /// <summary>
@@ -120,6 +84,22 @@
         public static List<TSource> PageByFilter<TSource>(this IQueryable<TSource> source, PagingFilter filter) where TSource : class
         {
             return filter.Limit > 0 && filter.Page > 0 ? source.Skip(filter.Start).Take(filter.Limit).ToList() : source.ToList();
+        }
+
+        private static IOrderedQueryable<T> OrderingHelper<T>(IQueryable<T> source, string propertyName, bool descending, bool anotherLevel)
+        {
+            ParameterExpression param = Expression.Parameter(typeof(T), string.Empty);
+            MemberExpression property = Expression.PropertyOrField(param, propertyName);
+            LambdaExpression sort = Expression.Lambda(property, param);
+
+            MethodCallExpression call = Expression.Call(
+                typeof(Queryable),
+                (!anotherLevel ? "OrderBy" : "ThenBy") + (descending ? "Descending" : string.Empty),
+                new[] { typeof(T), property.Type },
+                source.Expression,
+                Expression.Quote(sort));
+
+            return (IOrderedQueryable<T>)source.Provider.CreateQuery<T>(call);
         }
     }
 }

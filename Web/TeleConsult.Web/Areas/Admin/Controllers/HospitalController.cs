@@ -11,7 +11,7 @@
         public ActionResult Index()
         {
             var model = this.LoadModel<HospitalModel, bool>(true);
-            return View(model);
+            return this.View(model);
         }
 
         [HttpGet]

@@ -3,6 +3,7 @@
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
 
+    using Microsoft.AspNet.Identity.EntityFramework;
     using Models;
 
     public interface ITeleConsultDbContext
@@ -26,6 +27,8 @@
         IDbSet<Urinalysis> Urinalysis { get; set; }
 
         IDbSet<VisualExamination> VisualExaminations { get; set; }
+
+        IDbSet<IdentityRole> Roles { get; set; }
 
         IDbSet<Log> Logs { get; set; }
 

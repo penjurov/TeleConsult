@@ -1,15 +1,17 @@
 ﻿namespace TeleConsult.Web.Areas.Admin.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity.Validation;
+    using System.Linq;
+    using System.Web.Mvc;
+
     using Base;
     using Common;
     using Data.Filters.Admin;
     using Data.Models;
     using Data.Proxies;
     using Data.Repositories;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity.Validation;
-    using System.Web.Mvc;
     using Web.Models;
 
     public class HospitalModel : AdminModel, IModel<bool>
@@ -18,7 +20,7 @@
 
         public List<HospitalProxy> GetHospitals(AdminFilter filter)
         {
-            return this.RepoFactory.Get<HospitalRepository>().Get(filter);
+            return this.RepoFactory.Get<HospitalRepository>().Get(filter).ToList();
         }
 
         public int Save(HospitalProxy proxy, ModelStateDictionary modelState)
@@ -56,7 +58,6 @@
                         hospital.Latitude = proxy.Latitude.Value;
                     }
 
-
                     if (proxy.Longitude.HasValue)
                     {
                         hospital.Longitude = proxy.Longitude.Value;
@@ -77,10 +78,10 @@
             }
         }
 
-        public void Delete(int Id)
+        public void Delete(int id)
         {
             var repo = this.RepoFactory.Get<HospitalRepository>();
-            var hospital = repo.GetById(Id);
+            var hospital = repo.GetById(id);
 
             if (hospital != null)
             {
@@ -94,10 +95,10 @@
             }
         }
 
-        public void Activate(int Id)
+        public void Activate(int id)
         {
             var repo = this.RepoFactory.Get<HospitalRepository>();
-            var hospital = repo.GetById(Id);
+            var hospital = repo.GetById(id);
 
             if (hospital != null)
             {

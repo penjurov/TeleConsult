@@ -16,6 +16,16 @@
             return source;
         }
 
+        public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> source, int? property, Expression<Func<TSource, bool>> predicate)
+        {
+            if (property.HasValue)
+            {
+                source = source.Where(predicate);
+            }
+
+            return source;
+        }
+
         public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> source, bool property, Expression<Func<TSource, bool>> predicate)
         {
             if (property)

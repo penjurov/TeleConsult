@@ -1,14 +1,15 @@
 ﻿namespace TeleConsult.Data.Repositories
 {
+    using System.Collections.Generic;
     using System.Linq;
 
-    using Microsoft.Practices.Unity;
-    using TeleConsult.Data.Models;
-    using Proxies;
     using Filters.Admin;
-    using System.Collections.Generic;
+    using Helpers;
+    using Microsoft.Practices.Unity;
+    using Proxies;
     using TeleConsult.Common.Helpers;
-
+    using TeleConsult.Data.Models;
+    
     public class HospitalRepository : BaseRepository<Hospital>
     {
         [InjectionConstructor]
@@ -17,13 +18,21 @@
         {
         }
 
-        public List<HospitalProxy> Get(AdminFilter filter)
+        public IEnumerable<HospitalProxy> Get(AdminFilter filter)
         {
             var result = this.All()
                 .Where(filter.Name, h => h.Name.Contains(filter.Name))
-                .Where(filter.IsDeleted.HasValue, h => h.IsDeleted == filter.IsDeleted.Value);
+                .Where(filter.IsDeleted.HasValue, h => h.IsDeleted == filter.IsDeleted.Value)
+                .OrderBy(h => h.Id);
 
             filter.Count = result.Count();
+
+            return this.GetProxy(result.OrderByFilter(filter).PageByFilter(filter));
+        }
+
+        public IEnumerable<HospitalProxy> GetActive()
+        {
+            var result = this.All().Where(s => !s.IsDeleted).ToList();
             return this.GetProxy(result);
         }
 
@@ -32,7 +41,7 @@
             return this.All().Any(h => h.Name == name && h.Id != id);
         }
 
-        private List<HospitalProxy> GetProxy(IQueryable<Hospital> result)
+        private IEnumerable<HospitalProxy> GetProxy(List<Hospital> result)
         {
             return result.Select(h => new HospitalProxy
             {
@@ -43,7 +52,7 @@
                 Address = h.Address,
                 Phone = h.Phone,
                 IsDeleted = h.IsDeleted
-            }).ToList();
+            });
         }
     }
 }

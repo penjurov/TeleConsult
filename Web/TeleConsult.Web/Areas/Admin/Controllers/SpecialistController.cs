@@ -5,44 +5,43 @@
     using Data.Filters.Admin;
     using Data.Proxies;
     using Models;
-
-    public class SpecialityController : AdminBaseController
+    
+    public class SpecialistController : AdminBaseController
     {
-        // GET: Admin/Specialty
         public ActionResult Index()
         {
-            var model = this.LoadModel<SpecialityModel, bool>(true);
+            var model = this.LoadModel<SpecialistModel, bool>(true);
             return this.View(model);
         }
 
         [HttpGet]
-        public JsonResult GetSpecialities(AdminFilter filter)
+        public JsonResult GetSpecialists(SpecialistFilter filter)
         {
-            var model = LoadModel<SpecialityModel, bool>(false);
-            var result = model.GetSpecialities(filter);
+            var model = LoadModel<SpecialistModel, bool>(false);
+            var result = model.GetSpecialists(filter);
             return this.Json(new { records = result, total = filter.Count }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public JsonResult Save(SpecialityProxy proxy)
+        public JsonResult Save(SpecialistProxy proxy)
         {
-            var model = LoadModel<SpecialityModel, bool>(false);
+            var model = LoadModel<SpecialistModel, bool>(false);
             var result = model.Save(proxy, this.ModelState);
             return this.Json(result);
         }
 
         [HttpPost]
-        public JsonResult Delete(int id)
+        public JsonResult Delete(string id)
         {
-            var model = LoadModel<SpecialityModel, bool>(false);
+            var model = LoadModel<SpecialistModel, bool>(false);
             model.Delete(id);
             return this.Json(true);
         }
 
         [HttpPost]
-        public JsonResult Activate(int id)
+        public JsonResult Activate(string id)
         {
-            var model = LoadModel<SpecialityModel, bool>(false);
+            var model = LoadModel<SpecialistModel, bool>(false);
             model.Activate(id);
             return this.Json(true);
         }

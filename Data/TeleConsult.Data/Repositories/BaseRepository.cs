@@ -10,12 +10,12 @@
 
     public class BaseRepository<T> : IRepository<T> where T : class, IDeletableEntity
     {
-        protected readonly ITeleConsultDbContext context;
+        protected readonly ITeleConsultDbContext Context;
         private readonly IDbSet<T> set;
 
         public BaseRepository(ITeleConsultDbContext context)
         {
-            this.context = context;
+            this.Context = context;
             this.set = context.Set<T>();
         }
 
@@ -53,7 +53,7 @@
 
         public void Delete(T entity)
         {
-            var entry = this.context.Entry(entity);
+            var entry = this.Context.Entry(entity);
             if (entry.State != EntityState.Deleted)
             {
                 entry.State = EntityState.Deleted;
@@ -67,18 +67,18 @@
 
         public void Detach(T entity)
         {
-            var entry = this.context.Entry(entity);
+            var entry = this.Context.Entry(entity);
             entry.State = EntityState.Detached;
         }
 
         public virtual int SaveChanges()
         {
-            return this.context.SaveChanges();
+            return this.Context.SaveChanges();
         }
 
         private DbEntityEntry AttachIfDetached(T entity)
         {
-            var entry = this.context.Entry(entity);
+            var entry = this.Context.Entry(entity);
             if (entry.State == EntityState.Detached)
             {
                 this.set.Attach(entity);

@@ -1,8 +1,9 @@
 ﻿namespace TeleConsult.Data.Proxies
 {
-    using Common;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+
+    using Common;
 
     public class HospitalProxy
     {

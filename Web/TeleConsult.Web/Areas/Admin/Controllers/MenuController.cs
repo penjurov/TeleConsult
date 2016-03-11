@@ -7,7 +7,7 @@
         // GET: Admin/Menu
         public ActionResult Index()
         {
-            return View();
+            return this.View();
         }
     }
 }
