@@ -9,6 +9,7 @@
       <mvcSiteMapNode title="Лечебни заведения" controller="Hospital" action="Index"/>
       <mvcSiteMapNode title="Специалности" controller="Speciality" action="Index"/>
       <mvcSiteMapNode title="Специалисти" controller="Specialist" action="Index"/>
+      <mvcSiteMapNode title="Хронология" controller="Log" action="Index"/>
     </mvcSiteMapNode>
   </mvcSiteMapNode>
 

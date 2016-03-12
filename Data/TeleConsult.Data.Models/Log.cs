@@ -17,12 +17,12 @@
         public virtual User User { get; set; }
 
         [Required]
-        public DateTime ActionDate { get; set; }
+        public DateTime Date { get; set; }
 
         [Required]
         public ActionType Action { get; set; }
 
         [Required]
-        public string ActionInfo { get; set; }
+        public string Details { get; set; }
     }
 }

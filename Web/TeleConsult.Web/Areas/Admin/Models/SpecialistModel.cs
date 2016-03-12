@@ -33,26 +33,29 @@
         {
             base.Init(init);
 
-            this.Specialities = this.RepoFactory.Get<SpecialityRepository>().GetActive()
-                        .Select(s => new SelectListItem
-                        {
-                            Value = s.Id.ToString(),
-                            Text = s.Name
-                        });
+            if (init)
+            {
+                this.Specialities = this.RepoFactory.Get<SpecialityRepository>().GetActive()
+                    .Select(s => new SelectListItem
+                    {
+                        Value = s.Id.ToString(),
+                        Text = s.Name
+                    });
 
-            this.Hospitals = this.RepoFactory.Get<HospitalRepository>().GetActive()
-                        .Select(s => new SelectListItem
-                        {
-                            Value = s.Id.ToString(),
-                            Text = s.Name
-                        });
+                this.Hospitals = this.RepoFactory.Get<HospitalRepository>().GetActive()
+                    .Select(s => new SelectListItem
+                    {
+                        Value = s.Id.ToString(),
+                        Text = s.Name
+                    });
 
-            this.Titles = Enum.GetValues(typeof(Title)).Cast<Title>()
-                        .Select(v => new SelectListItem
-                        {
-                            Text = v.GetDescription(),
-                            Value = ((int)v).ToString()
-                        });
+                this.Titles = Enum.GetValues(typeof(Title)).Cast<Title>()
+                    .Select(v => new SelectListItem
+                    {
+                        Text = v.GetDescription(),
+                        Value = ((int)v).ToString()
+                    });
+            }
         }
 
         public List<SpecialistProxy> GetSpecialists(SpecialistFilter filter)
@@ -114,6 +117,8 @@
                         repo.SaveChanges();
                     }
 
+                    this.Logger.Log(!string.IsNullOrEmpty(proxy.Id) ? ActionType.EditSpecialist : ActionType.AddSpecialist, string.Format("{0} {1} {2}", specialist.Title.GetDescription(), specialist.FirstName, specialist.LastName));
+
                     return specialist.Id;
                 }
                 catch (DbEntityValidationException e)
@@ -130,13 +135,15 @@
         public void Delete(string id)
         {
             var repo = this.RepoFactory.Get<SpecialistRepository>();
-            var hospital = repo.GetById(id);
+            var specialist = repo.GetById(id);
 
-            if (hospital != null)
+            if (specialist != null)
             {
-                hospital.IsDeleted = true;
-                hospital.DeletedOn = DateTime.Now;
+                specialist.IsDeleted = true;
+                specialist.DeletedOn = DateTime.Now;
                 repo.SaveChanges();
+
+                this.Logger.Log(ActionType.DeleteSpecialist, string.Format("{0} {1} {2}", specialist.Title.GetDescription(), specialist.FirstName, specialist.LastName));
             }
             else
             {
@@ -147,13 +154,15 @@
         public void Activate(string id)
         {
             var repo = this.RepoFactory.Get<SpecialistRepository>();
-            var hospital = repo.GetById(id);
+            var specialist = repo.GetById(id);
 
-            if (hospital != null)
+            if (specialist != null)
             {
-                hospital.IsDeleted = false;
-                hospital.DeletedOn = null;
+                specialist.IsDeleted = false;
+                specialist.DeletedOn = null;
                 repo.SaveChanges();
+
+                this.Logger.Log(ActionType.ActivateSpecialist, string.Format("{0} {1} {2}", specialist.Title.GetDescription(), specialist.FirstName, specialist.LastName));
             }
             else
             {

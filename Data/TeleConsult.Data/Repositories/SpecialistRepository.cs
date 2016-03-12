@@ -22,10 +22,7 @@
 
         public IEnumerable<SpecialistProxy> Get(SpecialistFilter filter)
         {
-            var specialistRoleId = this.Context.Roles.FirstOrDefault(r => r.Name == GlobalConstants.SpecialistRoleName).Id;
-
             var result = this.All()
-                .Where(s => s.Roles.Any(r => r.RoleId == specialistRoleId))
                 .Where(filter.Name, s => s.FirstName.Contains(filter.Name) || s.LastName.Contains(filter.Name))
                 .Where(filter.Title, s => s.Title == (Title)filter.Title.Value)
                 .Where(filter.HospitalId, s => s.HospitalId == filter.HospitalId.Value)

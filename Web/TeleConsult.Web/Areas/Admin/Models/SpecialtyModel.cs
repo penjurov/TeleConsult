@@ -10,11 +10,12 @@
     using Common;
     using Data.Filters.Admin;
     using Data.Models;
+    using Data.Models.Enumerations;
     using Data.Proxies;
     using Data.Repositories;
     using Web.Models;
 
-    public class SpecialityModel : AdminModel, IModel<bool>
+    public class SpecialityModel : AdminModel, IModel
     {
         public SpecialityProxy ViewModel { get; set; }
 
@@ -53,6 +54,8 @@
 
                     repo.SaveChanges();
 
+                    this.Logger.Log(proxy.Id.HasValue ? ActionType.EditSpecialty : ActionType.AddSpecialty, speciality.Name);
+
                     return speciality.Id;
                 }
                 catch (DbEntityValidationException e)
@@ -76,6 +79,8 @@
                 speciality.IsDeleted = true;
                 speciality.DeletedOn = DateTime.Now;
                 repo.SaveChanges();
+
+                this.Logger.Log(ActionType.DeleteSpecialty, speciality.Name);
             }
             else
             {
@@ -93,6 +98,8 @@
                 speciality.IsDeleted = false;
                 speciality.DeletedOn = null;
                 repo.SaveChanges();
+
+                this.Logger.Log(ActionType.ActivateSpeciality, speciality.Name);
             }
             else
             {

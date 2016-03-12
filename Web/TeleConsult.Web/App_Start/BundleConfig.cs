@@ -10,10 +10,12 @@
             bundles.Add(new ScriptBundle("~/bundles/common").Include(
                     "~/Scripts/jquery-{version}.js",
                     "~/Scripts/jquery.validate*",
+                    "~/Scripts/moment.js",
                     "~/Scripts/bootstrap.js",
                     "~/Scripts/respond.js",
                     "~/Scripts/Libs/grid-0.5.6.js",
                     "~/Scripts/bootstrap-dialog.js",
+                    "~/Scripts/bootstrap-datetimepicker.js",
                     "~/Scripts/Common.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
@@ -25,6 +27,7 @@
                       "~/Content/bootstrap.css",
                       "~/Content/grid-0.5.6.css",
                       "~/Content/bootstrap-dialog.css",
+                      "~/Content/bootstrap-datetimepicker.css",
                       "~/Content/site.css"));
         }
     }

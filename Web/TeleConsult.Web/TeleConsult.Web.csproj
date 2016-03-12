@@ -229,11 +229,13 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\HospitalController.cs" />
+    <Compile Include="Areas\Admin\Controllers\LogController.cs" />
     <Compile Include="Areas\Admin\Controllers\MenuController.cs" />
     <Compile Include="Areas\Admin\Controllers\SpecialistController.cs" />
     <Compile Include="Areas\Admin\Controllers\SpecialityController.cs" />
     <Compile Include="Areas\Admin\Models\Base\AdminModel.cs" />
     <Compile Include="Areas\Admin\Models\HospitalModel.cs" />
+    <Compile Include="Areas\Admin\Models\LogModel.cs" />
     <Compile Include="Areas\Admin\Models\SpecialistModel.cs" />
     <Compile Include="Areas\Admin\Models\SpecialtyModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -244,6 +246,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Binders\DoubleModelBinder.cs" />
+    <Compile Include="Infrastructure\Logging\DataBaseLogger.cs" />
+    <Compile Include="Infrastructure\Logging\ILogger.cs" />
     <Compile Include="Infrastructure\Unity\MvcUnityDependencyResolver.cs" />
     <Compile Include="Models\Base\BaseModel.cs" />
     <Compile Include="Models\ExternalLoginConfirmationViewModel.cs" />
@@ -261,9 +265,12 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Admin\Scripts\Log.js" />
     <Content Include="Areas\Admin\Scripts\Specialist.js" />
     <Content Include="Areas\Admin\Scripts\Hospital.js" />
     <Content Include="Areas\Admin\Scripts\Speciality.js" />
+    <Content Include="Areas\Admin\Views\Log\Index.cshtml" />
+    <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-dialog.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -285,9 +292,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-dialog.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -303,10 +309,15 @@
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\EnumTemplate.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\DropDownTemplate.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\PasswordTemplate.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Common.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -317,6 +328,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Libs\grid-0.5.6.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
@@ -371,9 +383,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />

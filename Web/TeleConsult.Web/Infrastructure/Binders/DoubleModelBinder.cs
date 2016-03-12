@@ -13,7 +13,10 @@
             object actualValue = null;
             try
             {
-                actualValue = Convert.ToDouble(valueResult.AttemptedValue, CultureInfo.InvariantCulture);
+                if (!string.IsNullOrEmpty(valueResult.AttemptedValue))
+                {
+                    actualValue = Convert.ToDouble(valueResult.AttemptedValue, CultureInfo.InvariantCulture);
+                } 
             }
             catch (FormatException e)
             {

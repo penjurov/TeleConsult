@@ -4,13 +4,16 @@
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
+
+    using Data.Models.Enumerations;
+    using Infrastructure.Logging;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
-    using TeleConsult.Data.Models;
-    using TeleConsult.Web.Models;
     using TeleConsult.Common;
+    using TeleConsult.Data.Models;
     using TeleConsult.Web.Controllers.Base;
+    using TeleConsult.Web.Models;
 
     [Authorize]
     public class AccountController : BaseController
@@ -80,6 +83,8 @@
             switch (result)
             {
                 case SignInStatus.Success:
+                    var user = await this.UserManager.FindAsync(model.UserName, model.Password);
+                    DataBaseLogger.Instance.Log(ActionType.Login, model.UserName, user.Id);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -491,6 +496,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            DataBaseLogger.Instance.Log(ActionType.Logout, AuthenticationManager.User.Identity.Name);
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home", new { Area = "" });
         }

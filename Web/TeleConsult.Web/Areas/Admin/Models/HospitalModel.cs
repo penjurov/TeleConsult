@@ -10,11 +10,12 @@
     using Common;
     using Data.Filters.Admin;
     using Data.Models;
+    using Data.Models.Enumerations;
     using Data.Proxies;
     using Data.Repositories;
     using Web.Models;
-
-    public class HospitalModel : AdminModel, IModel<bool>
+    
+    public class HospitalModel : AdminModel, IModel
     {
         public HospitalProxy ViewModel { get; set; }
 
@@ -65,6 +66,8 @@
 
                     repo.SaveChanges();
 
+                    this.Logger.Log(proxy.Id.HasValue ? ActionType.EditHospital : ActionType.AddHospital, hospital.Name);
+
                     return hospital.Id;
                 }
                 catch (DbEntityValidationException e)
@@ -88,6 +91,8 @@
                 hospital.IsDeleted = true;
                 hospital.DeletedOn = DateTime.Now;
                 repo.SaveChanges();
+
+                this.Logger.Log(ActionType.DeleteHospital, hospital.Name);
             }
             else
             {
@@ -105,6 +110,8 @@
                 hospital.IsDeleted = false;
                 hospital.DeletedOn = null;
                 repo.SaveChanges();
+
+                this.Logger.Log(ActionType.ActivateHospital, hospital.Name);
             }
             else
             {

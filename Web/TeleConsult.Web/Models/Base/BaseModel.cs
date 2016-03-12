@@ -1,20 +1,25 @@
 ﻿namespace TeleConsult.Web.Models.Base
 {
+    using System.Data.Entity.Validation;
     using System.Linq;
+    using System.Text;
     using System.Web.Mvc;
 
     using Common;
     using Data.RepoFactory;
+    using Infrastructure.Logging;
     using Microsoft.Practices.Unity;
-    using System.Data.Entity.Validation;
-    using System.Text;
+
     public abstract class BaseModel : IModel
     {
         [Dependency]
         public IRepoFactory RepoFactory { get; set; }
 
+        protected ILogger Logger { get; set; }
+
         public void Init()
         {
+            this.Logger = DataBaseLogger.Instance;
         }
 
         protected string HandleErrors(ModelStateDictionary modelState)
@@ -39,8 +44,11 @@
 
             foreach (var eve in e.EntityValidationErrors)
             {
-                builder.AppendLine(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                    eve.Entry.Entity.GetType().Name, eve.Entry.State));
+                builder.AppendLine(string.Format(
+                    "Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                    eve.Entry.Entity.GetType().Name, 
+                    eve.Entry.State));
+
                 foreach (var ve in eve.ValidationErrors)
                 {
                     builder.AppendLine(string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage));

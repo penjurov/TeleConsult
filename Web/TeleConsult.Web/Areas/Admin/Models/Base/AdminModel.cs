@@ -13,11 +13,11 @@
 
         public virtual void Init(bool init)
         {
+            base.Init();
+
             if (init)
             {
-                if (init)
-                {
-                    this.Statuses = new List<SelectListItem>()
+                this.Statuses = new List<SelectListItem>()
                 {
                     new SelectListItem
                     {
@@ -31,8 +31,7 @@
                         Value = bool.TrueString
                     },
                 };
-                }
             }
-        }
+    }
     }
 }
