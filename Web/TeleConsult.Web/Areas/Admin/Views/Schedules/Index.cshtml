@@ -1,0 +1,79 @@
+﻿@using TeleConsult.Common
+@using TeleConsult.Web.Areas.Admin.Models
+@model ScheduleModel
+
+@{
+    ViewBag.Title = SiteMap.CurrentNode.Title;
+}
+
+@section scripts {
+    @Html.RenderScripts("~/Scripts/Libs/Calendar/fullcalendar.js",
+                    "~/Scripts/Libs/Calendar/bg.js",
+                    "~/Areas/Admin/Scripts/Schedules.js")
+}
+
+@section styles {
+    @Html.RenderStyles("~/Content/fullcalendar.css")
+}
+
+@Html.Hidden("saveSchedule", Url.Action("Save", "Schedules"))
+@Html.Hidden("getSchedules", Url.Action("GetSchedules", "Schedules"))
+
+<div>
+    <div class="row well">
+        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-12 form-group">
+            <label for="searchDescription">Описание</label>
+            <input type="text" id="searchDescription" class="form-control" />
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 form-group">
+            <label for="searchSpecialist">Специалист</label>
+            @Html.DropDownList("searchSpecialist", Model.Specialists, GlobalConstants.Statuses.All, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-10 col-md-3 col-sm-8 col-xs-12 form-group">
+            <button id="btnSearch" type="button" class="btn btn-primary">Търси</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div data-role="wrapper">
+            <div class="calendar noselect" id="calendar"></div>
+        </div>
+    </div>
+</div>
+
+<div id="scheduleDialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Title</h4>
+            </div>
+            <div class="modal-body">
+                <form class="modal-form" id="scheduleForm">
+                    <div class="contentTable dialog auto-overflow-dialog">
+                        @Html.Hidden("Id")
+
+                        @Html.EditorFor(m => m.ViewModel.SpecialistId, new { ListItems = Model.Specialists })
+                        @Html.EditorFor(m => m.ViewModel.StartDate)
+                        @Html.EditorFor(m => m.ViewModel.EndDate)
+                        
+                        <div class="form-group row">
+                            @Html.LabelFor(m => m.ViewModel.IsAllDay, htmlAttributes: new { @class = "col-lg-4 col-md-5 col-sm-5 col-xs-5 modal-label" })
+                            <div class="col-lg-8 col-md-7 col-sm-7 col-xs-7">
+                                @Html.CheckBoxFor(m => m.ViewModel.IsAllDay, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ViewModel.IsAllDay, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @Html.EditorFor(m => m.ViewModel.Description)
+                        <div class="modal-footer">
+                            <button id="btnSaveSchedule" type="button" class="btn btn-primary" data-url="@Url.Action("Save")">Запис</button>
+                            <button id="btnCancel" type="button" class="btn btn-default">Отказ</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

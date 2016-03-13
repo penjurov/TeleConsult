@@ -231,11 +231,13 @@
     <Compile Include="Areas\Admin\Controllers\HospitalController.cs" />
     <Compile Include="Areas\Admin\Controllers\LogController.cs" />
     <Compile Include="Areas\Admin\Controllers\MenuController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SchedulesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SpecialistController.cs" />
     <Compile Include="Areas\Admin\Controllers\SpecialityController.cs" />
     <Compile Include="Areas\Admin\Models\Base\AdminModel.cs" />
     <Compile Include="Areas\Admin\Models\HospitalModel.cs" />
     <Compile Include="Areas\Admin\Models\LogModel.cs" />
+    <Compile Include="Areas\Admin\Models\ScheduleModel.cs" />
     <Compile Include="Areas\Admin\Models\SpecialistModel.cs" />
     <Compile Include="Areas\Admin\Models\SpecialtyModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -246,6 +248,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Binders\DoubleModelBinder.cs" />
+    <Compile Include="Infrastructure\Bundles\BundleCollectionExtensions.cs" />
     <Compile Include="Infrastructure\Logging\DataBaseLogger.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
     <Compile Include="Infrastructure\Unity\MvcUnityDependencyResolver.cs" />
@@ -266,6 +269,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Scripts\Log.js" />
+    <Content Include="Areas\Admin\Scripts\Schedules.js" />
     <Content Include="Areas\Admin\Scripts\Specialist.js" />
     <Content Include="Areas\Admin\Scripts\Hospital.js" />
     <Content Include="Areas\Admin\Scripts\Speciality.js" />
@@ -276,6 +280,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.spacelab.css" />
     <Content Include="Content\bootstrap.spacelab.min.css" />
+    <Content Include="Content\fullcalendar.css" />
     <Content Include="Content\grid-0.5.6.css" />
     <Content Include="Content\images\hospital.png" />
     <Content Include="Content\images\Logo.png" />
@@ -297,7 +302,9 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Menu\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Hospital\Index.cshtml" />
@@ -312,9 +319,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <None Include="MvcSiteMapSchema.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <Content Include="Areas\Admin\Views\Schedules\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\MultiLineTemplate.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\BoolTemplate.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\DateTemplate.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -326,6 +334,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Libs\Calendar\bg.js" />
+    <Content Include="Scripts\Libs\Calendar\fullcalendar.js" />
     <Content Include="Scripts\Libs\grid-0.5.6.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\moment.js" />

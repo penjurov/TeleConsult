@@ -35,5 +35,15 @@
 
             return source;
         }
+
+        public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> source, DateTime? property, Expression<Func<TSource, bool>> predicate)
+        {
+            if (property.HasValue)
+            {
+                source = source.Where(predicate);
+            }
+
+            return source;
+        }
     }
 }

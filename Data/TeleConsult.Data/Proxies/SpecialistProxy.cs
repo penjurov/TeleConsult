@@ -23,6 +23,14 @@
         [UIHint("SingleLineTemplate")]
         public string LastName { get; set; }
 
+        public string FullName
+        {
+            get
+            {
+                return string.Format("{0} {1} {2}", this.TitleName, this.FirstName, this.LastName);
+            }
+        }
+
         [DisplayName(GlobalConstants.UinDisplay)]
         [Required(ErrorMessage = GlobalConstants.UinRequireText)]
         [MinLength(10)]

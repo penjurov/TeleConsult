@@ -108,7 +108,7 @@
     showDialog: function (title, record) {
         var self = SpecialityViewModel;
 
-        self.populateEquipmentFields(record);
+        self.populateFields(record);
         self.modal = $(self.dialog).modal();
         self.modal.find('.modal-title').text(title);
         self.modal.off('hide.bs.modal')
@@ -118,7 +118,7 @@
             });
     },
 
-    populateEquipmentFields: function (record) {
+    populateFields: function (record) {
         var self = SpecialityViewModel;
 
         if (record) {

@@ -20,6 +20,12 @@
         {
         }
 
+        public IEnumerable<SpecialistProxy> GetActive()
+        {
+            var result = this.All().Where(s => !s.IsDeleted).ToList();
+            return this.GetProxy(result);
+        }
+
         public IEnumerable<SpecialistProxy> Get(SpecialistFilter filter)
         {
             var result = this.All()

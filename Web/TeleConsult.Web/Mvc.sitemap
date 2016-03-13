@@ -10,6 +10,7 @@
       <mvcSiteMapNode title="Специалности" controller="Speciality" action="Index"/>
       <mvcSiteMapNode title="Специалисти" controller="Specialist" action="Index"/>
       <mvcSiteMapNode title="Хронология" controller="Log" action="Index"/>
+      <mvcSiteMapNode title="График" controller="Schedules" action="Index"/>
     </mvcSiteMapNode>
   </mvcSiteMapNode>
 
