@@ -1,12 +1,12 @@
 ﻿@using TeleConsult.Common;
 @{
-    ViewBag.Title = GlobalConstants.AdministrationControllerTitle;
+    ViewBag.Title = SiteMap.CurrentNode.Title;
 }
 
 <div class="row well down menu">
     <div class="row">
         <div class="col-md-10">
-            <h2>@GlobalConstants.AdministrationControllerTitle</h2>
+            <h2>@ViewBag.Title</h2>
         </div>
         <div class="col-md-2">
             <div class="menu-logo pull-right">

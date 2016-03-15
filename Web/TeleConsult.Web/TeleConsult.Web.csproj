@@ -240,6 +240,9 @@
     <Compile Include="Areas\Admin\Models\ScheduleModel.cs" />
     <Compile Include="Areas\Admin\Models\SpecialistModel.cs" />
     <Compile Include="Areas\Admin\Models\SpecialtyModel.cs" />
+    <Compile Include="Areas\Consultation\ConsultationAreaRegistration.cs" />
+    <Compile Include="Areas\Consultation\Controllers\ConsultationBaseController.cs" />
+    <Compile Include="Areas\Consultation\Controllers\MenuController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -308,7 +311,6 @@
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Menu\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Hospital\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\SingleLineTemplate.cshtml" />
     <Content Include="Content\bootstrap-dialog.less" />
     <Content Include="Mvc.sitemap" />
     <Content Include="Areas\Admin\Views\Speciality\Index.cshtml" />
@@ -323,6 +325,9 @@
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\MultiLineTemplate.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\BoolTemplate.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\DateTemplate.cshtml" />
+    <Content Include="Areas\Consultation\Views\web.config" />
+    <Content Include="Areas\Consultation\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Consultation\Views\Menu\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -388,12 +393,16 @@
     <Content Include="Views\Shared\DisplayTemplates\SiteMapNodeModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SiteMapHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MenuHelperModel.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\SingleLineTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Consultation\Models\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>

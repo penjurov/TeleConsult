@@ -4,7 +4,6 @@
 
     public class MenuController : AdminBaseController
     {
-        // GET: Admin/Menu
         public ActionResult Index()
         {
             return this.View();
