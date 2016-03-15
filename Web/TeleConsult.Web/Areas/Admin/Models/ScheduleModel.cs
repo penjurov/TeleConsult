@@ -67,7 +67,9 @@
 
                     repo.SaveChanges();
 
-                    this.Logger.Log(proxy.Id.HasValue ? ActionType.EditSchedule : ActionType.AddSchedule, string.Format("{0}: {1} - {2}", schedule.Specialist.UserName, schedule.StartDate, schedule.EndDate));
+                    var specialist = this.RepoFactory.Get<SpecialistRepository>().GetById(schedule.SpecialistId);
+
+                    this.Logger.Log(proxy.Id.HasValue ? ActionType.EditSchedule : ActionType.AddSchedule, string.Format("{0}: {1} - {2}", specialist.UserName, schedule.StartDate, schedule.EndDate));
 
                     return schedule.Id;
                 }

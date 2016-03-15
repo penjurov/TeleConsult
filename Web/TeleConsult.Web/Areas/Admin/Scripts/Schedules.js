@@ -69,6 +69,11 @@
         });
 
         $('#btnSearch').on('click', self.search);
+
+        $('.fc-button').on('click', function (e) {
+            e.preventDefault();
+            self.search();
+        });
     },
 
     initValidation: function () {
@@ -132,13 +137,24 @@
                 self.search();
             }
 
-            params = {
-                Id: $('#Id').val(),
-                SpecialistId: $('#ViewModel_SpecialistId').val(),
-                StartDate: $('#ViewModel_StartDate').val(),
-                EndDate: $('#ViewModel_EndDate').val(),
-                IsAllDay: $('#ViewModel_IsAllDay').is(':selected'),
-                Description: $('#ViewModel_Description').val()
+            if (event) {
+                params = {
+                    Id: event.Id,
+                    SpecialistId: event.SpecialistId,
+                    StartDate: event.start.format('DD/MM/YYYY h:mm A'),
+                    EndDate: event.end.format('DD/MM/YYYY h:mm A'),
+                    IsAllDay: event.IsAllDay,
+                    Description: event.Description
+                }
+            } else {
+                params = {
+                    Id: $('#Id').val(),
+                    SpecialistId: $('#ViewModel_SpecialistId').val(),
+                    StartDate: $('#ViewModel_StartDate').val(),
+                    EndDate: $('#ViewModel_EndDate').val(),
+                    IsAllDay: $('#ViewModel_IsAllDay').is(':selected'),
+                    Description: $('#ViewModel_Description').val()
+                }
             }
 
             ajaxModel.post(url, params, onSuccess);
