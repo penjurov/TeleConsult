@@ -11,7 +11,9 @@
         self.initCalendar();
         self.initEvents();
         self.initValidation();
-        $('.date').datetimepicker();
+        $('.date').datetimepicker({
+            format: 'DD/MM/YYYY h:mm A'
+        });
 
         self.search();
     },
@@ -79,6 +81,17 @@
     initValidation: function () {
         var self = SchedulesViewModel;
 
+        jQuery.validator.methods.date = function (value, element) {
+            var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+            if (isChrome) {
+                var dateParts = value.split('/');
+                var dateStr = dateParts[2] + '-' + dateParts[1] + '-' + dateParts[0];
+                return this.optional(element) || !/Invalid|NaN/.test(new Date(dateStr));
+            } else {
+                return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
+            }
+        };
+
         self.validator = $(self.form).validate();
         self.validator.settings.errorElement = 'div';
         self.validator.settings.errorClass = 'validation-error';
@@ -137,24 +150,13 @@
                 self.search();
             }
 
-            if (event) {
-                params = {
-                    Id: event.Id,
-                    SpecialistId: event.SpecialistId,
-                    StartDate: event.start.format('DD/MM/YYYY h:mm A'),
-                    EndDate: event.end.format('DD/MM/YYYY h:mm A'),
-                    IsAllDay: event.IsAllDay,
-                    Description: event.Description
-                }
-            } else {
-                params = {
-                    Id: $('#Id').val(),
-                    SpecialistId: $('#ViewModel_SpecialistId').val(),
-                    StartDate: $('#ViewModel_StartDate').val(),
-                    EndDate: $('#ViewModel_EndDate').val(),
-                    IsAllDay: $('#ViewModel_IsAllDay').is(':selected'),
-                    Description: $('#ViewModel_Description').val()
-                }
+            params = {
+                Id: event.Id ? event.Id : $('#Id').val(),
+                SpecialistId: event.SpecialistId ? event.SpecialistId : $('#ViewModel_SpecialistId').val(),
+                StartDate: event.start ? event.start.format('DD/MM/YYYY h:mm A') : $('#ViewModel_StartDate').val(),
+                EndDate: event.end ? event.end.format('DD/MM/YYYY h:mm A') : $('#ViewModel_EndDate').val(),
+                IsAllDay: event.IsAllDay ?  event.IsAllDay : $('#ViewModel_IsAllDay').is(':selected'),
+                Description: event.Description ? event.Description : $('#ViewModel_Description').val()
             }
 
             ajaxModel.post(url, params, onSuccess);
@@ -215,9 +217,6 @@
             item.end = new Date(parseInt(item.EndDate.substr(6)));
 
             item.title = item.SpecialistName + '; ' + item.SpecialistSpeciality;
-
-            delete item.StartDate;
-            delete item.EndDate;
 
             sourceArray.push(item);
         });

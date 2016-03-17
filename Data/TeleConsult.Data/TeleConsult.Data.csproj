@@ -111,6 +111,7 @@
     <Compile Include="ITeleConsultDbContext.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proxies\ConsultationProxy.cs" />
     <Compile Include="Proxies\HospitalProxy.cs" />
     <Compile Include="Proxies\LogProxy.cs" />
     <Compile Include="Proxies\ScheduleProxy.cs" />
@@ -120,6 +121,8 @@
     <Compile Include="RepoFactory\IRepoFactory.cs" />
     <Compile Include="RepoFactory\RepoFactory.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\ConsultationRepository.cs" />
+    <Compile Include="Repositories\DiagnosisRepository.cs" />
     <Compile Include="Repositories\HospitalRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\LogRepository.cs" />

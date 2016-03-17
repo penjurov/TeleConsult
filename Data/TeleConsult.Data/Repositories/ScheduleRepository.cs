@@ -5,12 +5,11 @@
 
     using Common.Helpers;
     using Filters.Admin;
-    using Helpers;
     using Microsoft.Practices.Unity;
-    using Models.Enumerations;
     using Proxies;
     using TeleConsult.Data.Models;
     using System;
+
     public class ScheduleRepository: BaseRepository<Schedule>
     {
         [InjectionConstructor]
@@ -22,10 +21,12 @@
         public IEnumerable<ScheduleProxy> Get(SchedulesFilter filter)
         {
             var result = this.All()
-                .Where(filter.StartDate, s => filter.StartDate <= s.StartDate)
-                .Where(filter.EndDate, s => filter.EndDate >= s.EndDate)
+                .Where(filter.StartDate.HasValue, s => s.StartDate >= filter.StartDate)
+                .Where(filter.EndDate.HasValue, s => s.EndDate <= filter.EndDate)
+                .Where(filter.Date.HasValue, s => s.StartDate <= filter.Date && filter.Date <= s.EndDate)
                 .Where(filter.SpecialistId, s => s.SpecialistId == filter.SpecialistId)
-                .Where(filter.Description, s => s.Description.Contains(filter.Description));
+                .Where(filter.Description, s => s.Description.Contains(filter.Description))
+                .Where(filter.SpecialityId, s => s.Specialist.SpecialityId == filter.SpecialityId);
 
             return this.GetProxy(result);
         }
@@ -46,7 +47,8 @@
                 {
                     Title = s.Specialist.Title,
                     FirstName = s.Specialist.FirstName,
-                    LastName = s.Specialist.LastName
+                    LastName = s.Specialist.LastName,
+                    UserName = s.Specialist.UserName
                 },
                 SpecialistSpeciality = s.Specialist.Speciality.Name
             }).ToList();

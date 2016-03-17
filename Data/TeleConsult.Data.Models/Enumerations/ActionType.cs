@@ -40,8 +40,8 @@
         DeleteSchedule,
         [Description("Активиране график")]
         ActivateSchedule,
-        [Description("Добавяне консултация")]
-        AddConsultation,
+        [Description("Изпращане консултация")]
+        SendConsultation,
         [Description("Редакция консултация")]
         EditConsultation,
         [Description("Добавяне кръвно изследване")]

@@ -2,7 +2,7 @@
 {
     public enum ConsultationStage
     {
-        Sended,
+        Sent,
         Answered,
         Finnished
     }

@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace TeleConsult.Web.Areas.Consultation
+namespace TeleConsult.Web.Areas.Consultations
 {
     public class ConsultationAreaRegistration : AreaRegistration 
     {
@@ -8,7 +8,7 @@ namespace TeleConsult.Web.Areas.Consultation
         {
             get 
             {
-                return "Consultation";
+                return "Consultations";
             }
         }
 

@@ -1,0 +1,50 @@
+﻿@using TeleConsult.Common
+@using TeleConsult.Web.Areas.Consultations.Models
+
+@model ConsultationModel
+
+@{
+    ViewBag.Title = SiteMap.CurrentNode.Title;
+}
+
+@section scripts {
+    @Html.RenderScripts("~/Areas/Consultations/Scripts/RequestConsultation.js")
+}
+
+@Html.Hidden("GetDiagnosisUrl", Url.Action("GetDiagnosis", "Consultation"))
+@Html.Hidden("HomePageUrl", Url.Action("Index", "Menu", new { area = GlobalConstants.ConsultationAreaName }, null))
+
+<div class="row well">
+    <form id="requestForm">
+        <div class="form-horizontal">
+            <fieldset>
+                @Html.EditorFor(m => m.ViewModel.PatientInitials)
+                @Html.EditorFor(m => m.ViewModel.PatientAge)
+                @Html.EditorFor(m => m.ViewModel.Gender, new { ListItems = Model.Genders })
+
+                <div class="form-group">
+                    @Html.EditorFor(m => m.ViewModel.PreliminaryDiagnosisCode)
+                    @Html.EditorFor(m => m.ViewModel.PreliminaryDiagnosisDescription)
+                </div>
+
+                @Html.EditorFor(m => m.ViewModel.Anamnesis)
+                @Html.EditorFor(m => m.ViewModel.SpecialityId, new { ListItems = Model.Specialities })
+                @Html.EditorFor(m => m.ViewModel.Type, new { ListItems = Model.Types })
+
+                @if (Model.IsConsultation)
+                {
+                    <div class="form-group">
+                        @Html.EditorFor(m => m.ViewModel.FinalDiagnosisCode)
+                        @Html.EditorFor(m => m.ViewModel.FinalDiagnosisDescription)
+                    </div>
+
+                    @Html.EditorFor(m => m.ViewModel.Conclusion)
+                }
+
+                <div class="pull-right">
+                    <button id="btnSave" type="button" class="btn btn-primary" data-url="@Url.Action("Send")">@GlobalConstants.Send</button>
+                </div>
+            </fieldset>
+        </div>
+    </form>
+</div>

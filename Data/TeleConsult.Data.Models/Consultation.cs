@@ -20,11 +20,11 @@
         public int Id { get; set; }
 
         [Required]
-        public int SenderId { get; set; }
+        public string SenderId { get; set; }
 
         public Specialist Sender { get; set; }
 
-        public int? ConsultantId { get; set; }
+        public string ConsultantId { get; set; }
 
         public Specialist Consultant { get; set; }
 
@@ -43,9 +43,6 @@
         public virtual Diagnosis PreliminaryDiagnosis { get; set; }
 
         [Required]
-        public string PreliminaryDiagnosisDescription { get; set; }
-
-        [Required]
         public string Anamnesis { get; set; }
 
         public ICollection<BloodExamination> BloodExaminations { get; set; }
@@ -58,8 +55,6 @@
 
         public virtual Diagnosis FinalDiagnosis { get; set; }
 
-        public string FinalDiagnosisDescription { get; set; }
-
         public string Conclusion { get; set; }
 
         [Required]
@@ -67,11 +62,6 @@
 
         [Required]
         public ConsultationStage Stage { get; set; }
-
-        [Required]
-        public int SpecialityId { get; set; }
-
-        public Speciality Speciality { get; set; }
 
         [Required]
         [DataType(DataType.Date)]

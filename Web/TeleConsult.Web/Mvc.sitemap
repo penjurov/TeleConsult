@@ -12,7 +12,8 @@
       <mvcSiteMapNode title="Хронология" controller="Log" action="Index"/>
       <mvcSiteMapNode title="График" controller="Schedules" action="Index"/>
     </mvcSiteMapNode>
-    <mvcSiteMapNode title="Консултации" area="Consultation" controller="Menu" action="Index">
+    <mvcSiteMapNode title="Консултации" area="Consultations" controller="Menu" action="Index">
+      <mvcSiteMapNode title="Искане за консултация" controller="Consultation" action="RequestConsultation"/>
     </mvcSiteMapNode>
   </mvcSiteMapNode>
 

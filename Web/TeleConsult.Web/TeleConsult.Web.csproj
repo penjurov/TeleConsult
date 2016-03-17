@@ -240,9 +240,11 @@
     <Compile Include="Areas\Admin\Models\ScheduleModel.cs" />
     <Compile Include="Areas\Admin\Models\SpecialistModel.cs" />
     <Compile Include="Areas\Admin\Models\SpecialtyModel.cs" />
-    <Compile Include="Areas\Consultation\ConsultationAreaRegistration.cs" />
-    <Compile Include="Areas\Consultation\Controllers\ConsultationBaseController.cs" />
-    <Compile Include="Areas\Consultation\Controllers\MenuController.cs" />
+    <Compile Include="Areas\Consultations\ConsultationAreaRegistration.cs" />
+    <Compile Include="Areas\Consultations\Controllers\ConsultationBaseController.cs" />
+    <Compile Include="Areas\Consultations\Controllers\ConsultationController.cs" />
+    <Compile Include="Areas\Consultations\Controllers\MenuController.cs" />
+    <Compile Include="Areas\Consultations\Models\ConsultationModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -277,6 +279,7 @@
     <Content Include="Areas\Admin\Scripts\Hospital.js" />
     <Content Include="Areas\Admin\Scripts\Speciality.js" />
     <Content Include="Areas\Admin\Views\Log\Index.cshtml" />
+    <Content Include="Areas\Consultations\Scripts\RequestConsultation.js" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-dialog.css" />
     <Content Include="Content\bootstrap.css" />
@@ -323,11 +326,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Areas\Admin\Views\Schedules\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\MultiLineTemplate.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\BoolTemplate.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\DateTemplate.cshtml" />
-    <Content Include="Areas\Consultation\Views\web.config" />
-    <Content Include="Areas\Consultation\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Consultation\Views\Menu\Index.cshtml" />
+    <Content Include="Areas\Consultations\Views\web.config" />
+    <Content Include="Areas\Consultations\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Consultations\Views\Menu\Index.cshtml" />
+    <Content Include="Areas\Consultations\Views\Consultation\RequestConsultation.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -347,6 +350,8 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Shared\EditorTemplates\CodeTemplate.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\MultiLineTemplate.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -394,10 +399,15 @@
     <Content Include="Views\Shared\DisplayTemplates\SiteMapHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MenuHelperModel.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\SingleLineTemplate.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DescriptionTemplate.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DropDownTemplate.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\EnumTemplate.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\PasswordTemplate.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\SingleLineTemplate.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\IntTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Consultation\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

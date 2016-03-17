@@ -27,7 +27,7 @@
 
         // Areas
         public const string AdminAreaName = "Admin";
-        public const string ConsultationAreaName = "Consultation";
+        public const string ConsultationAreaName = "Consultations";
 
         // Controllers
         public const string AdministrationControllerTitle = "Администрация";

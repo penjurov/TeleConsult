@@ -1,4 +1,4 @@
-﻿namespace TeleConsult.Web.Areas.Consultation.Controllers
+﻿namespace TeleConsult.Web.Areas.Consultations.Controllers
 {
     using System.Web.Mvc;
     using Common;
