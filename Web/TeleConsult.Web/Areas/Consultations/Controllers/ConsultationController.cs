@@ -1,8 +1,9 @@
 ﻿namespace TeleConsult.Web.Areas.Consultations.Controllers
 {
-    using Data.Proxies;
-    using Models;
     using System.Web.Mvc;
+    using Data.Proxies;
+    using Infrastructure.Attributes;
+    using Models;
 
     public class ConsultationController : ConsultationBaseController
     {
@@ -10,10 +11,11 @@
         {
             var model = this.LoadModel<ConsultationModel, bool>(true);
             model.IsConsultation = false;
-            return View(model);
+            return this.View(model);
         }
 
         [HttpPost]
+        [ValidateHeaderAntiForgeryToken]
         public JsonResult Send(ConsultationProxy proxy)
         {
             var model = LoadModel<ConsultationModel, bool>(false);

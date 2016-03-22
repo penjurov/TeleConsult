@@ -128,6 +128,7 @@
         public const string GenderRequireText = "Пола на пациента е задължителен";
         public const string PreliminaryDiagnosisDisplay = "Предполагаема диагноза";
         public const string PreliminaryDiagnosisRequireText = "Предполагаемата диагноза е задължителна";
+        public const string PreliminaryDiagnosisDescriptionRequireText = "Грешен МКБ код";
         public const string AnamnesisDisplay = "Анамнеза";
         public const string AnamnesisRequireText = "Анамнезата е задължителна";
         public const string FinalDiagnosisDisplay = "Диагноза";

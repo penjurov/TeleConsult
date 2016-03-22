@@ -1,28 +1,39 @@
 ﻿namespace TeleConsult.Web.Areas.Consultations.Models
 {
-    using Data.Proxies;
-    using Web.Models.Base;
-    using Web.Models;
-    using System.Collections.Generic;
-    using System.Web.Mvc;
     using System;
-    using Data.Models.Enumerations;
-    using System.Linq;
-    using Common.Helpers;
-    using Data.Repositories;
-    using Data.Models;
-    using System.Web;
+    using System.Collections.Generic;
     using System.Data.Entity.Validation;
+    using System.Linq;
+    using System.Transactions;
+    using System.Web;
+
+    using System.Web.Mvc;
+    using Common.Helpers;
     using Data.Filters.Admin;
+    using Data.Models;
+    using Data.Models.Enumerations;
+    using Data.Proxies;
+    using Data.Repositories;
+    using Web.Models;
+    using Web.Models.Base;
+
     public class ConsultationModel : BaseModel, IModel<bool>
     {
         public ConsultationProxy ViewModel { get; set; }
+
+        public BloodExaminationProxy BloodExaminationViewModel { get; set; }
+
+        public UrinalysisProxy UrinalysisViewModel { get; set; }
+
+        public VisualExaminationProxy VisualExaminationViewModel { get; set; }
 
         public IEnumerable<SelectListItem> Genders { get; set; }
 
         public IEnumerable<SelectListItem> Types { get; set; }
 
         public IEnumerable<SelectListItem> Specialities { get; set; }
+
+        public IEnumerable<SelectListItem> VisualExaminationTypes { get; set; }
 
         public bool IsConsultation { get; set; }
 
@@ -52,6 +63,13 @@
                         Value = s.Id.ToString(),
                         Text = s.Name
                     });
+
+                this.VisualExaminationTypes = Enum.GetValues(typeof(VisualExaminationType)).Cast<VisualExaminationType>()
+                    .Select(v => new SelectListItem
+                    {
+                        Text = v.GetDescription(),
+                        Value = ((int)v).ToString()
+                    });
             }
         }
 
@@ -66,30 +84,38 @@
             {
                 try
                 {
-                    var senderId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
-                    var consultantId = this.GetConsultantId(proxy.SpecialityId);
-
-                    var consultation = new Consultation
+                    using (var transaction = new TransactionScope())
                     {
-                        SenderId = senderId,
-                        ConsultantId = consultantId,
-                        PatientInitials = proxy.PatientInitials,
-                        PatientAge = proxy.PatientAge,
-                        Gender = proxy.Gender,
-                        PreliminaryDiagnosisCode = proxy.PreliminaryDiagnosisCode,
-                        Anamnesis = proxy.Anamnesis,
-                        Type = proxy.Type,
-                        Stage = ConsultationStage.Sent,
-                        Date = DateTime.Now
-                    };
+                        var senderId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
+                        var consultantId = this.GetConsultantId(proxy.SpecialityId);
 
-                    var repo = this.RepoFactory.Get<ConsultationRepository>();
-                    repo.Add(consultation);
-                    repo.SaveChanges();
+                        var consultation = new Consultation
+                        {
+                            SenderId = senderId,
+                            ConsultantId = consultantId,
+                            PatientInitials = proxy.PatientInitials,
+                            PatientAge = proxy.PatientAge,
+                            Gender = proxy.Gender,
+                            PreliminaryDiagnosisCode = proxy.PreliminaryDiagnosisCode,
+                            Anamnesis = proxy.Anamnesis,
+                            Type = proxy.Type,
+                            Stage = ConsultationStage.Sent,
+                            Date = DateTime.Now
+                        };
 
-                    this.Logger.Log(ActionType.SendConsultation, consultation.SenderId.ToString());
+                        var repo = this.RepoFactory.Get<ConsultationRepository>();
+                        repo.Add(consultation);
 
-                    return consultation.Id;
+                        consultation.BloodExaminations = proxy.BloodExaminations != null ? this.SaveBloodExaminations(proxy.BloodExaminations, consultation.Id) : null;
+                        consultation.Urinalysis = proxy.Urinalysis != null ? this.SaveUrinalysis(proxy.Urinalysis, consultation.Id) : null;
+                        consultation.VisualExaminations = proxy.VisualExaminations != null ? this.SaveVisualExaminations(proxy.VisualExaminations, consultation.Id) : null;
+                        repo.SaveChanges();
+
+                        this.Logger.Log(ActionType.SendConsultation, string.Format("Id: {1}, Sender:{0}, Consultant: {2}", consultation.Id, consultation.SenderId, consultation.ConsultantId));
+
+                        transaction.Complete();
+                        return consultation.Id;
+                    }
                 }
                 catch (DbEntityValidationException e)
                 {
@@ -100,6 +126,103 @@
             {
                 throw new Exception(this.HandleErrors(modelState));
             }
+        }
+
+        private ICollection<BloodExamination> SaveBloodExaminations(IEnumerable<BloodExaminationProxy> bloodExaminations, int consultationId)
+        {
+            var result = new List<BloodExamination>();
+
+            foreach (var item in bloodExaminations)
+            {
+                var bloodExamination = new BloodExamination
+                {
+                    BleedingTime = item.BleedingTime,
+                    BloodSugar = item.BloodSugar,
+                    CoagulationTime = item.CoagulationTime,
+                    Date = item.Date.Value,
+                    Erythrocytes = item.Erythrocytes,
+                    Hct = item.Hct,
+                    Hemoglobin = item.Hemoglobin,
+                    Leuc = item.Leuc,
+                    Mch = item.Mch,
+                    Mchc = item.Mchc,
+                    Mcv = item.Mcv,
+                    MorphologyErythrocytes = item.MorphologyErythrocytes,
+                    Ret = item.Ret,
+                    Sue = item.Sue
+                };
+
+                result.Add(bloodExamination);
+
+                this.Logger.Log(ActionType.AddBloodExamination, string.Format("ConsultationId: {0}, Date: {1}", consultationId, bloodExamination.Date));
+            }
+
+            return result;
+        }
+
+        private ICollection<Urinalysis> SaveUrinalysis(IEnumerable<UrinalysisProxy> urinalyses, int consultationId)
+        {
+            var result = new List<Urinalysis>();
+
+            foreach (var item in urinalyses)
+            {
+                var urinalysis = new Urinalysis
+                {
+                    Amylase = item.Amylase,
+                    Bilirubin = item.Bilirubin,
+                    Blood = item.Blood,
+                    Date = item.Date.Value,
+                    Diuresis = item.Diuresis,
+                    FormedElements = item.FormedElements,
+                    Glucose = item.Glucose,
+                    GlucoseWeight = item.GlucoseWeight,
+                    KetoneBodies = item.KetoneBodies,
+                    Ketosteroids = item.Ketosteroids,
+                    Ph = item.Ph,
+                    Porphobilinogen = item.Porphobilinogen,
+                    Protein = item.Protein,
+                    ProteinWeight = item.ProteinWeight,
+                    Sediments = item.Sediments,
+                    SpecificGravity = item.SpecificGravity,
+                    Urobilinogen = item.Urobilinogen
+                };
+
+                result.Add(urinalysis);
+
+                this.Logger.Log(ActionType.AddUrinalysis, string.Format("ConsultationId: {0}, Date: {1}", consultationId, urinalysis.Date));
+            }
+
+            return result;
+        }
+
+        private ICollection<VisualExamination> SaveVisualExaminations(IEnumerable<VisualExaminationProxy> visualExaminations, int consultationId)
+        {
+            var result = new List<VisualExamination>();
+
+            foreach (var item in visualExaminations)
+            {
+                var visualExamination = new VisualExamination
+                {
+                    Date = item.Date.Value,
+                    FileContent = this.GetBytes(item.FileContent),
+                    FileType = item.FileType,
+                    InputInformation = item.InputInformation,
+                    Type = item.Type
+                };
+
+                result.Add(visualExamination);
+
+                this.Logger.Log(ActionType.AddVisualExamination, string.Format("ConsultationId: {0}, Date: {1}", consultationId, visualExamination.Date));
+            }
+
+            return result;
+        }
+
+        private byte[] GetBytes(string str)
+        {
+            byte[] bytes = new byte[str.Length * sizeof(char)];
+            Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+            return bytes;
         }
 
         private string GetConsultantId(int specialityId)
@@ -148,8 +271,6 @@
             {
                 throw new Exception("Няма специалист на смяна по избраната специалност");
             }
-
-
 
             return lessAvailableSpecialistId;
         }

@@ -23,7 +23,7 @@
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/Content/main/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/grid-0.5.6.css",
                       "~/Content/bootstrap-dialog.css",

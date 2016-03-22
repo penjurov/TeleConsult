@@ -81,17 +81,6 @@
     initValidation: function () {
         var self = SchedulesViewModel;
 
-        jQuery.validator.methods.date = function (value, element) {
-            var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-            if (isChrome) {
-                var dateParts = value.split('/');
-                var dateStr = dateParts[2] + '-' + dateParts[1] + '-' + dateParts[0];
-                return this.optional(element) || !/Invalid|NaN/.test(new Date(dateStr));
-            } else {
-                return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
-            }
-        };
-
         self.validator = $(self.form).validate();
         self.validator.settings.errorElement = 'div';
         self.validator.settings.errorClass = 'validation-error';

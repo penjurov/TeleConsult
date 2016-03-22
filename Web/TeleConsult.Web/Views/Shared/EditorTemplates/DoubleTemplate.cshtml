@@ -1,0 +1,7 @@
+﻿@model double?
+
+@Html.LabelFor(m => m, htmlAttributes: new { @class = "col-lg-2 col-md-2 col-sm-3 col-xs-12 modal-label" })
+<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+    @Html.TextBoxFor(m => m, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })
+</div>

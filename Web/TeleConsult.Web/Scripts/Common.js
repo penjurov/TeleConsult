@@ -1,11 +1,31 @@
-﻿var ajaxModel = {
+﻿jQuery.validator.methods.date = function (value, element) {
+    var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    if (isChrome) {
+        var dateParts = value.split('/');
+        var dateStr = dateParts[2] + '-' + dateParts[1] + '-' + dateParts[0];
+        return this.optional(element) || !/Invalid|NaN/.test(new Date(dateStr));
+    } else {
+        return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
+    }
+};
+
+var ajaxModel = {
     get: function (url, params, onSuccessFunc, onErrorFunc) {
         var settings = { url: url, data: params, type: 'GET', dataType: 'json' };
         $.ajax(settings).done(onSuccessFunc).fail(onErrorFunc || utils.onError);
     },
 
-    post: function (url, params, onSuccessFunc, onErrorFunc) {
-        var settings = { url: url, data: JSON.stringify(params), type: 'POST', contentType: 'application/json', dataType: 'json' };
+    post: function (url, params, onSuccessFunc, onErrorFunc, verificationToken) {
+        var settings = {
+            url: url,
+            data: JSON.stringify(params),
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            headers: {
+                'VerificationToken': verificationToken
+            },
+        };
         $.ajax(settings).done(onSuccessFunc).fail(onErrorFunc || utils.onError);
     },
 

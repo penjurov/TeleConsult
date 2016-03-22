@@ -62,7 +62,7 @@
     <Compile Include="Enumerations\ActionType.cs" />
     <Compile Include="Enumerations\ConsultationStage.cs" />
     <Compile Include="Enumerations\ConsultationType.cs" />
-    <Compile Include="Enumerations\ExaminationType.cs" />
+    <Compile Include="Enumerations\VisualExaminationType.cs" />
     <Compile Include="Enumerations\Gender.cs" />
     <Compile Include="Enumerations\Title.cs" />
     <Compile Include="BloodExamination.cs" />

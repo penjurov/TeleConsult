@@ -104,6 +104,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -158,13 +159,13 @@
       <HintPath>..\..\packages\WebActivatorEx.2.0.1\lib\net40\WebActivatorEx.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebGrease">
-      <Private>True</Private>
-      <HintPath>..\..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
-    </Reference>
     <Reference Include="Antlr3.Runtime">
       <Private>True</Private>
       <HintPath>..\..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -252,6 +253,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Attributes\ValidateHeaderAntiForgeryTokenAttribute.cs" />
     <Compile Include="Infrastructure\Binders\DoubleModelBinder.cs" />
     <Compile Include="Infrastructure\Bundles\BundleCollectionExtensions.cs" />
     <Compile Include="Infrastructure\Logging\DataBaseLogger.cs" />
@@ -279,7 +281,10 @@
     <Content Include="Areas\Admin\Scripts\Hospital.js" />
     <Content Include="Areas\Admin\Scripts\Speciality.js" />
     <Content Include="Areas\Admin\Views\Log\Index.cshtml" />
+    <Content Include="Areas\Consultations\Scripts\BloodExamination.js" />
     <Content Include="Areas\Consultations\Scripts\RequestConsultation.js" />
+    <Content Include="Areas\Consultations\Scripts\Urinalysis.js" />
+    <Content Include="Areas\Consultations\Scripts\VisualExamination.js" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-dialog.css" />
     <Content Include="Content\bootstrap.css" />
@@ -321,9 +326,6 @@
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\EnumTemplate.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\DropDownTemplate.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\PasswordTemplate.cshtml" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Areas\Admin\Views\Schedules\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\MultiLineTemplate.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\DateTemplate.cshtml" />
@@ -331,6 +333,12 @@
     <Content Include="Areas\Consultations\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Consultations\Views\Menu\Index.cshtml" />
     <Content Include="Areas\Consultations\Views\Consultation\RequestConsultation.cshtml" />
+    <Content Include="Areas\Consultations\Views\Shared\_UrinalysisDialog.cshtml" />
+    <Content Include="Areas\Consultations\Views\Shared\_BloodExaminationDialog.cshtml" />
+    <Content Include="Areas\Consultations\Views\Shared\_VisualExaminationDialog.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -345,6 +353,7 @@
     <Content Include="Scripts\Libs\Calendar\bg.js" />
     <Content Include="Scripts\Libs\Calendar\fullcalendar.js" />
     <Content Include="Scripts\Libs\grid-0.5.6.js" />
+    <Content Include="Scripts\Libs\underscore.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\respond.js" />
@@ -405,6 +414,8 @@
     <Content Include="Views\Shared\EditorTemplates\PasswordTemplate.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SingleLineTemplate.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\IntTemplate.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DoubleTemplate.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

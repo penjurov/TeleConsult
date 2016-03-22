@@ -14,7 +14,14 @@
 
         public string GetDiagnosisByCode(string code)
         {
-            return this.All().FirstOrDefault(d => d.Code == code).Description;
+            var result = this.All().FirstOrDefault(d => d.Code == code);
+
+            if (result != null)
+            {
+                return result.Description;
+            }
+
+            return string.Empty;  
         }
     }
 }

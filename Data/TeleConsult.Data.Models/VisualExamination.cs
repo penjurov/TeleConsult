@@ -17,7 +17,7 @@
         public DateTime Date { get; set; }
 
         [Required]
-        public ExaminationType Type { get; set; }
+        public VisualExaminationType Type { get; set; }
 
         public string InputInformation { get; set; }
 

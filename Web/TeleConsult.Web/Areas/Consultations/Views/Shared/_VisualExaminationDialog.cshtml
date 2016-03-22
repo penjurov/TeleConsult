@@ -1,0 +1,53 @@
+﻿@using TeleConsult.Web.Areas.Consultations.Models
+@model ConsultationModel
+
+<div class="modal fade" id="visualExaminationDialog" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-large">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Образни изследвания</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal modal-form" id="visualExaminationForm">
+                    <fieldset>
+                        @Html.Hidden("visualExaminationId")
+
+                        @Html.EditorFor(m => m.VisualExaminationViewModel.Type, new { ListItems = Model.VisualExaminationTypes })
+
+                        <div class="form-group row">
+                            @Html.Label("Изследване", htmlAttributes: new { @class = "col-md-2 col-sm-3 col-xs-12 modal-label" })
+                            <div class="col-md-2 col-sm-3 col-xs-12">
+                                <span class="btn btn-default btn-file col-xs-12">
+                                    Избери <input type="file">
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.Label(" ", htmlAttributes: new { @class = "col-md-2 col-sm-3 col-xs-12 modal-label" })
+                            <div class="col-md-10 col-sm-9 col-xs-12">
+                                <img src="#" id="examination" class="examination-image" alt="Изследване" />
+                            </div>
+                        </div>
+
+                        @Html.EditorFor(m => m.VisualExaminationViewModel.InputInformation)
+
+                        @if (Model.IsConsultation)
+	                    {
+		                    @Html.EditorFor(m => m.VisualExaminationViewModel.ConsultInformation)
+                        }
+
+                        <div class="form-group">
+                            @Html.EditorFor(m => m.VisualExaminationViewModel.Date)
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSaveVisualExamination" class="btn btn-primary">Запис</button>
+                <button type="button" id="btnCancelVisualExamination" class="btn btn-default">Отказ</button>
+            </div>
+        </div>
+    </div>
+</div>

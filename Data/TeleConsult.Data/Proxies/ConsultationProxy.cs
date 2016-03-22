@@ -51,6 +51,7 @@
         [UIHint("CodeTemplate")]
         public string PreliminaryDiagnosisCode { get; set; }
 
+        [Required(ErrorMessage = GlobalConstants.PreliminaryDiagnosisDescriptionRequireText)]
         [UIHint("DescriptionTemplate")]
         public string PreliminaryDiagnosisDescription { get; set; }
 
@@ -60,9 +61,15 @@
         [UIHint("MultiLineTemplate")]
         public string Anamnesis { get; set; }
 
+        public IEnumerable<BloodExaminationProxy> BloodExaminations { get; set; }
+
         public IEnumerable<int> BloodExaminationIds { get; set; }
 
+        public IEnumerable<UrinalysisProxy> Urinalysis { get; set; }
+
         public IEnumerable<int> UrinalysisIds { get; set; }
+
+        public IEnumerable<VisualExaminationProxy> VisualExaminations { get; set; }
 
         public IEnumerable<int> VisualExaminationIds { get; set; }
 

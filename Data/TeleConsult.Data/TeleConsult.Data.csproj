@@ -111,13 +111,16 @@
     <Compile Include="ITeleConsultDbContext.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proxies\BloodExaminationProxy.cs" />
     <Compile Include="Proxies\ConsultationProxy.cs" />
     <Compile Include="Proxies\HospitalProxy.cs" />
     <Compile Include="Proxies\LogProxy.cs" />
     <Compile Include="Proxies\ScheduleProxy.cs" />
     <Compile Include="Proxies\SpecialistProxy.cs" />
     <Compile Include="Proxies\SpecialityProxy.cs" />
+    <Compile Include="Proxies\UrinalysisProxy.cs" />
     <Compile Include="Proxies\UserProxy.cs" />
+    <Compile Include="Proxies\VisualExaminationProxy.cs" />
     <Compile Include="RepoFactory\IRepoFactory.cs" />
     <Compile Include="RepoFactory\RepoFactory.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />

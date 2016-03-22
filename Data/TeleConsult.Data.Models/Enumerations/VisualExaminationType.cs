@@ -3,7 +3,7 @@
     using System.ComponentModel;
     using TeleConsult.Common;
 
-    public enum ExaminationType
+    public enum VisualExaminationType
     {
         [Description(GlobalConstants.Ecg)]
         Ecg,

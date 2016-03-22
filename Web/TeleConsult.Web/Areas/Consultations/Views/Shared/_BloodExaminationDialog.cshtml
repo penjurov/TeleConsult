@@ -1,0 +1,53 @@
+﻿@using TeleConsult.Web.Areas.Consultations.Models
+@model ConsultationModel
+
+<div class="modal fade" id="bloodExaminationDialog" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-large">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Кръвни изследвания</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal modal-form" id="bloodExaminationForm">
+                    <fieldset>
+                        @Html.Hidden("bloodExaminationId")
+
+                        <div class="form-group">
+                            @Html.EditorFor(m => m.BloodExaminationViewModel.Hemoglobin)
+                            @Html.EditorFor(m => m.BloodExaminationViewModel.Erythrocytes)
+                            @Html.EditorFor(m => m.BloodExaminationViewModel.Hct)
+                        </div>
+
+                        <div class="form-group">
+                            @Html.EditorFor(m => m.BloodExaminationViewModel.Leuc)
+                            @Html.EditorFor(m => m.BloodExaminationViewModel.Mchc)
+                            @Html.EditorFor(m => m.BloodExaminationViewModel.Mch)
+                        </div>
+
+                        <div class="form-group">
+                            @Html.EditorFor(m => m.BloodExaminationViewModel.Mcv)
+                            @Html.EditorFor(m => m.BloodExaminationViewModel.Ret)
+                            @Html.EditorFor(m => m.BloodExaminationViewModel.Sue)
+                        </div>
+
+                        <div class="form-group">
+                            @Html.EditorFor(m => m.BloodExaminationViewModel.BleedingTime)
+                            @Html.EditorFor(m => m.BloodExaminationViewModel.CoagulationTime)
+                            @Html.EditorFor(m => m.BloodExaminationViewModel.MorphologyErythrocytes)
+                        </div>
+
+                        <div class="form-group">
+                            @Html.EditorFor(m => m.BloodExaminationViewModel.BloodSugar)
+                            @Html.EditorFor(m => m.BloodExaminationViewModel.Date)
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSaveBloodExamination" class="btn btn-primary">Запис</button>
+                <button type="button" id="btnCancelBloodExamination" class="btn btn-default">Отказ</button>
+            </div>
+        </div>
+    </div>
+</div>
