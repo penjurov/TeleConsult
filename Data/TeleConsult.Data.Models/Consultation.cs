@@ -22,11 +22,11 @@
         [Required]
         public string SenderId { get; set; }
 
-        public Specialist Sender { get; set; }
+        public virtual Specialist Sender { get; set; }
 
         public string ConsultantId { get; set; }
 
-        public Specialist Consultant { get; set; }
+        public virtual Specialist Consultant { get; set; }
 
         [Required]
         public string PatientInitials { get; set; }

@@ -1,11 +1,14 @@
 ﻿namespace TeleConsult.Data.Repositories
 {
-    using Microsoft.Practices.Unity;
-    using Proxies;
     using System.Collections.Generic;
     using System.Linq;
+
+    using Filters.Consultations;
+    using Helpers;
+    using Microsoft.Practices.Unity;
+    using Proxies;
+    using TeleConsult.Common.Helpers;
     using TeleConsult.Data.Models;
-    using System;
 
     public class ConsultationRepository : BaseRepository<Consultation>
     {
@@ -15,36 +18,50 @@
         {
         }
 
+        public IEnumerable<ConsultationProxy> Get(ConsultationFilter filter)
+        {
+            var result = this.All()
+                .Where(filter.IsConsultation, c => c.ConsultantId == filter.SpecialistId)
+                .Where(!filter.IsConsultation, c => c.SenderId == filter.SpecialistId)
+                .OrderBy(c => c.Date);
+
+            if (filter.SortBy == "PreliminaryDiagnosisDescription")
+            {
+                filter.SortBy = "PreliminaryDiagnosisCode";
+            }
+
+            filter.Count = result.Count();
+
+            return this.GetProxy(result.OrderByFilter(filter).PageByFilter(filter));
+        }
+
         public IEnumerable<ConsultationProxy> GetByConsultantIds(List<string> consultantIds)
         {
             var result = this.All().Where(c => consultantIds.Contains(c.ConsultantId));
 
-            return this.GetProxy(result);
+            return this.GetProxy(result.ToList());
         }
 
-        private IEnumerable<ConsultationProxy> GetProxy(IQueryable<Consultation> result)
+        private IEnumerable<ConsultationProxy> GetProxy(List<Consultation> result)
         {
             return result.Select(c => new ConsultationProxy
             {
                 Id = c.Id,
                 PatientInitials = c.PatientInitials,
                 PatientAge = c.PatientAge,
+                PatientGender = c.Gender,
                 SenderId = c.SenderId,
                 ConsultantId = c.ConsultantId,
                 Anamnesis = c.Anamnesis,
                 Conclusion = c.Conclusion,
-                Date = c.Date,
-                Gender = c.Gender,
+                ConsultationDate = c.Date,
                 SpecialityId = c.Consultant.SpecialityId,
                 PreliminaryDiagnosisCode = c.PreliminaryDiagnosisCode,
-                PreliminaryDiagnosisDescription = c.PreliminaryDiagnosis.Description,
+                PreliminaryDiagnosisDescription = c.PreliminaryDiagnosis != null ? c.PreliminaryDiagnosis.Description : null,
                 FinalDiagnosisCode = c.FinalDiagnosisCode,
-                FinalDiagnosisDescription = c.FinalDiagnosis.Description,
+                FinalDiagnosisDescription = c.FinalDiagnosis != null ? c.FinalDiagnosis.Description : null,
                 Stage = c.Stage,
-                Type = c.Type,
-                BloodExaminationIds = c.BloodExaminations.Select(be => be.Id),
-                UrinalysisIds = c.Urinalysis.Select(ur => ur.Id),
-                VisualExaminationIds = c.VisualExaminations.Select(ve => ve.Id)
+                ConsultationType = c.Type
             });
         }
     }

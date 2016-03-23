@@ -34,15 +34,15 @@
         [Required(ErrorMessage = GlobalConstants.GenderRequireText)]
         [DisplayName(GlobalConstants.GenderDisplay)]
         [UIHint("EnumTemplate")]
-        public Gender Gender { get; set; }
+        public Gender PatientGender { get; set; }
 
         [DisplayName(GlobalConstants.GenderDisplay)]
         [UIHint("SingleLineTemplate")]
-        public string GenderName
+        public string Gender
         {
             get
             {
-                return this.Gender.GetDescription();
+                return this.PatientGender.GetDescription();
             }
         }
 
@@ -88,15 +88,15 @@
         [DisplayName(GlobalConstants.TypeDisplay)]
         [Required]
         [UIHint("EnumTemplate")]
-        public ConsultationType Type { get; set; }
+        public ConsultationType ConsultationType { get; set; }
 
         [DisplayName(GlobalConstants.TypeDisplay)]
         [UIHint("SingleLineTemplate")]
-        public string TypeName
+        public string Type
         {
             get
             {
-                return this.Type.GetDescription();
+                return this.ConsultationType.GetDescription();
             }
         }
 
@@ -111,7 +111,15 @@
         [Required]
         [DisplayName(GlobalConstants.DateDisplay)]
         [UIHint("DateTemplate")]
-        public DateTime Date { get; set; }
+        public DateTime ConsultationDate { get; set; }
+
+        public string Date
+        {
+            get
+            {
+                return this.ConsultationDate.ToString();
+            }
+        }
 
         public bool Deleted { get; set; }
 

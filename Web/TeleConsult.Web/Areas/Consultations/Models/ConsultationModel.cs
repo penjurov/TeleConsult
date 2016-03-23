@@ -10,6 +10,7 @@
     using System.Web.Mvc;
     using Common.Helpers;
     using Data.Filters.Admin;
+    using Data.Filters.Consultations;
     using Data.Models;
     using Data.Models.Enumerations;
     using Data.Proxies;
@@ -73,6 +74,12 @@
             }
         }
 
+        public List<ConsultationProxy> GetConsultations(ConsultationFilter filter)
+        {
+            filter.SpecialistId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
+            return this.RepoFactory.Get<ConsultationRepository>().Get(filter).ToList();
+        }
+
         public string GetDiagnosis(string code)
         {
             return this.RepoFactory.Get<DiagnosisRepository>().GetDiagnosisByCode(code);
@@ -95,10 +102,10 @@
                             ConsultantId = consultantId,
                             PatientInitials = proxy.PatientInitials,
                             PatientAge = proxy.PatientAge,
-                            Gender = proxy.Gender,
-                            PreliminaryDiagnosisCode = proxy.PreliminaryDiagnosisCode,
+                            Gender = proxy.PatientGender,
+                            PreliminaryDiagnosisCode = proxy.PreliminaryDiagnosisCode.ToUpper(),
                             Anamnesis = proxy.Anamnesis,
-                            Type = proxy.Type,
+                            Type = proxy.ConsultationType,
                             Stage = ConsultationStage.Sent,
                             Date = DateTime.Now
                         };

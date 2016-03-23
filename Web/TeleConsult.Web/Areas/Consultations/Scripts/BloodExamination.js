@@ -52,7 +52,6 @@
         $('#btnCancelBloodExamination').on('click', function () {
             self.modal.modal('hide');
         });
-
     },
 
     initValidation: function () {

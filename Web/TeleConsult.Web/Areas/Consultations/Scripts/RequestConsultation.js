@@ -57,12 +57,12 @@
             params = {
                 PatientInitials: $('#ViewModel_PatientInitials').val(),
                 PatientAge: $('#ViewModel_PatientAge').val(),
-                Gender: $('#ViewModel_Gender').val(),
+                PatientGender: $('#ViewModel_PatientGender').val(),
                 PreliminaryDiagnosisCode: $('#ViewModel_PreliminaryDiagnosisCode').val(),
                 PreliminaryDiagnosisDescription: $('#ViewModel_PreliminaryDiagnosisDescription').val(),
                 Anamnesis: $('#ViewModel_Anamnesis').val(),
                 SpecialityId: $('#ViewModel_SpecialityId').val(),
-                Type: $('#ViewModel_Type').val(),
+                ConsultationType: $('#ViewModel_ConsultationType').val(),
                 BloodExaminations: self.getBloodExaminations(),
                 Urinalysis: self.getUrinalysis(),
                 VisualExaminations: self.getVisualExaminations()

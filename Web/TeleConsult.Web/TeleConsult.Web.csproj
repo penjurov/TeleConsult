@@ -282,6 +282,7 @@
     <Content Include="Areas\Admin\Scripts\Speciality.js" />
     <Content Include="Areas\Admin\Views\Log\Index.cshtml" />
     <Content Include="Areas\Consultations\Scripts\BloodExamination.js" />
+    <Content Include="Areas\Consultations\Scripts\ConsultationTable.js" />
     <Content Include="Areas\Consultations\Scripts\RequestConsultation.js" />
     <Content Include="Areas\Consultations\Scripts\Urinalysis.js" />
     <Content Include="Areas\Consultations\Scripts\VisualExamination.js" />
@@ -332,13 +333,16 @@
     <Content Include="Areas\Consultations\Views\web.config" />
     <Content Include="Areas\Consultations\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Consultations\Views\Menu\Index.cshtml" />
-    <Content Include="Areas\Consultations\Views\Consultation\RequestConsultation.cshtml" />
+    <Content Include="Areas\Consultations\Views\Consultation\Request.cshtml" />
     <Content Include="Areas\Consultations\Views\Shared\_UrinalysisDialog.cshtml" />
     <Content Include="Areas\Consultations\Views\Shared\_BloodExaminationDialog.cshtml" />
     <Content Include="Areas\Consultations\Views\Shared\_VisualExaminationDialog.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Areas\Consultations\Views\Shared\_ConsultationsTable.cshtml" />
+    <Content Include="Areas\Consultations\Views\Consultation\Sent.cshtml" />
+    <Content Include="Areas\Consultations\Views\Consultation\Received.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

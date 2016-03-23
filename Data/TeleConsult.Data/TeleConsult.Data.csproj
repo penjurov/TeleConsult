@@ -106,6 +106,7 @@
     <Compile Include="Filters\Admin\LogFilter.cs" />
     <Compile Include="Filters\Admin\SchedulesFilter.cs" />
     <Compile Include="Filters\Admin\SpecialistFilter.cs" />
+    <Compile Include="Filters\Consultations\ConsultationFilter.cs" />
     <Compile Include="Filters\PagingFilter.cs" />
     <Compile Include="Helpers\Sort.cs" />
     <Compile Include="ITeleConsultDbContext.cs" />

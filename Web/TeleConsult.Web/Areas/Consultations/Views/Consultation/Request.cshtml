@@ -24,7 +24,7 @@
             @Html.AntiForgeryToken()
             @Html.EditorFor(m => m.ViewModel.PatientInitials)
             @Html.EditorFor(m => m.ViewModel.PatientAge)
-            @Html.EditorFor(m => m.ViewModel.Gender, new { ListItems = Model.Genders })
+            @Html.EditorFor(m => m.ViewModel.PatientGender, new { ListItems = Model.Genders })
 
             <div class="form-group">
                 @Html.EditorFor(m => m.ViewModel.PreliminaryDiagnosisCode)
@@ -33,7 +33,7 @@
 
             @Html.EditorFor(m => m.ViewModel.Anamnesis)
             @Html.EditorFor(m => m.ViewModel.SpecialityId, new { ListItems = Model.Specialities })
-            @Html.EditorFor(m => m.ViewModel.Type, new { ListItems = Model.Types })
+            @Html.EditorFor(m => m.ViewModel.ConsultationType, new { ListItems = Model.Types })
 
             <div class="form-group row">
                 <div data-role="wrapper" class="gj-grid-wrapper">

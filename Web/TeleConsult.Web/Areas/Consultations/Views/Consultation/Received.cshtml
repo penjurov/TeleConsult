@@ -1,0 +1,13 @@
+﻿@model TeleConsult.Web.Areas.Consultations.Models.ConsultationModel
+
+@{
+    ViewBag.Title = SiteMap.CurrentNode.Title;
+}
+
+@section scripts {
+    @Html.RenderScripts("~/Areas/Consultations/Scripts/ConsultationTable.js")
+}
+
+@Html.HiddenFor(m => m.IsConsultation)
+
+@Html.Partial("_ConsultationsTable")
