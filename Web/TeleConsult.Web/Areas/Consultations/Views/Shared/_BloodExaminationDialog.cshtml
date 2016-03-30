@@ -11,8 +11,9 @@
             <div class="modal-body">
                 <form class="form-horizontal modal-form" id="bloodExaminationForm">
                     <fieldset>
-                        @Html.Hidden("bloodExaminationId")
+                        @Html.Hidden("bloodExaminationCounter")
 
+                        @Html.HiddenFor(m => m.BloodExaminationViewModel.Id)
                         <div class="form-group">
                             @Html.EditorFor(m => m.BloodExaminationViewModel.Hemoglobin)
                             @Html.EditorFor(m => m.BloodExaminationViewModel.Erythrocytes)

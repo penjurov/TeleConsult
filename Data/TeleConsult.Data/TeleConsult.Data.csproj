@@ -125,6 +125,9 @@
     <Compile Include="RepoFactory\IRepoFactory.cs" />
     <Compile Include="RepoFactory\RepoFactory.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\UrinalysisRepository.cs" />
+    <Compile Include="Repositories\VisualExaminationRepository.cs" />
+    <Compile Include="Repositories\BloodExaminationRepository.cs" />
     <Compile Include="Repositories\ConsultationRepository.cs" />
     <Compile Include="Repositories\DiagnosisRepository.cs" />
     <Compile Include="Repositories\HospitalRepository.cs" />

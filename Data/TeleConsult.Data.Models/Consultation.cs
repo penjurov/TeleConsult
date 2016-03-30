@@ -45,11 +45,11 @@
         [Required]
         public string Anamnesis { get; set; }
 
-        public ICollection<BloodExamination> BloodExaminations { get; set; }
+        public virtual ICollection<BloodExamination> BloodExaminations { get; set; }
 
-        public ICollection<VisualExamination> VisualExaminations { get; set; }
+        public virtual ICollection<VisualExamination> VisualExaminations { get; set; }
 
-        public ICollection<Urinalysis> Urinalysis { get; set; }
+        public virtual ICollection<Urinalysis> Urinalysis { get; set; }
 
         public string FinalDiagnosisCode { get; set; }
 
@@ -65,6 +65,10 @@
 
         [Required]
         [DataType(DataType.Date)]
-        public DateTime Date { get; set; }
+        public DateTime AddedDate { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime ModifiedDate { get; set; }
     }
 }

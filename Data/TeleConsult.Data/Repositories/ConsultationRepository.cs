@@ -23,7 +23,7 @@
             var result = this.All()
                 .Where(filter.IsConsultation, c => c.ConsultantId == filter.SpecialistId)
                 .Where(!filter.IsConsultation, c => c.SenderId == filter.SpecialistId)
-                .OrderBy(c => c.Date);
+                .OrderBy(c => c.ModifiedDate);
 
             if (filter.SortBy == "PreliminaryDiagnosisDescription")
             {
@@ -33,6 +33,13 @@
             filter.Count = result.Count();
 
             return this.GetProxy(result.OrderByFilter(filter).PageByFilter(filter));
+        }
+
+        public ConsultationProxy GetProxyById(int id)
+        {
+            var result = this.All().Where(c => c.Id == id).ToList();
+
+            return this.GetProxy(result).FirstOrDefault();
         }
 
         public IEnumerable<ConsultationProxy> GetByConsultantIds(List<string> consultantIds)
@@ -54,7 +61,7 @@
                 ConsultantId = c.ConsultantId,
                 Anamnesis = c.Anamnesis,
                 Conclusion = c.Conclusion,
-                ConsultationDate = c.Date,
+                ConsultationDate = c.AddedDate,
                 SpecialityId = c.Consultant.SpecialityId,
                 PreliminaryDiagnosisCode = c.PreliminaryDiagnosisCode,
                 PreliminaryDiagnosisDescription = c.PreliminaryDiagnosis != null ? c.PreliminaryDiagnosis.Description : null,

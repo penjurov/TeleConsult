@@ -1,5 +1,5 @@
-﻿var RequestConsultationViewModel = {
-    form: '#requestForm',
+﻿var ConsultationViewModel = {
+    form: '#consultationForm',
     validator: null,
 
     init: function () {
@@ -10,7 +10,7 @@
     },
 
     initEvents: function () {
-        var self = RequestConsultationViewModel;
+        var self = ConsultationViewModel;
 
         $('#btnSave').on('click', self.save);
         $('#ViewModel_PreliminaryDiagnosisCode').on('change', self.getDiagnosis);
@@ -21,7 +21,7 @@
     },
 
     initValidation: function () {
-        var self = RequestConsultationViewModel;
+        var self = ConsultationViewModel;
 
         self.validator = $(self.form).validate();
         self.validator.settings.errorElement = 'div';
@@ -47,7 +47,7 @@
     },
 
     save: function () {
-        var self = RequestConsultationViewModel,
+        var self = ConsultationViewModel,
             params = {},
             url,
             onSuccess,
@@ -55,6 +55,7 @@
 
         if ($(self.form).valid()) {
             params = {
+                Id: $('#ViewModel_Id').val(),
                 PatientInitials: $('#ViewModel_PatientInitials').val(),
                 PatientAge: $('#ViewModel_PatientAge').val(),
                 PatientGender: $('#ViewModel_PatientGender').val(),
@@ -104,11 +105,6 @@
         var result = [];
 
         result = _.map(VisualExaminationViewModel.grid.getAll(), function (item) {
-            var imageData = JSON.parse(localStorage.getItem('examination' + item.record.ID));
-
-            item.record.FileType = imageData.FileType;
-            item.record.FileContent = imageData.FileContent;
-
             return item.record;
         });
 
@@ -117,5 +113,5 @@
 };
 
 $(document).ready(function () {
-    RequestConsultationViewModel.init();
+    ConsultationViewModel.init();
 });

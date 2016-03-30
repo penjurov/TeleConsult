@@ -1,10 +1,11 @@
 ﻿namespace TeleConsult.Web.Controllers.Base
 {
-    using Infrastructure.Unity;
-    using Models;
-    using System;
     using System.Web.Mvc;
 
+    using Infrastructure.ActionResults;
+    using Infrastructure.Unity;
+    using Models;
+    
     public abstract class BaseController : Controller
     {
         protected MvcUnityDependencyResolver DependencyResolver
@@ -51,6 +52,11 @@
             }
             
             filterContext.ExceptionHandled = true;
+        }
+
+        protected new JsonResult Json(object data, JsonRequestBehavior behavior)
+        {
+            return new DateTimeJsonResult(data, behavior);
         }
     }
 }

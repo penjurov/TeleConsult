@@ -3,11 +3,13 @@
     using System;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
     using Common;
 
     public class UrinalysisProxy
     {
-        public int Id { get; set; }
+        [HiddenInput(DisplayValue = false)]
+        public int? Id { get; set; }
 
         [Required(ErrorMessage = GlobalConstants.DateRequireText)]
         [DisplayName(GlobalConstants.DateDisplay)]

@@ -29,6 +29,8 @@
         [Required]
         public string FileType { get; set; }
 
-        public virtual ICollection<Consultation> Consultations { get; set; }
+        public int ConsultationId { get; set; }
+
+        public virtual Consultation Consultation { get; set; }
     }
 }

@@ -15,7 +15,8 @@
     },
 
     initGrid: function () {
-        var self = UrinalysisViewModel;
+        var self = UrinalysisViewModel,
+            consultationId;
 
         self.grid = $(self.gridId).grid({
             primaryKey: 'ID',
@@ -45,6 +46,12 @@
             uiLibrary: 'bootstrap',
             notFoundText: 'Няма добавени записи'
         });
+
+        consultationId = $('#ViewModel_Id').val();
+
+        if (consultationId) {
+            self.grid.reload({ consultationId: consultationId });
+        }
     },
 
     initEvents: function () {
@@ -70,7 +77,7 @@
     },
 
     edit: function (e) {
-        UrinalysisViewModel.showDialog('Редакция изследване на урина', e.data.record);
+        UrinalysisViewModel.showDialog('Редакция изследване на урина', e);
     },
 
     remove: function (e) {
@@ -88,11 +95,15 @@
         self.modal.find('.modal-title').text(title);
     },
 
-    populateFields: function (record) {
-        var self = UrinalysisViewModel;
+    populateFields: function (e) {
+        var self = UrinalysisViewModel,
+            record;
 
-        if (record) {
-            $('#urinalysisId').val(record.ID);
+        if (e) {
+            record = e.data.record;
+
+            $('#urinalysisCounter').val(e.data.id);
+            $('#UrinalysisViewModel_Id').val(record.Id);
             $('#UrinalysisViewModel_SpecificGravity').val(record.SpecificGravity);
             $('#UrinalysisViewModel_Ph').val(record.Ph);
             $('#UrinalysisViewModel_Protein').val(record.Protein);
@@ -111,43 +122,43 @@
             $('#UrinalysisViewModel_FormedElements').val(record.FormedElements);
             $('#UrinalysisViewModel_Date').val(record.Date);
         } else {
-            $('#urinalysisId').val('');
+            $('#UrinalysisViewModel_Id').val('');
+            $('#urinalysisCounter').val('');
             $(self.dialog).find(':text').val('');
         }
     },
 
     save: function () {
         var self = UrinalysisViewModel,
-            data;
+            data,
+            count;
 
         if ($(self.form).valid()) {
             data = {
-                'SpecificGravity': $('#UrinalysisViewModel_SpecificGravity').val(),
-                'Ph': $('#UrinalysisViewModel_Ph').val(),
-                'Protein': $('#UrinalysisViewModel_Protein').val(),
-                'ProteinWeight': $('#UrinalysisViewModel_ProteinWeight').val(),
-                'Glucose': $('#UrinalysisViewModel_Glucose').val(),
-                'GlucoseWeight': $('#UrinalysisViewModel_GlucoseWeight').val(),
-                'KetoneBodies': $('#UrinalysisViewModel_KetoneBodies').val(),
-                'Bilirubin': $('#UrinalysisViewModel_Bilirubin').val(),
-                'Urobilinogen': $('#UrinalysisViewModel_Urobilinogen').val(),
-                'Blood': $('#UrinalysisViewModel_Blood').val(),
-                'Porphobilinogen': $('#UrinalysisViewModel_Porphobilinogen').val(),
-                'Amylase': $('#UrinalysisViewModel_Amylase').val(),
-                'Ketosteroids': $('#UrinalysisViewModel_Ketosteroids').val(),
-                'Diuresis': $('#UrinalysisViewModel_Diuresis').val(),
-                'Sediments': $('#UrinalysisViewModel_Sediments').val(),
-                'FormedElements': $('#UrinalysisViewModel_FormedElements').val(),
-                'Date': $('#UrinalysisViewModel_Date').val()
+                Id: $('#UrinalysisViewModel_Id').val(),
+                SpecificGravity: $('#UrinalysisViewModel_SpecificGravity').val(),
+                Ph: $('#UrinalysisViewModel_Ph').val(),
+                Protein: $('#UrinalysisViewModel_Protein').val(),
+                ProteinWeight: $('#UrinalysisViewModel_ProteinWeight').val(),
+                Glucose: $('#UrinalysisViewModel_Glucose').val(),
+                GlucoseWeight: $('#UrinalysisViewModel_GlucoseWeight').val(),
+                KetoneBodies: $('#UrinalysisViewModel_KetoneBodies').val(),
+                Bilirubin: $('#UrinalysisViewModel_Bilirubin').val(),
+                Urobilinogen: $('#UrinalysisViewModel_Urobilinogen').val(),
+                Blood: $('#UrinalysisViewModel_Blood').val(),
+                Porphobilinogen: $('#UrinalysisViewModel_Porphobilinogen').val(),
+                Amylase: $('#UrinalysisViewModel_Amylase').val(),
+                Ketosteroids: $('#UrinalysisViewModel_Ketosteroids').val(),
+                Diuresis: $('#UrinalysisViewModel_Diuresis').val(),
+                Sediments: $('#UrinalysisViewModel_Sediments').val(),
+                FormedElements: $('#UrinalysisViewModel_FormedElements').val(),
+                Date: $('#UrinalysisViewModel_Date').val()
             };
 
-            if ($('#urinalysisId').val()) {
-                var id = parseInt($('#urinalysisId').val());
-
-                data = $.extend(data, { 'ID': id });
-                self.grid.updateRow(id, data);
+            if ($('#urinalysisCounter').val()) {
+                count = parseInt($('#urinalysisCounter').val());
+                self.grid.updateRow(count, data);
             } else {
-                data = $.extend(data, { 'ID': self.grid.count() + 1 });
                 self.grid.addRow(data);
             }
 

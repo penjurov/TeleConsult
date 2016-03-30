@@ -9,10 +9,10 @@
 
     public class ConsultationController : ConsultationBaseController
     {
-        public ActionResult Request()
+        public ActionResult Index(int? id)
         {
             var model = this.LoadModel<ConsultationModel, bool>(true);
-            model.IsConsultation = false;
+            model.BuildModel(id);
             return this.View(model);
         }
 
@@ -32,10 +32,10 @@
 
         [HttpPost]
         [ValidateHeaderAntiForgeryToken]
-        public JsonResult Send(ConsultationProxy proxy)
+        public JsonResult Save(ConsultationProxy proxy)
         {
             var model = LoadModel<ConsultationModel, bool>(false);
-            var result = model.Send(proxy, this.ModelState);
+            var result = model.Save(proxy, this.ModelState);
             return this.Json(result);
         }
 
@@ -52,6 +52,30 @@
         {
             var model = LoadModel<ConsultationModel, bool>(false);
             var result = model.GetConsultations(filter);
+            return this.Json(new { records = result, total = filter.Count }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetBloodExaminations(ConsultationFilter filter)
+        {
+            var model = LoadModel<ConsultationModel, bool>(false);
+            var result = model.GetBloodExaminations(filter);
+            return this.Json(new { records = result, total = filter.Count }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetUrinalysis(ConsultationFilter filter)
+        {
+            var model = LoadModel<ConsultationModel, bool>(false);
+            var result = model.GetUrinalysis(filter);
+            return this.Json(new { records = result, total = filter.Count }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetVisualExaminations(ConsultationFilter filter)
+        {
+            var model = LoadModel<ConsultationModel, bool>(false);
+            var result = model.GetVisualExaminations(filter);
             return this.Json(new { records = result, total = filter.Count }, JsonRequestBehavior.AllowGet);
         }
     }

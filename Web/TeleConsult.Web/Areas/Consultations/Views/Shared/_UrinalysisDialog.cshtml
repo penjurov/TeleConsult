@@ -11,8 +11,9 @@
             <div class="modal-body">
                 <form class="form-horizontal modal-form" id="urinalysisForm">
                     <fieldset>
-                        @Html.Hidden("urinalysisId")
+                        @Html.Hidden("urinalysisCounter")
 
+                        @Html.HiddenFor(m => m.UrinalysisViewModel.Id)
                         <div class="form-group">
                             @Html.EditorFor(m => m.UrinalysisViewModel.SpecificGravity)
                             @Html.EditorFor(m => m.UrinalysisViewModel.Ph)

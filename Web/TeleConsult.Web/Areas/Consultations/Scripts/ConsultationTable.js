@@ -37,8 +37,10 @@
 
     },
 
-    edit: function () {
+    edit: function (e) {
+        var url = $('#consultationUrl').val();
 
+        location.href = $.format('{0}?id={1}', url, e.data.record.Id);
     },
 
     search: function () {

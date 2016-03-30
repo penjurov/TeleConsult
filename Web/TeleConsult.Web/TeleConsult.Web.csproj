@@ -253,6 +253,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\ActionResults\DateTimeJsonResult.cs" />
     <Compile Include="Infrastructure\Attributes\ValidateHeaderAntiForgeryTokenAttribute.cs" />
     <Compile Include="Infrastructure\Binders\DoubleModelBinder.cs" />
     <Compile Include="Infrastructure\Bundles\BundleCollectionExtensions.cs" />
@@ -283,7 +284,7 @@
     <Content Include="Areas\Admin\Views\Log\Index.cshtml" />
     <Content Include="Areas\Consultations\Scripts\BloodExamination.js" />
     <Content Include="Areas\Consultations\Scripts\ConsultationTable.js" />
-    <Content Include="Areas\Consultations\Scripts\RequestConsultation.js" />
+    <Content Include="Areas\Consultations\Scripts\Consultation.js" />
     <Content Include="Areas\Consultations\Scripts\Urinalysis.js" />
     <Content Include="Areas\Consultations\Scripts\VisualExamination.js" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
@@ -333,7 +334,7 @@
     <Content Include="Areas\Consultations\Views\web.config" />
     <Content Include="Areas\Consultations\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Consultations\Views\Menu\Index.cshtml" />
-    <Content Include="Areas\Consultations\Views\Consultation\Request.cshtml" />
+    <Content Include="Areas\Consultations\Views\Consultation\Index.cshtml" />
     <Content Include="Areas\Consultations\Views\Shared\_UrinalysisDialog.cshtml" />
     <Content Include="Areas\Consultations\Views\Shared\_BloodExaminationDialog.cshtml" />
     <Content Include="Areas\Consultations\Views\Shared\_VisualExaminationDialog.cshtml" />

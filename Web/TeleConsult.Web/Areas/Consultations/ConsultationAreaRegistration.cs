@@ -16,7 +16,7 @@ namespace TeleConsult.Web.Areas.Consultations
         {
             context.MapRoute(
                 "Consultation_default",
-                "Consultation/{controller}/{action}/{id}",
+                "Consultations/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
             );
         }

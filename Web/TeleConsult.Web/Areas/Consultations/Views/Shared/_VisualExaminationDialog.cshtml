@@ -11,7 +11,9 @@
             <div class="modal-body">
                 <form class="form-horizontal modal-form" id="visualExaminationForm">
                     <fieldset>
-                        @Html.Hidden("visualExaminationId")
+                        @Html.Hidden("visualExaminationCounter")
+
+                        @Html.HiddenFor(m => m.VisualExaminationViewModel.Id)
 
                         @Html.EditorFor(m => m.VisualExaminationViewModel.Type, new { ListItems = Model.VisualExaminationTypes })
 

@@ -44,17 +44,27 @@
         SendConsultation,
         [Description("Редакция консултация")]
         EditConsultation,
+        [Description("Отговаряне на консултация")]
+        AnswerConsultation,
+        [Description("Затваряне на консултация")]
+        FinnishConsultation,
         [Description("Добавяне кръвно изследване")]
         AddBloodExamination,
         [Description("Редакция кръвно изследване")]
         EditBloodExamination,
+        [Description("Деактивиране кръвно изследване")]
+        DeactivateBloodExamination,
         [Description("Добавяне изследване урина")]
         AddUrinalysis,
         [Description("Редакция изследване урина")]
         EditUrinalysis,
+        [Description("Деактивиране изследване урина")]
+        DeactivateUrinalysis,
         [Description("Добавяне образно изследване")]
         AddVisualExamination,
         [Description("Редакция образно изследване")]
-        EditVisualExamination
+        EditVisualExamination,
+        [Description("Деактивиране образно изследване")]
+        DeactivateVisualExamination,
     }
 }

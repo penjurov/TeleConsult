@@ -1,6 +1,7 @@
 ﻿namespace TeleConsult.Data.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
@@ -51,17 +52,18 @@
             entry.State = EntityState.Modified;
         }
 
-        public void Delete(T entity)
+        public void Deactivate(T entity)
         {
-            var entry = this.Context.Entry(entity);
-            if (entry.State != EntityState.Deleted)
+            entity.IsDeleted = true;
+            entity.DeletedOn = DateTime.Now;
+        }
+
+        public void Deactivate(IEnumerable<T> entities)
+        {
+            foreach (var entity in entities)
             {
-                entry.State = EntityState.Deleted;
-            }
-            else
-            {
-                this.set.Attach(entity);
-                this.set.Remove(entity);
+                entity.IsDeleted = true;
+                entity.DeletedOn = DateTime.Now;
             }
         }
 

@@ -9,7 +9,7 @@
     public class BloodExaminationProxy
     {
         [HiddenInput(DisplayValue = false)]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required(ErrorMessage = GlobalConstants.DateRequireText)]
         [DisplayName(GlobalConstants.DateDisplay)]

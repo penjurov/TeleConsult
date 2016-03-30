@@ -8,7 +8,7 @@
 }
 
 @section scripts {
-    @Html.RenderScripts("~/Areas/Consultations/Scripts/RequestConsultation.js",
+    @Html.RenderScripts("~/Areas/Consultations/Scripts/Consultation.js",
                         "~/Areas/Consultations/Scripts/BloodExamination.js",
                         "~/Areas/Consultations/Scripts/Urinalysis.js",
                         "~/Areas/Consultations/Scripts/VisualExamination.js",
@@ -19,9 +19,10 @@
 @Html.Hidden("HomePageUrl", Url.Action("Index", "Menu", new { area = GlobalConstants.ConsultationAreaName }, null))
 
 <div class="row well">
-    <form id="requestForm" class="form-horizontal">
+    <form id="consultationForm" class="form-horizontal">
         <fieldset>
             @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ViewModel.Id)
             @Html.EditorFor(m => m.ViewModel.PatientInitials)
             @Html.EditorFor(m => m.ViewModel.PatientAge)
             @Html.EditorFor(m => m.ViewModel.PatientGender, new { ListItems = Model.Genders })
@@ -47,7 +48,7 @@
                             </div>
                         </div>
                     </div>
-                    <table id="bloodExaminationsGrid"></table>
+                    <table id="bloodExaminationsGrid" data-source="@Url.Action("GetBloodExaminations")"></table>
                 </div>       
             </div>
 
@@ -63,7 +64,7 @@
                             </div>
                         </div>
                     </div>
-                    <table id="urinalysisGrid"></table>
+                    <table id="urinalysisGrid" data-source="@Url.Action("GetUrinalysis")"></table>
                 </div>
             </div>
 
@@ -79,7 +80,7 @@
                             </div>
                         </div>
                     </div>
-                    <table id="visualExaminationsGrid"></table>
+                    <table id="visualExaminationsGrid" data-source="@Url.Action("GetVisualExaminations")"></table>
                 </div>
             </div>
 
@@ -94,7 +95,7 @@
             }
 
             <div class="pull-right">
-                <button id="btnSave" type="button" class="btn btn-primary" data-url="@Url.Action("Send")">@GlobalConstants.Send</button>
+                <button id="btnSave" type="button" class="btn btn-primary" data-url="@Url.Action("Save")">@GlobalConstants.Send</button>
             </div>
         </fieldset>
     </form>

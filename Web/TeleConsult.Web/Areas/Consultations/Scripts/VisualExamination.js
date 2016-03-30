@@ -18,7 +18,8 @@
     },
 
     initGrid: function () {
-        var self = VisualExaminationViewModel;
+        var self = VisualExaminationViewModel,
+            consultationId;
 
         self.grid = $(self.gridId).grid({
             primaryKey: 'ID',
@@ -33,6 +34,12 @@
             uiLibrary: 'bootstrap',
             notFoundText: 'Няма добавени записи'
         });
+
+        consultationId = $('#ViewModel_Id').val();
+
+        if (consultationId) {
+            self.grid.reload({ consultationId: consultationId });
+        }
     },
 
     initEvents: function () {
@@ -60,7 +67,7 @@
     },
 
     edit: function (e) {
-        VisualExaminationViewModel.showDialog('Редакция образно изследване', e.data.record);
+        VisualExaminationViewModel.showDialog('Редакция образно изследване', e);
     },
 
     remove: function (e) {
@@ -78,22 +85,26 @@
         self.modal.find('.modal-title').text(title);
     },
 
-    populateFields: function (record) {
+    populateFields: function (e) {
         var self = VisualExaminationViewModel,
-            imageData;
+            record;
 
-        if (record) {
-            $('#visualExaminationId').val(record.ID);
+        if (e) {
+            record = e.data.record;
+
+            $('#visualExaminationCounter').val(e.data.id);
+            $('#VisualExaminationViewModel_Id').val(record.Id);
             $('#VisualExaminationViewModel_Type').val(record.Type);
             $('#VisualExaminationViewModel_InputInformation').val(record.InputInformation);
             $('#VisualExaminationViewModel_ConsultInformation').val(record.ConsultInformation);
             $('#VisualExaminationViewModel_Date').val(record.Date);
 
-            imageData = JSON.parse(localStorage.getItem('examination' + record.ID));
-            $(self.image).attr('src', imageData.FileContent);
-            self.imageType = imageData.FileType;
+            $(self.image).attr('src', record.FileContent);
+            self.imageType = record.FileType;
         } else {
-            $('#visualExaminationId').val('');
+            $('#VisualExaminationViewModel_Id').val('');
+            $('#visualExaminationCounter').val('');
+            $(self.dialog).find('textarea').val('');
             $(self.dialog).find(':text').val('');
             self.clearImage();
         }
@@ -130,36 +141,26 @@
     save: function () {
         var self = VisualExaminationViewModel,
             data,
-            id,
-            imageData;
+            count;
 
         if ($(self.form).valid()) {
             data = {
-                'Type': $('#VisualExaminationViewModel_Type').val(),
-                'TypeName': $('#VisualExaminationViewModel_Type').find('option:selected').text(),
-                'InputInformation': $('#VisualExaminationViewModel_InputInformation').val(),
-                'ConsultInformation': $('#VisualExaminationViewModel_ConsultInformation').val(),
-                'Date': $('#VisualExaminationViewModel_Date').val(),
-            };
-
-            if ($('#visualExaminationId').val()) {
-                id = parseInt($('#visualExaminationId').val());
-
-                data = $.extend(data, { 'ID': id });
-                self.grid.updateRow(id, data);
-            } else {
-                id = self.grid.count() + 1;
-
-                data = $.extend(data, { 'ID':  id});
-                self.grid.addRow(data);
-            }
-
-            imageData = {
+                Id: $('#VisualExaminationViewModel_Id').val(),
+                Type: $('#VisualExaminationViewModel_Type').val(),
+                TypeName: $('#VisualExaminationViewModel_Type').find('option:selected').text(),
+                InputInformation: $('#VisualExaminationViewModel_InputInformation').val(),
+                ConsultInformation: $('#VisualExaminationViewModel_ConsultInformation').val(),
+                Date: $('#VisualExaminationViewModel_Date').val(),
                 FileType: self.imageType,
                 FileContent: $(self.image).attr('src')
-            }
+            };
 
-            localStorage.setItem('examination' + id,  JSON.stringify(imageData))
+            if ($('#visualExaminationCounter').val()) {
+                count = parseInt($('#visualExaminationCounter').val());
+                self.grid.updateRow(count, data);
+            } else {
+                self.grid.addRow(data);
+            }
 
             self.modal.modal('hide');
         }

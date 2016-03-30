@@ -74,10 +74,39 @@
             }
         }
 
+        public void BuildModel(int? id)
+        {
+            if (id.HasValue)
+            {
+                this.ViewModel = this.RepoFactory.Get<ConsultationRepository>().GetProxyById(id.Value);
+                var currentUserId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
+                this.IsConsultation = this.ViewModel.ConsultantId == currentUserId;
+            }
+            else
+            {
+                this.IsConsultation = false;
+            }
+        }
+
         public List<ConsultationProxy> GetConsultations(ConsultationFilter filter)
         {
             filter.SpecialistId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
             return this.RepoFactory.Get<ConsultationRepository>().Get(filter).ToList();
+        }
+
+        public List<BloodExaminationProxy> GetBloodExaminations(ConsultationFilter filter)
+        {
+            return this.RepoFactory.Get<BloodExaminationRepository>().Get(filter).ToList();
+        }
+
+        public List<UrinalysisProxy> GetUrinalysis(ConsultationFilter filter)
+        {
+            return this.RepoFactory.Get<UrinalysisRepository>().Get(filter).ToList();
+        }
+
+        public List<VisualExaminationProxy> GetVisualExaminations(ConsultationFilter filter)
+        {
+            return this.RepoFactory.Get<VisualExaminationRepository>().Get(filter).ToList();
         }
 
         public string GetDiagnosis(string code)
@@ -85,40 +114,82 @@
             return this.RepoFactory.Get<DiagnosisRepository>().GetDiagnosisByCode(code);
         }
 
-        public int Send(ConsultationProxy proxy, ModelStateDictionary modelState)
+        public int Save(ConsultationProxy proxy, ModelStateDictionary modelState)
         {
             if (proxy != null && modelState.IsValid)
             {
                 try
                 {
+                    var repo = this.RepoFactory.Get<ConsultationRepository>();
+                    var currentSpecialistId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
+                    Consultation consultation;
+
                     using (var transaction = new TransactionScope())
                     {
-                        var senderId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
-                        var consultantId = this.GetConsultantId(proxy.SpecialityId);
-
-                        var consultation = new Consultation
+                        if (!proxy.Id.HasValue || proxy.Id == 0)
                         {
-                            SenderId = senderId,
-                            ConsultantId = consultantId,
-                            PatientInitials = proxy.PatientInitials,
-                            PatientAge = proxy.PatientAge,
-                            Gender = proxy.PatientGender,
-                            PreliminaryDiagnosisCode = proxy.PreliminaryDiagnosisCode.ToUpper(),
-                            Anamnesis = proxy.Anamnesis,
-                            Type = proxy.ConsultationType,
-                            Stage = ConsultationStage.Sent,
-                            Date = DateTime.Now
-                        };
+                            var consultantId = this.GetConsultantId(proxy.SpecialityId);
 
-                        var repo = this.RepoFactory.Get<ConsultationRepository>();
-                        repo.Add(consultation);
+                            consultation = new Consultation
+                            {
+                                SenderId = currentSpecialistId,
+                                ConsultantId = consultantId,
+                                PatientInitials = proxy.PatientInitials,
+                                PatientAge = proxy.PatientAge,
+                                Gender = proxy.PatientGender,
+                                PreliminaryDiagnosisCode = proxy.PreliminaryDiagnosisCode.ToUpper(),
+                                Anamnesis = proxy.Anamnesis,
+                                Type = proxy.ConsultationType,
+                                Stage = ConsultationStage.Sent,
+                                AddedDate = DateTime.Now,
+                                ModifiedDate = DateTime.Now
+                            };
 
-                        consultation.BloodExaminations = proxy.BloodExaminations != null ? this.SaveBloodExaminations(proxy.BloodExaminations, consultation.Id) : null;
-                        consultation.Urinalysis = proxy.Urinalysis != null ? this.SaveUrinalysis(proxy.Urinalysis, consultation.Id) : null;
-                        consultation.VisualExaminations = proxy.VisualExaminations != null ? this.SaveVisualExaminations(proxy.VisualExaminations, consultation.Id) : null;
+                            repo.Add(consultation);
+
+                            this.Logger.Log(ActionType.SendConsultation, string.Format("Id: {0}, Sender:{1}, Consultant: {2}, Date: {3}", consultation.Id, consultation.SenderId, consultation.ConsultantId, DateTime.Now));
+                        }
+                        else
+                        {
+                            consultation = repo.GetById(proxy.Id.Value);
+                            
+                            if (consultation.SenderId == currentSpecialistId)
+                            {
+                                consultation.PatientInitials = proxy.PatientInitials;
+                                consultation.PatientAge = proxy.PatientAge;
+                                consultation.Gender = proxy.PatientGender;
+                                consultation.PreliminaryDiagnosisCode = proxy.PreliminaryDiagnosisCode.ToUpper();
+                                consultation.Anamnesis = proxy.Anamnesis;
+                                consultation.Type = proxy.ConsultationType;
+                                consultation.Stage = ConsultationStage.Sent;
+                                consultation.ModifiedDate = DateTime.Now;
+
+                                this.Logger.Log(ActionType.EditConsultation, string.Format("Id: {0}, Sender:{1}, Consultant: {2}, Date: {3}", consultation.Id, consultation.SenderId, consultation.ConsultantId, DateTime.Now));
+                            }
+                            else
+                            {
+                                if (proxy.FinalDiagnosisCode != null)
+                                {
+                                    consultation.Stage = ConsultationStage.Finnished;
+                                    this.Logger.Log(ActionType.FinnishConsultation, string.Format("Id: {0}, Sender:{1}, Consultant: {2}, Date: {3}", consultation.Id, consultation.SenderId, consultation.ConsultantId, DateTime.Now));
+                                }
+                                else
+                                {
+                                    consultation.Stage = ConsultationStage.Answered;
+                                    this.Logger.Log(ActionType.AnswerConsultation, string.Format("Id: {0}, Sender:{1}, Consultant: {2}, Date: {3}", consultation.Id, consultation.SenderId, consultation.ConsultantId, DateTime.Now));
+                                }
+
+                                consultation.FinalDiagnosisCode = proxy.FinalDiagnosisCode.ToUpper();
+                                consultation.Conclusion = proxy.Conclusion;
+                                consultation.ModifiedDate = DateTime.Now;
+                            }
+                        }
+
+                        this.SaveBloodExaminations(proxy.BloodExaminations ?? new List<BloodExaminationProxy>(), consultation);
+                        this.SaveUrinalysis(proxy.Urinalysis ?? new List<UrinalysisProxy>(), consultation);
+                        this.SaveVisualExaminations(proxy.VisualExaminations ?? new List<VisualExaminationProxy>(), consultation);
+
                         repo.SaveChanges();
-
-                        this.Logger.Log(ActionType.SendConsultation, string.Format("Id: {1}, Sender:{0}, Consultant: {2}", consultation.Id, consultation.SenderId, consultation.ConsultantId));
 
                         transaction.Complete();
                         return consultation.Id;
@@ -135,94 +206,129 @@
             }
         }
 
-        private ICollection<BloodExamination> SaveBloodExaminations(IEnumerable<BloodExaminationProxy> bloodExaminations, int consultationId)
+        private void SaveBloodExaminations(IEnumerable<BloodExaminationProxy> bloodExaminations, Consultation consultation)
         {
-            var result = new List<BloodExamination>();
+            var bloodExaminationToDeactivate = consultation.BloodExaminations.Where(ex => !bloodExaminations.Any(be => be.Id == ex.Id));
+
+            if (bloodExaminationToDeactivate.Any())
+            {
+                this.RepoFactory.Get<BloodExaminationRepository>().Deactivate(bloodExaminationToDeactivate);
+                this.Logger.Log(ActionType.DeactivateBloodExamination, string.Format("ConsultationId: {0}, Deactivated: {1}", consultation.Id, string.Join(";", bloodExaminationToDeactivate.Select(ve => ve.Id).ToList())));
+            }
 
             foreach (var item in bloodExaminations)
             {
-                var bloodExamination = new BloodExamination
+                BloodExamination bloodExamination;
+
+                if (!item.Id.HasValue)
                 {
-                    BleedingTime = item.BleedingTime,
-                    BloodSugar = item.BloodSugar,
-                    CoagulationTime = item.CoagulationTime,
-                    Date = item.Date.Value,
-                    Erythrocytes = item.Erythrocytes,
-                    Hct = item.Hct,
-                    Hemoglobin = item.Hemoglobin,
-                    Leuc = item.Leuc,
-                    Mch = item.Mch,
-                    Mchc = item.Mchc,
-                    Mcv = item.Mcv,
-                    MorphologyErythrocytes = item.MorphologyErythrocytes,
-                    Ret = item.Ret,
-                    Sue = item.Sue
-                };
+                    bloodExamination = new BloodExamination();
 
-                result.Add(bloodExamination);
+                    consultation.BloodExaminations.Add(bloodExamination);
+                    this.Logger.Log(ActionType.AddBloodExamination, string.Format("ConsultationId: {0}, Date: {1}", consultation.Id, bloodExamination.Date));
+                }
+                else
+                {
+                    bloodExamination = consultation.BloodExaminations.FirstOrDefault(be => be.Id == item.Id);
+                    this.Logger.Log(ActionType.EditBloodExamination, string.Format("ConsultationId: {0}, Date: {1}", consultation.Id, bloodExamination.Date));
+                }
 
-                this.Logger.Log(ActionType.AddBloodExamination, string.Format("ConsultationId: {0}, Date: {1}", consultationId, bloodExamination.Date));
+                bloodExamination.BleedingTime = item.BleedingTime;
+                bloodExamination.BloodSugar = item.BloodSugar;
+                bloodExamination.CoagulationTime = item.CoagulationTime;
+                bloodExamination.Date = item.Date.Value;
+                bloodExamination.Erythrocytes = item.Erythrocytes;
+                bloodExamination.Hct = item.Hct;
+                bloodExamination.Hemoglobin = item.Hemoglobin;
+                bloodExamination.Leuc = item.Leuc;
+                bloodExamination.Mch = item.Mch;
+                bloodExamination.Mchc = item.Mchc;
+                bloodExamination.Mcv = item.Mcv;
+                bloodExamination.MorphologyErythrocytes = item.MorphologyErythrocytes;
+                bloodExamination.Ret = item.Ret;
+                bloodExamination.Sue = item.Sue;
             }
-
-            return result;
         }
 
-        private ICollection<Urinalysis> SaveUrinalysis(IEnumerable<UrinalysisProxy> urinalyses, int consultationId)
+        private void SaveUrinalysis(IEnumerable<UrinalysisProxy> urinalyses, Consultation consultation)
         {
-            var result = new List<Urinalysis>();
+            var urinalysesToDeactivate = consultation.Urinalysis.Where(ex => !urinalyses.Any(u => u.Id == ex.Id));
+
+            if (urinalysesToDeactivate.Any())
+            {
+                this.RepoFactory.Get<UrinalysisRepository>().Deactivate(urinalysesToDeactivate);
+                this.Logger.Log(ActionType.DeactivateUrinalysis, string.Format("ConsultationId: {0}, Deactivated: {1}", consultation.Id, string.Join(";", urinalysesToDeactivate.Select(ve => ve.Id).ToList())));
+            }
 
             foreach (var item in urinalyses)
             {
-                var urinalysis = new Urinalysis
+                Urinalysis urinalysis;
+                if (!item.Id.HasValue)
                 {
-                    Amylase = item.Amylase,
-                    Bilirubin = item.Bilirubin,
-                    Blood = item.Blood,
-                    Date = item.Date.Value,
-                    Diuresis = item.Diuresis,
-                    FormedElements = item.FormedElements,
-                    Glucose = item.Glucose,
-                    GlucoseWeight = item.GlucoseWeight,
-                    KetoneBodies = item.KetoneBodies,
-                    Ketosteroids = item.Ketosteroids,
-                    Ph = item.Ph,
-                    Porphobilinogen = item.Porphobilinogen,
-                    Protein = item.Protein,
-                    ProteinWeight = item.ProteinWeight,
-                    Sediments = item.Sediments,
-                    SpecificGravity = item.SpecificGravity,
-                    Urobilinogen = item.Urobilinogen
-                };
+                    urinalysis = new Urinalysis();
 
-                result.Add(urinalysis);
+                    consultation.Urinalysis.Add(urinalysis);
+                    this.Logger.Log(ActionType.AddUrinalysis, string.Format("ConsultationId: {0}, Date: {1}", consultation.Id, urinalysis.Date));
+                }
+                else
+                {
+                    urinalysis = consultation.Urinalysis.FirstOrDefault(u => u.Id == item.Id);
+                    this.Logger.Log(ActionType.EditUrinalysis, string.Format("ConsultationId: {0}, Date: {1}", consultation.Id, urinalysis.Date));
+                }
 
-                this.Logger.Log(ActionType.AddUrinalysis, string.Format("ConsultationId: {0}, Date: {1}", consultationId, urinalysis.Date));
+                urinalysis.Amylase = item.Amylase;
+                urinalysis.Bilirubin = item.Bilirubin;
+                urinalysis.Blood = item.Blood;
+                urinalysis.Date = item.Date.Value;
+                urinalysis.Diuresis = item.Diuresis;
+                urinalysis.FormedElements = item.FormedElements;
+                urinalysis.Glucose = item.Glucose;
+                urinalysis.GlucoseWeight = item.GlucoseWeight;
+                urinalysis.KetoneBodies = item.KetoneBodies;
+                urinalysis.Ketosteroids = item.Ketosteroids;
+                urinalysis.Ph = item.Ph;
+                urinalysis.Porphobilinogen = item.Porphobilinogen;
+                urinalysis.Protein = item.Protein;
+                urinalysis.ProteinWeight = item.ProteinWeight;
+                urinalysis.Sediments = item.Sediments;
+                urinalysis.SpecificGravity = item.SpecificGravity;
+                urinalysis.Urobilinogen = item.Urobilinogen;
             }
-
-            return result;
         }
 
-        private ICollection<VisualExamination> SaveVisualExaminations(IEnumerable<VisualExaminationProxy> visualExaminations, int consultationId)
+        private void SaveVisualExaminations(IEnumerable<VisualExaminationProxy> visualExaminations, Consultation consultation)
         {
-            var result = new List<VisualExamination>();
+            var visualExaminationToDeactivate = consultation.VisualExaminations.Where(ex => !visualExaminations.Any(ve => ve.Id == ex.Id));
+
+            if (visualExaminationToDeactivate.Any())
+            {
+                this.RepoFactory.Get<VisualExaminationRepository>().Deactivate(visualExaminationToDeactivate);
+                this.Logger.Log(ActionType.DeactivateVisualExamination, string.Format("ConsultationId: {0}, Deactivated: {1}", consultation.Id, string.Join(";", visualExaminationToDeactivate.Select(ve => ve.Id).ToList())));
+            }
 
             foreach (var item in visualExaminations)
             {
-                var visualExamination = new VisualExamination
+                VisualExamination visualExamination;
+
+                if (!item.Id.HasValue)
                 {
-                    Date = item.Date.Value,
-                    FileContent = this.GetBytes(item.FileContent),
-                    FileType = item.FileType,
-                    InputInformation = item.InputInformation,
-                    Type = item.Type
-                };
+                    visualExamination = new VisualExamination();
 
-                result.Add(visualExamination);
+                    consultation.VisualExaminations.Add(visualExamination);
+                    this.Logger.Log(ActionType.AddVisualExamination, string.Format("ConsultationId: {0}, Date: {1}", consultation.Id, visualExamination.Date));
+                }
+                else
+                {
+                    visualExamination = consultation.VisualExaminations.FirstOrDefault(u => u.Id == item.Id);
+                    this.Logger.Log(ActionType.EditVisualExamination, string.Format("ConsultationId: {0}, Date: {1}", consultation.Id, visualExamination.Date));
+                }
 
-                this.Logger.Log(ActionType.AddVisualExamination, string.Format("ConsultationId: {0}, Date: {1}", consultationId, visualExamination.Date));
+                visualExamination.Date = item.Date.Value;
+                visualExamination.FileContent = this.GetBytes(item.FileContent);
+                visualExamination.FileType = item.FileType;
+                visualExamination.InputInformation = item.InputInformation;
+                visualExamination.Type = item.Type;
             }
-
-            return result;
         }
 
         private byte[] GetBytes(string str)

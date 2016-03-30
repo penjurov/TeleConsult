@@ -12,7 +12,7 @@
     public class ConsultationProxy
     {
         [HiddenInput(DisplayValue = false)]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         public string SenderId { get; set; }
 
