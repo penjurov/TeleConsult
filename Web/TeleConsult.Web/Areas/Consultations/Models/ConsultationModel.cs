@@ -323,19 +323,14 @@
                     this.Logger.Log(ActionType.EditVisualExamination, string.Format("ConsultationId: {0}, Date: {1}", consultation.Id, visualExamination.Date));
                 }
 
+                var base64 = item.FileContent.Substring(item.FileContent.IndexOf(',') + 1);
+
                 visualExamination.Date = item.Date.Value;
-                visualExamination.FileContent = this.GetBytes(item.FileContent);
+                visualExamination.FileContent = Convert.FromBase64String(base64);
                 visualExamination.FileType = item.FileType;
                 visualExamination.InputInformation = item.InputInformation;
                 visualExamination.Type = item.Type;
             }
-        }
-
-        private byte[] GetBytes(string str)
-        {
-            byte[] bytes = new byte[str.Length * sizeof(char)];
-            Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
-            return bytes;
         }
 
         private string GetConsultantId(int specialityId)

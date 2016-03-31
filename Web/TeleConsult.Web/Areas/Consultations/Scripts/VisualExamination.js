@@ -100,6 +100,7 @@
             $('#VisualExaminationViewModel_Date').val(record.Date);
 
             $(self.image).attr('src', record.FileContent);
+            $(self.image).show();
             self.imageType = record.FileType;
         } else {
             $('#VisualExaminationViewModel_Id').val('');
@@ -107,6 +108,7 @@
             $(self.dialog).find('textarea').val('');
             $(self.dialog).find(':text').val('');
             self.clearImage();
+            $(self.image).hide();
         }
     },
 

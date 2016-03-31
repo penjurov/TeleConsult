@@ -1,8 +1,8 @@
 ﻿namespace TeleConsult.Data.Repositories
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
 
     using Common.Helpers;
     using Filters.Consultations;
@@ -10,7 +10,7 @@
     using Microsoft.Practices.Unity;
     using Proxies;
     using TeleConsult.Data.Models;
-
+    
     public class VisualExaminationRepository : BaseRepository<VisualExamination>
     {
         [InjectionConstructor]
@@ -37,7 +37,7 @@
             {
                 Id = ve.Id,
                 Date = ve.Date,
-                FileContent = Encoding.UTF8.GetString(ve.FileContent, 0, ve.FileContent.Length),
+                FileContent = string.Format("data:image/{0};base64,{1}", ve.FileType, Convert.ToBase64String(ve.FileContent)),
                 FileType = ve.FileType,
                 InputInformation = ve.InputInformation,
                 Type = ve.Type
