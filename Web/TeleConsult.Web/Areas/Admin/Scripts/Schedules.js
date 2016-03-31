@@ -111,7 +111,7 @@
             $('#ViewModel_Description').val(record.Description);
         } else {
             $('#Id').val('');
-            $(self.dialog).find(':text, select').val('');
+            $(self.dialog).find(':text, select, textarea').val('');
             $('#ViewModel_StartDate').val(startDate);
             $('#ViewModel_EndDate').val(endDate);
         }

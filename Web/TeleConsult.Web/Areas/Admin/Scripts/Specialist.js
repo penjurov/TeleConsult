@@ -151,7 +151,7 @@
             $('#loginInfoWrapper').show();
 
             $('#Id').val('');
-            $(self.dialog).find(':text, select').val('');
+            $(self.dialog).find(':text, :password, select').val('');
         }
     },
 
