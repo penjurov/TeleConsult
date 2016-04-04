@@ -60,12 +60,16 @@
                         Value = ((int)v).ToString()
                     });
 
-                this.Specialities = this.RepoFactory.Get<SpecialityRepository>().GetActive()
+                var currentSpecialistId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
+
+                this.Specialities = this.RepoFactory.Get<ScheduleRepository>().GetForToday()
+                    .Where(s => s.SpecialistId != currentSpecialistId)
                     .Select(s => new SelectListItem
                     {
-                        Value = s.Id.ToString(),
-                        Text = s.Name
-                    });
+                        Value = s.Specialist.SpecialityId.ToString(),
+                        Text = s.Specialist.SpecialityName
+                    })
+                    .Distinct();
 
                 this.VisualExaminationTypes = Enum.GetValues(typeof(VisualExaminationType)).Cast<VisualExaminationType>()
                     .Select(v => new SelectListItem

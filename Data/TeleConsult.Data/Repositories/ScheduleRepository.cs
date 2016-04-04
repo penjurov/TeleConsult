@@ -1,16 +1,16 @@
 ﻿namespace TeleConsult.Data.Repositories
 {
-    using System.Linq;
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Common.Helpers;
     using Filters.Admin;
     using Microsoft.Practices.Unity;
     using Proxies;
     using TeleConsult.Data.Models;
-    using System;
 
-    public class ScheduleRepository: BaseRepository<Schedule>
+    public class ScheduleRepository : BaseRepository<Schedule>
     {
         [InjectionConstructor]
         public ScheduleRepository(ITeleConsultDbContext context)
@@ -27,6 +27,15 @@
                 .Where(filter.SpecialistId, s => s.SpecialistId == filter.SpecialistId)
                 .Where(filter.Description, s => s.Description.Contains(filter.Description))
                 .Where(filter.SpecialityId, s => s.Specialist.SpecialityId == filter.SpecialityId);
+
+            return this.GetProxy(result);
+        }
+
+        public IEnumerable<ScheduleProxy> GetForToday()
+        {
+            var now = DateTime.Now;
+            var result = this.All()
+                .Where(s => s.StartDate < now && now < s.EndDate);
 
             return this.GetProxy(result);
         }
@@ -48,7 +57,9 @@
                     Title = s.Specialist.Title,
                     FirstName = s.Specialist.FirstName,
                     LastName = s.Specialist.LastName,
-                    UserName = s.Specialist.UserName
+                    UserName = s.Specialist.UserName,
+                    SpecialityId = s.Specialist.SpecialityId,
+                    SpecialityName = s.Specialist.Speciality.Name
                 },
                 SpecialistSpeciality = s.Specialist.Speciality.Name
             }).ToList();
