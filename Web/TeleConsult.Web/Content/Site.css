@@ -208,6 +208,21 @@ input.validation-error, select.validation-error, div.validation-error-border, te
     font-weight: bold;
 }
 
+.gj-grid-table > tbody > tr.sent td {
+    border-color: #ebccd1;
+    background-color: #f2dede;
+}
+
+.gj-grid-table > tbody > tr.answered td {
+    border-color: #bce8f1;
+    background-color: #d9edf7;
+}
+
+.gj-grid-table > tbody > tr.finnished td {
+    border-color: #d6e9c6;
+    background-color: #dff0d8;
+}
+
 @media (min-width: 1800px) {
     .container {
         max-width: 1700px;

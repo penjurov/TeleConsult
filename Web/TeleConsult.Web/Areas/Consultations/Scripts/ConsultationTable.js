@@ -30,6 +30,10 @@
             uiLibrary: 'bootstrap',
             notFoundText: 'Няма добавени записи'
         });
+
+        self.grid.on('rowDataBound', function (e, $row, id, record) {
+            $row.addClass(record.StageName);
+        });
     },
 
     initEvents: function () {

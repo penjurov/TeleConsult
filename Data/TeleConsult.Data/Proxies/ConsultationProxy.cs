@@ -103,6 +103,14 @@
         [Required]
         public ConsultationStage Stage { get; set; }
 
+        public string StageName
+        {
+            get
+            {
+                return this.Stage.GetDescription().ToLower();
+            }
+        }
+
         [Required(ErrorMessage = GlobalConstants.SpecialityRequireText)]
         [DisplayName(GlobalConstants.SpecialityDisplay)]
         [UIHint("DropDownTemplate")]
