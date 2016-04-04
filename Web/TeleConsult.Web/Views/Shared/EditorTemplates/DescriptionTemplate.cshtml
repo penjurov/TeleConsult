@@ -1,6 +1,6 @@
 ﻿@model string
 
-<div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+<div class="col-md-8 col-sm-6 col-xs-12">
     @Html.TextBoxFor(m => m, new { @class = "form-control", @readonly="readonly" })
     @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })
 </div>

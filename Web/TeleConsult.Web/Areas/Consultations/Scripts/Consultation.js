@@ -13,8 +13,12 @@
         var self = ConsultationViewModel;
 
         $('#btnSave').on('click', self.save);
-        $('#ViewModel_PreliminaryDiagnosisCode').on('change', self.getDiagnosis);
-
+        $('#ViewModel_PreliminaryDiagnosisCode').on('change', function () {
+            self.getDiagnosis($(this), $('#ViewModel_PreliminaryDiagnosisDescription'));
+        });
+        $('#ViewModel_FinalDiagnosisCode').on('change', function () {
+            self.getDiagnosis($(this), $('#ViewModel_FinalDiagnosisDescription'));
+        });
         $('.date').datetimepicker({
             format: 'DD/MM/YYYY h:mm A'
         });
@@ -28,19 +32,19 @@
         self.validator.settings.errorClass = 'validation-error';
     },
 
-    getDiagnosis: function() {
+    getDiagnosis: function(source, destination) {
         var params = {},
             url,
             onSuccess;
 
         params = {
-            code: $('#ViewModel_PreliminaryDiagnosisCode').val(),
+            code: source.val(),
         };
 
         url = $('#GetDiagnosisUrl').val();
 
         onSuccess = function (diagnosis) {
-            $('#ViewModel_PreliminaryDiagnosisDescription').val(diagnosis);
+            destination.val(diagnosis);
         }
 
         ajaxModel.get(url, params, onSuccess)
@@ -66,7 +70,11 @@
                 ConsultationType: $('#ViewModel_ConsultationType').val(),
                 BloodExaminations: self.getBloodExaminations(),
                 Urinalysis: self.getUrinalysis(),
-                VisualExaminations: self.getVisualExaminations()
+                VisualExaminations: self.getVisualExaminations(),
+                IsConsultation: $('#ViewModel_PatientInitials').length === 0,
+                Conclusion: $('#ViewModel_Conclusion').val(),
+                FinalDiagnosisCode: $('#ViewModel_FinalDiagnosisCode').val(),
+                FinalDiagnosisDescription: $('#ViewModel_FinalDiagnosisDescription').val()
             };
 
             url = $(this).data('url');

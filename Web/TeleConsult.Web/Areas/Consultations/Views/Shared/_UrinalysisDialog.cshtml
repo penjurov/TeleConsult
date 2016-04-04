@@ -53,7 +53,11 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" id="btnSaveUrinalysis" class="btn btn-primary">Запис</button>
+                @if (!Model.IsConsultation && string.IsNullOrEmpty(Model.ViewModel.FinalDiagnosisCode))
+                {
+                    <button type="button" id="btnSaveUrinalysis" class="btn btn-primary">Запис</button>
+                }
+
                 <button type="button" id="btnCancelUrinalysis" class="btn btn-default">Отказ</button>
             </div>
         </div>

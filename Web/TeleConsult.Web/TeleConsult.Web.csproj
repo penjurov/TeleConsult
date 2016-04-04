@@ -421,6 +421,11 @@
     <Content Include="Views\Shared\EditorTemplates\IntTemplate.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DoubleTemplate.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DateTemplate.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SingleLineTemplate.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\MultiLineTemplate.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\IntTemplate.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\CodeTemplate.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\DescriptionTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -19,16 +19,27 @@
 
     initGrid: function () {
         var self = VisualExaminationViewModel,
-            consultationId;
+            consultationId,
+            columns,
+            isConsultation;
+
+        columns = [
+                { title: 'Вид', field: 'TypeName' },
+                { title: 'Дата', field: 'Date' }
+        ];
+
+        isConsultation = $('#IsConsultation').val() === 'True';
+
+        if (!isConsultation) {
+            columns.push({ title: '', field: 'Edit', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-pencil', tooltip: 'Редакция', events: { 'click': self.edit } });
+            columns.push({ title: '', field: 'Delete', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-remove', tooltip: 'Изтриване', events: { 'click': self.remove } });
+        } else {
+            columns.push({ title: '', field: 'View', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-pencil', tooltip: 'Разглеждане', events: { 'click': self.edit } });
+        }
 
         self.grid = $(self.gridId).grid({
             primaryKey: 'ID',
-            columns: [
-                { title: 'Вид', field: 'TypeName' },
-                { title: 'Дата', field: 'Date' },
-                { title: '', field: 'Edit', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-pencil', tooltip: 'Редакция', events: { 'click': self.edit } },
-                { title: '', field: 'Delete', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-remove', tooltip: 'Изтриване', events: { 'click': self.remove } }
-            ],
+            columns: columns,
             pager: { enable: true, limit: 10, sizes: [10, 20, 50, 100] },
             autoLoad: false,
             uiLibrary: 'bootstrap',

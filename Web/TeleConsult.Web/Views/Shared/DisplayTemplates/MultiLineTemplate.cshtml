@@ -3,7 +3,6 @@
 <div class="form-group row">
     @Html.LabelFor(m => m, htmlAttributes: new { @class = "col-md-2 col-sm-3 col-xs-12 modal-label" })
     <div class="col-md-10 col-sm-9 col-xs-12">
-        @Html.TextAreaFor(m => m, new { @class = "form-control", rows = 5})
-        @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })
+        @Html.DisplayTextFor(m => m)
     </div>
 </div>

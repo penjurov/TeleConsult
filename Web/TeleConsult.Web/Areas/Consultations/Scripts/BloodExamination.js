@@ -16,11 +16,11 @@
 
     initGrid: function () {
         var self = BloodExaminationViewModel,
-            consultationId;
+            consultationId,
+            columns,
+            isConsultation;
 
-        self.grid = $(self.gridId).grid({
-            primaryKey: 'ID',
-            columns: [
+        columns = [
                 { title: 'Хемоглобин', field: 'Hemoglobin', align: 'center' },
                 { title: 'Еритроцити', field: 'Erythrocytes', align: 'center' },
                 { title: 'Hct', field: 'Hct', align: 'center' },
@@ -34,10 +34,21 @@
                 { title: 'Време съсирване', field: 'CoagulationTime', align: 'center' },
                 { title: 'Морфология еритроцити', field: 'MorphologyErythrocytes', align: 'center' },
                 { title: 'Кръвна захар', field: 'BloodSugar', align: 'center' },
-                { title: 'Дата', field: 'Date', align: 'center' },
-                { title: '', field: 'Edit', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-pencil', tooltip: 'Редакция', events: { 'click': self.edit } },
-                { title: '', field: 'Delete', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-remove', tooltip: 'Изтриване', events: { 'click': self.remove } }
-            ],
+                { title: 'Дата', field: 'Date', align: 'center' }
+        ];
+
+        isConsultation = $('#IsConsultation').val() === 'True';
+
+        if (!isConsultation) {
+            columns.push({ title: '', field: 'Edit', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-pencil', tooltip: 'Редакция', events: { 'click': self.edit } });
+            columns.push({ title: '', field: 'Delete', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-remove', tooltip: 'Изтриване', events: { 'click': self.remove } });
+        } else {
+            columns.push({ title: '', field: 'View', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-pencil', tooltip: 'Разглеждане', events: { 'click': self.edit } });
+        }
+
+        self.grid = $(self.gridId).grid({
+            primaryKey: 'ID',
+            columns: columns,
             pager: { enable: true, limit: 10, sizes: [10, 20, 50, 100] },
             autoLoad: false,
             uiLibrary: 'bootstrap',

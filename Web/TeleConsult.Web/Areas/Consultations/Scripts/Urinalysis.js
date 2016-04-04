@@ -16,11 +16,11 @@
 
     initGrid: function () {
         var self = UrinalysisViewModel,
-            consultationId;
+            consultationId,
+            columns,
+            isConsultation;
 
-        self.grid = $(self.gridId).grid({
-            primaryKey: 'ID',
-            columns: [
+        columns = [
                 { title: 'Специфично тегло', field: 'SpecificGravity', width: 105, align: 'center' },
                 { title: 'Ph', field: 'Ph', align: 'center' },
                 { title: 'Белтък', field: 'Protein', align: 'center' },
@@ -37,10 +37,21 @@
                 { title: 'Диуреза (24 ч.)', field: 'Diuresis', width: 80, align: 'center' },
                 { title: 'Седимент', field: 'Sediments', align: 'center' },
                 { title: 'Формени елементи', field: 'FormedElements', align: 'center' },
-                { title: 'Дата', field: 'Date', align: 'center' },
-                { title: '', field: 'Edit', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-pencil', tooltip: 'Редакция', events: { 'click': self.edit } },
-                { title: '', field: 'Delete', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-remove', tooltip: 'Изтриване', events: { 'click': self.remove } }
-            ],
+                { title: 'Дата', field: 'Date', align: 'center' }
+        ];
+
+        isConsultation = $('#IsConsultation').val() === 'True';
+
+        if (!isConsultation) {
+            columns.push({ title: '', field: 'Edit', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-pencil', tooltip: 'Редакция', events: { 'click': self.edit } });
+            columns.push({ title: '', field: 'Delete', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-remove', tooltip: 'Изтриване', events: { 'click': self.remove } });
+        } else {
+            columns.push({ title: '', field: 'View', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-pencil', tooltip: 'Разглеждане', events: { 'click': self.edit } });
+        }
+
+        self.grid = $(self.gridId).grid({
+            primaryKey: 'ID',
+            columns: columns,
             pager: { enable: true, limit: 10, sizes: [10, 20, 50, 100] },
             autoLoad: false,
             uiLibrary: 'bootstrap',

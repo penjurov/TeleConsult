@@ -29,7 +29,7 @@
         [Range(1, 120, ErrorMessage = GlobalConstants.PatientAgeConstrainText)]
         [DisplayName(GlobalConstants.PatientAgeDisplay)]
         [UIHint("IntTemplate")]
-        public int PatientAge { get; set; }
+        public int? PatientAge { get; set; }
 
         [Required(ErrorMessage = GlobalConstants.GenderRequireText)]
         [DisplayName(GlobalConstants.GenderDisplay)]
@@ -124,5 +124,7 @@
         public bool Deleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
+
+        public bool IsConsultation { get; set; }
     }
 }

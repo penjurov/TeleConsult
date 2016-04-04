@@ -44,6 +44,8 @@
 
             if (init)
             {
+                this.ViewModel = new ConsultationProxy();
+
                 this.Genders = Enum.GetValues(typeof(Gender)).Cast<Gender>()
                     .Select(v => new SelectListItem
                     {
@@ -116,7 +118,7 @@
 
         public int Save(ConsultationProxy proxy, ModelStateDictionary modelState)
         {
-            if (proxy != null && modelState.IsValid)
+            if (proxy != null && (modelState.IsValid || proxy.IsConsultation))
             {
                 try
                 {
@@ -135,7 +137,7 @@
                                 SenderId = currentSpecialistId,
                                 ConsultantId = consultantId,
                                 PatientInitials = proxy.PatientInitials,
-                                PatientAge = proxy.PatientAge,
+                                PatientAge = proxy.PatientAge.Value,
                                 Gender = proxy.PatientGender,
                                 PreliminaryDiagnosisCode = proxy.PreliminaryDiagnosisCode.ToUpper(),
                                 Anamnesis = proxy.Anamnesis,
@@ -156,7 +158,7 @@
                             if (consultation.SenderId == currentSpecialistId)
                             {
                                 consultation.PatientInitials = proxy.PatientInitials;
-                                consultation.PatientAge = proxy.PatientAge;
+                                consultation.PatientAge = proxy.PatientAge.Value;
                                 consultation.Gender = proxy.PatientGender;
                                 consultation.PreliminaryDiagnosisCode = proxy.PreliminaryDiagnosisCode.ToUpper();
                                 consultation.Anamnesis = proxy.Anamnesis;
@@ -171,6 +173,7 @@
                                 if (proxy.FinalDiagnosisCode != null)
                                 {
                                     consultation.Stage = ConsultationStage.Finnished;
+                                    consultation.FinalDiagnosisCode = proxy.FinalDiagnosisCode.ToUpper();
                                     this.Logger.Log(ActionType.FinnishConsultation, string.Format("Id: {0}, Sender:{1}, Consultant: {2}, Date: {3}", consultation.Id, consultation.SenderId, consultation.ConsultantId, DateTime.Now));
                                 }
                                 else
@@ -179,7 +182,6 @@
                                     this.Logger.Log(ActionType.AnswerConsultation, string.Format("Id: {0}, Sender:{1}, Consultant: {2}, Date: {3}", consultation.Id, consultation.SenderId, consultation.ConsultantId, DateTime.Now));
                                 }
 
-                                consultation.FinalDiagnosisCode = proxy.FinalDiagnosisCode.ToUpper();
                                 consultation.Conclusion = proxy.Conclusion;
                                 consultation.ModifiedDate = DateTime.Now;
                             }

@@ -17,24 +17,43 @@
 
 @Html.Hidden("GetDiagnosisUrl", Url.Action("GetDiagnosis", "Consultation"))
 @Html.Hidden("HomePageUrl", Url.Action("Index", "Menu", new { area = GlobalConstants.ConsultationAreaName }, null))
+@Html.Hidden("IsConsultation", Model.IsConsultation)
 
 <div class="row well">
     <form id="consultationForm" class="form-horizontal">
         <fieldset>
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.ViewModel.Id)
-            @Html.EditorFor(m => m.ViewModel.PatientInitials)
-            @Html.EditorFor(m => m.ViewModel.PatientAge)
-            @Html.EditorFor(m => m.ViewModel.PatientGender, new { ListItems = Model.Genders })
 
-            <div class="form-group">
-                @Html.EditorFor(m => m.ViewModel.PreliminaryDiagnosisCode)
-                @Html.EditorFor(m => m.ViewModel.PreliminaryDiagnosisDescription)
-            </div>
+            @if (!Model.IsConsultation && string.IsNullOrEmpty(Model.ViewModel.FinalDiagnosisCode))
+            {
+                @Html.EditorFor(m => m.ViewModel.PatientInitials)
+                @Html.EditorFor(m => m.ViewModel.PatientAge)
+                @Html.EditorFor(m => m.ViewModel.PatientGender, new { ListItems = Model.Genders })
 
-            @Html.EditorFor(m => m.ViewModel.Anamnesis)
-            @Html.EditorFor(m => m.ViewModel.SpecialityId, new { ListItems = Model.Specialities })
-            @Html.EditorFor(m => m.ViewModel.ConsultationType, new { ListItems = Model.Types })
+                <div class="form-group">
+                    @Html.EditorFor(m => m.ViewModel.PreliminaryDiagnosisCode)
+                    @Html.EditorFor(m => m.ViewModel.PreliminaryDiagnosisDescription)
+                </div>
+
+                @Html.EditorFor(m => m.ViewModel.Anamnesis)
+                @Html.EditorFor(m => m.ViewModel.SpecialityId, new { ListItems = Model.Specialities })
+                @Html.EditorFor(m => m.ViewModel.ConsultationType, new { ListItems = Model.Types })
+            }
+            else
+            {
+                @Html.DisplayFor(m => m.ViewModel.PatientInitials)
+                @Html.DisplayFor(m => m.ViewModel.PatientAge)
+                @Html.DisplayFor(m => m.ViewModel.Gender)
+
+                <div class="form-group">
+                    @Html.DisplayFor(m => m.ViewModel.PreliminaryDiagnosisCode)
+                    @Html.DisplayFor(m => m.ViewModel.PreliminaryDiagnosisDescription)
+                </div>
+
+                @Html.DisplayFor(m => m.ViewModel.Anamnesis)
+                @Html.DisplayFor(m => m.ViewModel.Type)
+            }
 
             <div class="form-group row">
                 <div data-role="wrapper" class="gj-grid-wrapper">
@@ -42,11 +61,14 @@
                         <div class="col-md-10 col-sm-12 no-padding-col">
                             <h4 data-role="title">Кръвни изследвания</h4>
                         </div>
-                        <div class="col-md-2 col-sm-12 no-padding-col">
-                            <div class="pull-right">
-                                <button type="button" class="btn btn-success" id="addBloodExamination">Добави</button>
+                        @if (!Model.IsConsultation && string.IsNullOrEmpty(Model.ViewModel.FinalDiagnosisCode))
+                        {
+                            <div class="col-md-2 col-sm-12 no-padding-col">
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-success" id="addBloodExamination">Добави</button>
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
                     <table id="bloodExaminationsGrid" data-source="@Url.Action("GetBloodExaminations")"></table>
                 </div>       
@@ -58,11 +80,14 @@
                         <div class="col-md-10 col-sm-12 no-padding-col">
                             <h4 data-role="title">Изследвания урина</h4>
                         </div>
-                        <div class="col-md-2 col-sm-12 no-padding-col">
-                            <div class="pull-right">
-                                <button type="button" class="btn btn-success" id="addUrinalysis">Добави</button>
+                        @if (!Model.IsConsultation && string.IsNullOrEmpty(Model.ViewModel.FinalDiagnosisCode))
+                        {
+                            <div class="col-md-2 col-sm-12 no-padding-col">
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-success" id="addUrinalysis">Добави</button>
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
                     <table id="urinalysisGrid" data-source="@Url.Action("GetUrinalysis")"></table>
                 </div>
@@ -74,11 +99,14 @@
                         <div class="col-md-10 col-sm-12 no-padding-col">
                             <h4 data-role="title">Образни изследвания</h4>
                         </div>
-                        <div class="col-md-2 col-sm-12 no-padding-col">
-                            <div class="pull-right">
-                                <button type="button" class="btn btn-success" id="addVisualExamination">Добави</button>
+                        @if (!Model.IsConsultation && string.IsNullOrEmpty(Model.ViewModel.FinalDiagnosisCode))
+                        {
+                            <div class="col-md-2 col-sm-12 no-padding-col">
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-success" id="addVisualExamination">Добави</button>
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
                     <table id="visualExaminationsGrid" data-source="@Url.Action("GetVisualExaminations")"></table>
                 </div>
@@ -86,17 +114,32 @@
 
             @if (Model.IsConsultation)
             {
-                <div class="form-group">
-                    @Html.EditorFor(m => m.ViewModel.FinalDiagnosisCode)
-                    @Html.EditorFor(m => m.ViewModel.FinalDiagnosisDescription)
-                </div>
+                if (string.IsNullOrEmpty(Model.ViewModel.FinalDiagnosisCode))
+                {
+                    <div class="form-group">
+                        @Html.EditorFor(m => m.ViewModel.FinalDiagnosisCode)
+                        @Html.EditorFor(m => m.ViewModel.FinalDiagnosisDescription)
+                    </div>
 
-                @Html.EditorFor(m => m.ViewModel.Conclusion)
+                    @Html.EditorFor(m => m.ViewModel.Conclusion)
+                }
+                else
+                {
+                    <div class="form-group">
+                        @Html.DisplayFor(m => m.ViewModel.FinalDiagnosisCode)
+                        @Html.DisplayFor(m => m.ViewModel.FinalDiagnosisDescription)
+                    </div>
+
+                    @Html.DisplayFor(m => m.ViewModel.Conclusion)
+                }
             }
 
-            <div class="pull-right">
-                <button id="btnSave" type="button" class="btn btn-primary" data-url="@Url.Action("Save")">@GlobalConstants.Send</button>
-            </div>
+            @if (string.IsNullOrEmpty(Model.ViewModel.FinalDiagnosisCode))
+            {
+                <div class="pull-right">
+                    <button id="btnSave" type="button" class="btn btn-primary" data-url="@Url.Action("Save")">@GlobalConstants.Send</button>
+                </div>
+            }
         </fieldset>
     </form>
 </div>
