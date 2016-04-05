@@ -1,4 +1,2 @@
 1. Send mail to Specialists
-2. Color for Specialties
-4. Add SignalR for Schedule
-5. Sent only Specialities for which there is Consultants for the current moment
+2. Add Search in Sent and Recieve

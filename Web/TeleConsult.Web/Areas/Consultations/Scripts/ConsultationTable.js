@@ -1,12 +1,14 @@
 ﻿var ConsultationTableViewModel = {
     grid: null,
     gridId: '#consultationsGrid',
+    currentSpecialistId: '#CurrentSpecialistId',
 
     init: function () {
         var self = this;
 
         self.initEvents();
         self.initGrid();
+        self.initHub();
 
         self.search();
     },
@@ -32,6 +34,7 @@
         });
 
         self.grid.on('rowDataBound', function (e, $row, id, record) {
+            $row.removeClass();
             $row.addClass(record.StageName);
         });
     },
@@ -39,6 +42,29 @@
     initEvents: function () {
         var self = ConsultationTableViewModel;
 
+    },
+
+    initHub: function () {
+        var self = ConsultationTableViewModel,
+            consultationHub = $.connection.consultationHub;
+
+        consultationHub.client.refresh = function (consultationId, consultantId, isInsert) {
+            var ids;
+
+            if (isInsert && consultantId === $(self.currentSpecialistId).val()) {
+                self.search();
+            } else {
+                ids = _.map(self.grid.getAll(), function (item) {
+                    return item.record.Id;
+                });
+
+                if (ids.indexOf(consultationId) > -1) {
+                    self.search();
+                }
+            }
+        };
+
+        $.connection.hub.start();
     },
 
     edit: function (e) {

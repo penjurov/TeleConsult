@@ -1,4 +1,12 @@
-﻿@Html.Hidden("consultationUrl", Url.Action("Index", "Consultation"))
+﻿@model TeleConsult.Web.Areas.Consultations.Models.ConsultationModel
+
+@{
+    ViewBag.Title = SiteMap.CurrentNode.Title;
+}
+
+@Html.Hidden("consultationUrl", Url.Action("Index", "Consultation"))
+@Html.HiddenFor(m => m.IsConsultation)
+@Html.HiddenFor(m => m.CurrentSpecialistId)
 
 <div>
     <div class="row well">

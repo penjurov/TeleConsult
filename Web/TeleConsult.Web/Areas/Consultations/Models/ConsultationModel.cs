@@ -6,8 +6,8 @@
     using System.Linq;
     using System.Transactions;
     using System.Web;
-
     using System.Web.Mvc;
+
     using Common.Helpers;
     using Data.Filters.Admin;
     using Data.Filters.Consultations;
@@ -15,6 +15,7 @@
     using Data.Models.Enumerations;
     using Data.Proxies;
     using Data.Repositories;
+    using Hubs;
     using Web.Models;
     using Web.Models.Base;
 
@@ -38,6 +39,8 @@
 
         public bool IsConsultation { get; set; }
 
+        public string CurrentSpecialistId { get; set; }
+
         public void Init(bool init)
         {
             base.Init();
@@ -60,10 +63,10 @@
                         Value = ((int)v).ToString()
                     });
 
-                var currentSpecialistId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
+                this.CurrentSpecialistId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
 
                 this.Specialities = this.RepoFactory.Get<ScheduleRepository>().GetForToday()
-                    .Where(s => s.SpecialistId != currentSpecialistId)
+                    .Where(s => s.SpecialistId != this.CurrentSpecialistId)
                     .Select(s => new SelectListItem
                     {
                         Value = s.Specialist.SpecialityId.ToString(),
@@ -130,6 +133,8 @@
                     var currentSpecialistId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
                     Consultation consultation;
 
+                    bool isInsert = false;
+
                     using (var transaction = new TransactionScope())
                     {
                         if (!proxy.Id.HasValue || proxy.Id == 0)
@@ -154,6 +159,8 @@
                             repo.Add(consultation);
 
                             this.Logger.Log(ActionType.SendConsultation, string.Format("Id: {0}, Sender:{1}, Consultant: {2}, Date: {3}", consultation.Id, consultation.SenderId, consultation.ConsultantId, DateTime.Now));
+
+                            isInsert = true;
                         }
                         else
                         {
@@ -198,6 +205,9 @@
                         repo.SaveChanges();
 
                         transaction.Complete();
+
+                        ConsultationHub.Refresh(consultation.Id, consultation.ConsultantId, isInsert);
+
                         return consultation.Id;
                     }
                 }
