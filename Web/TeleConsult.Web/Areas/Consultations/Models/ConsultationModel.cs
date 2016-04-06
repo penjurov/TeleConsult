@@ -222,6 +222,16 @@
             }
         }
 
+        public void Evaluate(int consultationId, float rating)
+        {
+            var repo = this.RepoFactory.Get<ConsultationRepository>();
+            var consultation = repo.GetById(consultationId);
+            consultation.RatedDate = DateTime.Now;
+            consultation.Rating = rating;
+
+            repo.SaveChanges();
+        }
+
         private void SaveBloodExaminations(IEnumerable<BloodExaminationProxy> bloodExaminations, Consultation consultation)
         {
             var bloodExaminationToDeactivate = consultation.BloodExaminations.Where(ex => !bloodExaminations.Any(be => be.Id == ex.Id));

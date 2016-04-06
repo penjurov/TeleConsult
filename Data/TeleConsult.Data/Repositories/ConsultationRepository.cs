@@ -68,7 +68,8 @@
                 FinalDiagnosisCode = c.FinalDiagnosisCode,
                 FinalDiagnosisDescription = c.FinalDiagnosis != null ? c.FinalDiagnosis.Description : null,
                 Stage = c.Stage,
-                ConsultationType = c.Type
+                ConsultationType = c.Type,
+                Rating = c.Rating
             });
         }
     }

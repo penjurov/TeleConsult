@@ -9,6 +9,17 @@
     }
 };
 
+jQuery.extend(jQuery.validator.messages, {
+    required: "Полето е задължително",
+    max: jQuery.validator.format("Моля въведете число по-малко или равно на {0}."),
+    min: jQuery.validator.format("Моля въведете число по-голямо или равно на {0}.")
+});
+
+jQuery.validator.addMethod("maxDecimalDigits", function (value, element, params) {
+    var numberOfDecimalPlaces = (value.split('.')[1] || []).length;
+    return this.optional(element) || numberOfDecimalPlaces <= params;
+}, $.format("Оценката не може да има повече от {0} знака след десетичната запетая."));
+
 var ajaxModel = {
     get: function (url, params, onSuccessFunc, onErrorFunc) {
         var settings = { url: url, data: params, type: 'GET', dataType: 'json' };

@@ -134,5 +134,7 @@
         public DateTime? DeletedOn { get; set; }
 
         public bool IsConsultation { get; set; }
+
+        public float? Rating { get; set; }
     }
 }

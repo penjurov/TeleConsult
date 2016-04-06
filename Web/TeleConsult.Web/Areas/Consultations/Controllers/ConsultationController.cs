@@ -78,5 +78,13 @@
             var result = model.GetVisualExaminations(filter);
             return this.Json(new { records = result, total = filter.Count }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult Evaluate(int consultationId, float rating)
+        {
+            var model = LoadModel<ConsultationModel, bool>(false);
+            model.Evaluate(consultationId, rating);
+            return this.Json(true);
+        }
     }
 }

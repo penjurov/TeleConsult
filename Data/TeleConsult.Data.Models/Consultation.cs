@@ -70,5 +70,9 @@
         [Required]
         [DataType(DataType.Date)]
         public DateTime ModifiedDate { get; set; }
+
+        public DateTime? RatedDate { get; set; }
+
+        public float? Rating { get; set; }
     }
 }

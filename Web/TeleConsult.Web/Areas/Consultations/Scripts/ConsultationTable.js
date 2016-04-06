@@ -3,10 +3,16 @@
     gridId: '#consultationsGrid',
     currentSpecialistId: '#CurrentSpecialistId',
 
+    evaluateDialog: '#evaluateDialog',
+    evaluateForm: '#evaluateForm',
+    modal: null,
+    validator: null,
+
     init: function () {
         var self = this;
 
         self.initEvents();
+        self.initValidation();
         self.initGrid();
         self.initHub();
 
@@ -25,7 +31,8 @@
                 { title: 'Предполагаема диагноза', field: 'PreliminaryDiagnosisDescription', align: 'center', width: 700, sortable: true },
                 { title: 'Вид', field: 'Type', align: 'center', sortable: true },
                 { title: 'Дата', field: 'Date', align: 'center', sortable: true },
-                { title: '', field: 'Edit', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-pencil', tooltip: 'Редакция', events: { 'click': self.edit } }
+                { title: '', field: 'Edit', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-pencil', tooltip: 'Редакция', events: { 'click': self.edit } },
+                { title: '', field: 'Rating', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-star', tooltip: 'Рейтинг', events: { 'click': self.openEvaluateDialog } }
             ],
             pager: { enable: true, limit: 10, sizes: [10, 20, 50, 100] },
             autoLoad: false,
@@ -37,11 +44,47 @@
             $row.removeClass();
             $row.addClass(record.StageName);
         });
+
+        self.grid.on('cellDataBound', function (e, $wrapper, id, column, record) {
+            if ('Rating' === column.field) {
+                if (record.Rating !== null) {
+                    $wrapper.empty().closest('td').off('click');
+                    $wrapper.html(record.Rating);
+                } else {
+                    if ($('#IsConsultation').val() === 'False' && record.StageName === 'finnished') {
+                        $wrapper.css('display', '');
+                    } else {
+                        $wrapper.hide().closest('td').off('click');
+                    }
+                }
+            }
+        });
+    },
+
+    initValidation: function () {
+        var self = ConsultationTableViewModel;
+
+        self.validator = $(self.evaluateForm).validate({
+            rules: {
+                evaluationValue: {
+                    required: true,
+                    maxDecimalDigits: 1,
+                    min: 0,
+                    max: 10
+                }
+            },
+            errorElement: 'div',
+            errorClass: 'validation-error'
+        });
     },
 
     initEvents: function () {
         var self = ConsultationTableViewModel;
 
+        $('#btnEvaluate').on('click', self.evaluate);
+        $('#btnCancel').on('click', function () {
+            self.modal.modal('hide');
+        });
     },
 
     initHub: function () {
@@ -83,6 +126,41 @@
 
         self.grid.reload(params);
     },
+
+    openEvaluateDialog: function (e) {
+        var self = ConsultationTableViewModel;
+
+        $('#consultationId').val(e.data.record.Id);
+        $('#evaluationValue').val('');
+
+        self.modal = $(self.evaluateDialog).modal();
+        self.modal.off('hide.bs.modal')
+            .on('hide.bs.modal', function (event) {
+                self.validator.resetForm();
+                $('input.validation-error').removeClass('validation-error');
+            });
+    },
+
+    evaluate: function () {
+        var self = ConsultationTableViewModel,
+            url,
+            params,
+            onSuccess;
+
+        url = $(this).data('url');
+
+        params = {
+            consultationId: parseInt($('#consultationId').val(), 10),
+            rating: parseFloat($('#rating').val())
+        }
+
+        onSuccess = function () {
+            self.modal.modal('hide');
+            self.grid.reload();
+        }
+
+        ajaxModel.post(url, params, onSuccess);
+    }
 }
 
 

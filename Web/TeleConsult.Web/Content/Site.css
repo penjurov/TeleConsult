@@ -274,6 +274,10 @@ a, a:focus {
     width: 1200px; 
 }
 
+.modal .modal-small {
+    width: 400px;
+}
+
 .btn-file {
     position: relative;
     overflow: hidden;

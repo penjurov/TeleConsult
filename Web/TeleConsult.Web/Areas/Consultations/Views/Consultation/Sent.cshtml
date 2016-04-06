@@ -6,3 +6,29 @@
 }
 
 @Html.Partial("_ConsultationsTable")
+
+<div class="modal fade" id="evaluateDialog" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-small">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Оценка</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="evaluateForm">
+                    @Html.Hidden("consultationId")
+                    <div class="form-group">
+                        @Html.Label("Оценка", new { @class = "col-sm-2 col-xs-12 control-label" })
+                        <div class="col-sm-offset-2 col-sm-8 col-xs-12">
+                            @Html.TextBox("rating", null, new { @class = "form-control", type = "number" })
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnEvaluate" class="btn btn-primary" data-url="@Url.Action("Evaluate")">Оцени</button>
+                <button type="button" id="btnCancel" class="btn btn-default">Отказ</button>
+            </div>
+        </div>
+    </div>
+</div>
