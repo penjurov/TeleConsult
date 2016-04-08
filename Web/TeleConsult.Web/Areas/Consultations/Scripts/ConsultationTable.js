@@ -11,9 +11,9 @@
     init: function () {
         var self = this;
 
+        self.initGrid();
         self.initEvents();
         self.initValidation();
-        self.initGrid();
         self.initHub();
 
         self.search();
@@ -32,7 +32,7 @@
                 { title: 'Вид', field: 'Type', align: 'center', sortable: true },
                 { title: 'Дата', field: 'Date', align: 'center', sortable: true },
                 { title: '', field: 'Edit', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-pencil', tooltip: 'Редакция', events: { 'click': self.edit } },
-                { title: '', field: 'Rating', width: 32, align: 'center', type: 'icon', icon: 'glyphicon-star', tooltip: 'Рейтинг', events: { 'click': self.openEvaluateDialog } }
+                { title: '', field: 'Rating', width: 100, align: 'center', type: 'icon', icon: 'glyphicon-star', tooltip: 'Рейтинг', events: { 'click': self.openEvaluateDialog } }
             ],
             pager: { enable: true, limit: 10, sizes: [10, 20, 50, 100] },
             autoLoad: false,
@@ -49,7 +49,9 @@
             if ('Rating' === column.field) {
                 if (record.Rating !== null) {
                     $wrapper.empty().closest('td').off('click');
-                    $wrapper.html(record.Rating);
+                    var span = $('<span />').addClass('stars').html($('<span />').width(record.Rating * 8));
+
+                    $wrapper.html(span);
                 } else {
                     if ($('#IsConsultation').val() === 'False' && record.StageName === 'finnished') {
                         $wrapper.css('display', '');

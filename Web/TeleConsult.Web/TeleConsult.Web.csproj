@@ -254,6 +254,10 @@
     <Compile Include="Areas\Consultations\Controllers\ConsultationController.cs" />
     <Compile Include="Areas\Consultations\Controllers\MenuController.cs" />
     <Compile Include="Areas\Consultations\Models\ConsultationModel.cs" />
+    <Compile Include="Areas\Statistics\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Statistics\Controllers\StatisticsBaseController.cs" />
+    <Compile Include="Areas\Statistics\Models\StatisticsModel.cs" />
+    <Compile Include="Areas\Statistics\StatisticsAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -296,6 +300,7 @@
     <Content Include="Areas\Consultations\Scripts\Consultation.js" />
     <Content Include="Areas\Consultations\Scripts\Urinalysis.js" />
     <Content Include="Areas\Consultations\Scripts\VisualExamination.js" />
+    <Content Include="Areas\Statistics\Scripts\BestStatistics.js" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-dialog.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -315,6 +320,7 @@
     <Content Include="Content\images\sent-consultations.png" />
     <Content Include="Content\images\specialist.png" />
     <Content Include="Content\images\specialties.png" />
+    <Content Include="Content\images\stars.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -357,6 +363,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Areas\Statistics\Views\web.config" />
+    <Content Include="Areas\Statistics\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Statistics\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Statistics\Views\Home\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

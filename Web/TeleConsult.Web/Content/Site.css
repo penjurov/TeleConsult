@@ -87,14 +87,6 @@ textarea {
     vertical-align: middle; 
 }
 
-.k-edit-form-container .form-control {
-    height: 20px;
-}
-
-.kendo-form {
-    margin-left: 20px;
-}
-
 .field-validation-error {
     color: #ff0000;
 }
@@ -223,6 +215,10 @@ input.validation-error, select.validation-error, div.validation-error-border, te
     background-color: #dff0d8;
 }
 
+.gj-grid-bootstrap-thead-cell div {
+    float: none !important;
+}
+
 @media (min-width: 1800px) {
     .container {
         max-width: 1700px;
@@ -301,4 +297,15 @@ a, a:focus {
 .examination-image {
     max-width: 100%;
     height: auto;
+}
+
+span.stars, span.stars span {
+    display: block;
+    background: url(/Content/images/stars.png) 0 -16px repeat-x;
+    width: 80px;
+    height: 16px;
+}
+
+span.stars span {
+    background-position: 0 0;
 }

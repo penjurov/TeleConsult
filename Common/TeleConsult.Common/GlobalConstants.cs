@@ -28,6 +28,7 @@
         // Areas
         public const string AdminAreaName = "Admin";
         public const string ConsultationAreaName = "Consultations";
+        public const string StatisticsAreaName = "Statistics";
 
         // Controllers
         public const string AdministrationControllerTitle = "Администрация";
@@ -40,7 +41,7 @@
         public const string NewConsultationsControllerTitle = "Нова";
         public const string SentConsultationsControllerTitle = "Изпратени";
         public const string RecievedConsultationsControllerTitle = "Получени";
-        public const string ReportsControllerTitle = "Отчети";
+        public const string StatisticsControllerTitle = "Статистика";
 
         // User
         public const string Login = "Вход";

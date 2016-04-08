@@ -1,6 +1,9 @@
 ﻿namespace TeleConsult.Data.Models
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     using TeleConsult.Data.Models.Enumerations;
 
     public class Specialist : User
@@ -20,5 +23,8 @@
         public int HospitalId { get; set; }
 
         public virtual Hospital Hospital { get; set; }
+
+        [InverseProperty("Consultant")]
+        public virtual ICollection<Consultation> Consultations { get; set; }
     }
 }

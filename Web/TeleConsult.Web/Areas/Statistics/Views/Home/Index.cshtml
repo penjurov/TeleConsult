@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = SiteMap.CurrentNode.Title;
+}
+
+@section scripts {
+    @Scripts.Render("~/Areas/Statistics/Scripts/BestStatistics.js")
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-6">
+        <div class="row">
+            <div data-role="wrapper">
+                <div data-role="toolbar" class="clearfix">
+                    <h4 data-role="title" class="pull-md-left">Най-добрите лечебни заведения</h4>
+                </div>
+                <table id="bestHospitalsGrid" data-source="@Url.Action("GetBestHospitals")"></table>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="row">
+            <div data-role="wrapper">
+                <div data-role="toolbar" class="clearfix">
+                    <h4 data-role="title" class="pull-md-left">Най-добрите 10 лекари</h4>
+                </div>
+                <table id="bestDoctorsGrid" data-source="@Url.Action("GetBestDoctors")"></table>
+            </div>
+        </div>
+    </div>
+</div>
+

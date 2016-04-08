@@ -29,5 +29,7 @@
         public double? Longitude { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public float? Rating { get; set; }
     }
 }

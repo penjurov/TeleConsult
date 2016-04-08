@@ -87,5 +87,7 @@
         public string Password { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public float? Rating { get; set; }
     }
 }

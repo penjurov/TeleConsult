@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using Contracts;
     using Enumerations;
@@ -26,6 +27,7 @@
 
         public string ConsultantId { get; set; }
 
+        [InverseProperty("Consultations")]
         public virtual Specialist Consultant { get; set; }
 
         [Required]

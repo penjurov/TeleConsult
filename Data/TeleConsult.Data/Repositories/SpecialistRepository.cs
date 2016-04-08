@@ -86,7 +86,8 @@
                 UserName = s.UserName,
                 HospitalId = s.HospitalId,
                 HospitalName = s.Hospital.Name,
-                IsDeleted = s.IsDeleted
+                IsDeleted = s.IsDeleted,
+                Rating = s.Consultations.Where(c => c.ConsultantId == s.Id && c.Rating.HasValue).Average(c => c.Rating)
             });
         }
     }

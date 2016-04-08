@@ -51,7 +51,8 @@
                 Longitude = h.Longitude,
                 Address = h.Address,
                 Phone = h.Phone,
-                IsDeleted = h.IsDeleted
+                IsDeleted = h.IsDeleted,
+                Rating = h.Specialists.Select(s => s.Consultations.Where(c => c.ConsultantId == s.Id).Select(c => c.Rating).Average()).Where(c => c.HasValue).Average(c => c.Value)
             });
         }
     }
