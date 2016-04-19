@@ -2,11 +2,12 @@
 {
     using System.Web.Mvc;
 
+    using Common;
     using Data.Filters.Consultations;
     using Data.Proxies;
     using Infrastructure.Attributes;
     using Models;
-
+    
     public class ConsultationController : ConsultationBaseController
     {
         public ActionResult Index(int? id)
@@ -16,6 +17,7 @@
             return this.View(model);
         }
 
+        [Authorize(Roles = GlobalConstants.SpecialistRoleName)]
         public ActionResult Received()
         {
             var model = this.LoadModel<ConsultationModel, bool>(true);

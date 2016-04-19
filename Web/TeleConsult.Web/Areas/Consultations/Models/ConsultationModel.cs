@@ -8,6 +8,7 @@
     using System.Web;
     using System.Web.Mvc;
 
+    using Common;
     using Common.Helpers;
     using Data.Filters.Admin;
     using Data.Filters.Consultations;
@@ -17,7 +18,7 @@
     using Data.Repositories;
     using Hubs;
     using Web.Models;
-    using Web.Models.Base;
+    using Web.Models.Base;   
 
     public class ConsultationModel : BaseModel, IModel<bool>
     {
@@ -40,6 +41,8 @@
         public bool IsConsultation { get; set; }
 
         public string CurrentSpecialistId { get; set; }
+
+        public bool IsSpecialist { get; set; }
 
         public void Init(bool init)
         {
@@ -64,6 +67,8 @@
                     });
 
                 this.CurrentSpecialistId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
+
+                this.IsSpecialist = HttpContext.Current.User.IsInRole(GlobalConstants.SpecialistRoleName);
 
                 this.Specialities = this.RepoFactory.Get<ScheduleRepository>().GetForToday()
                     .Where(s => s.SpecialistId != this.CurrentSpecialistId)
@@ -130,7 +135,16 @@
                 try
                 {
                     var repo = this.RepoFactory.Get<ConsultationRepository>();
-                    var currentSpecialistId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
+                    var currentUserId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
+
+                    if (!HttpContext.Current.User.IsInRole(GlobalConstants.SpecialistRoleName))
+                    {
+                        if (!this.CheckConfirmationCode(proxy.ConfirmationCode))
+                        {
+                            throw new Exception("Грешен потвърждаващ код");
+                        }
+                    }
+                    
                     Consultation consultation;
 
                     bool isInsert = false;
@@ -143,7 +157,7 @@
 
                             consultation = new Consultation
                             {
-                                SenderId = currentSpecialistId,
+                                SenderId = currentUserId,
                                 ConsultantId = consultantId,
                                 PatientInitials = proxy.PatientInitials,
                                 PatientAge = proxy.PatientAge.Value,
@@ -166,7 +180,7 @@
                         {
                             consultation = repo.GetById(proxy.Id.Value);
                             
-                            if (consultation.SenderId == currentSpecialistId)
+                            if (consultation.SenderId == currentUserId)
                             {
                                 consultation.PatientInitials = proxy.PatientInitials;
                                 consultation.PatientAge = proxy.PatientAge.Value;
@@ -220,6 +234,19 @@
             {
                 throw new Exception(this.HandleErrors(modelState));
             }
+        }
+
+        private bool CheckConfirmationCode(Guid confirmationCode)
+        {
+            var dummyCodeForTesting = new Guid("289A0486-AB6A-4D9F-B269-68691764F675");
+            var result = true;
+
+            if (confirmationCode != dummyCodeForTesting)
+            {
+                result = false;
+            }
+
+            return result;
         }
 
         public void Evaluate(int consultationId, float rating)

@@ -136,5 +136,10 @@
         public bool IsConsultation { get; set; }
 
         public float? Rating { get; set; }
+
+        [Required(ErrorMessage = GlobalConstants.ConfirmationCodeRequireText)]
+        [DisplayName(GlobalConstants.ConfirmationCodeDisplay)]
+        [UIHint("GuidTemplate")]
+        public Guid ConfirmationCode { get; set; }
     }
 }

@@ -452,6 +452,7 @@
     <Content Include="Views\Shared\DisplayTemplates\IntTemplate.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\CodeTemplate.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\DescriptionTemplate.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\GuidTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

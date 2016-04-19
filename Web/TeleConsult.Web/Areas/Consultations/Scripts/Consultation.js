@@ -13,15 +13,20 @@
         var self = ConsultationViewModel;
 
         $('#btnSave').on('click', self.save);
+
         $('#ViewModel_PreliminaryDiagnosisCode').on('change', function () {
             self.getDiagnosis($(this), $('#ViewModel_PreliminaryDiagnosisDescription'));
         });
+
         $('#ViewModel_FinalDiagnosisCode').on('change', function () {
             self.getDiagnosis($(this), $('#ViewModel_FinalDiagnosisDescription'));
         });
+
         $('.date').datetimepicker({
             format: 'DD/MM/YYYY h:mm A'
         });
+
+        $('#ViewModel_ConfirmationCode').val('');
     },
 
     initValidation: function () {
@@ -74,7 +79,8 @@
                 IsConsultation: $('#ViewModel_PatientInitials').length === 0,
                 Conclusion: $('#ViewModel_Conclusion').val(),
                 FinalDiagnosisCode: $('#ViewModel_FinalDiagnosisCode').val(),
-                FinalDiagnosisDescription: $('#ViewModel_FinalDiagnosisDescription').val()
+                FinalDiagnosisDescription: $('#ViewModel_FinalDiagnosisDescription').val(),
+                ConfirmationCode: $('#ViewModel_ConfirmationCode').val() || '34e2f125-894c-4cba-a0d3-e714992d5858' // Sending not valid Confirmation code to skip back-end error validation on edit, or when logged user is Specialist
             };
 
             url = $(this).data('url');

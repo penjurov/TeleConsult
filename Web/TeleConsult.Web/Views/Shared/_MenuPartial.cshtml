@@ -5,7 +5,7 @@
 }
 
 <ul class="nav navbar-nav">
-    @if (User.IsInRole(GlobalConstants.SpecialistRoleName))
+    @if (User.Identity.IsAuthenticated)
     {
         <li>@Html.ActionLink(GlobalConstants.ConsultationsControllerTitle, ActionName, ControllerName, new { area = GlobalConstants.ConsultationAreaName }, null)</li>
     }

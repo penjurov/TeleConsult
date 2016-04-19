@@ -4,29 +4,51 @@
 }
 
 <div class="row well down menu">
-    <div class="row">
-        <div class="col-md-10">
-            <h2>@ViewBag.Title</h2>
-        </div>
-        <div class="col-md-2">
-            <div class="menu-logo pull-right">
-                @Html.Partial("_LogoPartial")
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-md-10">
+                <h2>@ViewBag.Title</h2>
+            </div>
+            <div class="col-md-2">
+                <div class="menu-logo pull-right">
+                    @Html.Partial("_LogoPartial")
+                </div>
             </div>
         </div>
-    </div>
-    <hr />
-    <div class="row">
-        <div class="col-md-4 text-center">
-            @Html.ActionLink(GlobalConstants.NewConsultationsControllerTitle, "Index", "Consultation", null, new { @class = "new-consultation image" })
-            @Html.ActionLink(GlobalConstants.NewConsultationsControllerTitle, "Index", "Consultation", null, new { @class = "link" })
+        <hr />
+        <div class="row">
+            @{
+                string className;
+                bool isSpecialist = false;
+
+                if(User.IsInRole(GlobalConstants.SpecialistRoleName))
+                {
+                    className = "col-md-4 text-center";
+                    isSpecialist = true;
+                }
+                else
+                {
+                    className = "col-md-6 text-center";
+                }
+
+                <div class="@className">
+                    @Html.ActionLink(GlobalConstants.NewConsultationsControllerTitle, "Index", "Consultation", null, new { @class = "new-consultation image" })
+                    @Html.ActionLink(GlobalConstants.NewConsultationsControllerTitle, "Index", "Consultation", null, new { @class = "link" })
+                </div>
+                <div class="@className">
+                    @Html.ActionLink(GlobalConstants.SentConsultationsControllerTitle, "Sent", "Consultation", null, new { @class = "sent-consultations image" })
+                    @Html.ActionLink(GlobalConstants.SentConsultationsControllerTitle, "Sent", "Consultation", null, new { @class = "link" })
+                </div>
+
+                if (isSpecialist)
+                {
+                    <div class="@className">
+                        @Html.ActionLink(GlobalConstants.RecievedConsultationsControllerTitle, "Received", "Consultation", null, new { @class = "recieved-consultations image" })
+                        @Html.ActionLink(GlobalConstants.RecievedConsultationsControllerTitle, "Received", "Consultation", null, new { @class = "link" })
+                    </div>
+                }
+            }
+            
         </div>
-        <div class="col-md-4 text-center">
-            @Html.ActionLink(GlobalConstants.SentConsultationsControllerTitle, "Sent", "Consultation", null, new { @class = "sent-consultations image" })
-            @Html.ActionLink(GlobalConstants.SentConsultationsControllerTitle, "Sent", "Consultation", null, new { @class = "link" })
-        </div>
-        <div class="col-md-4 text-center">
-            @Html.ActionLink(GlobalConstants.RecievedConsultationsControllerTitle, "Received", "Consultation", null, new { @class = "recieved-consultations image" })
-            @Html.ActionLink(GlobalConstants.RecievedConsultationsControllerTitle, "Received", "Consultation", null, new { @class = "link" })
-        </div>
-    </div>
+    </div>  
 </div>

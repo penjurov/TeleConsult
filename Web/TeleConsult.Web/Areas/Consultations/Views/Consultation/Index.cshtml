@@ -133,6 +133,14 @@
                     @Html.DisplayFor(m => m.ViewModel.Conclusion)
                 }
             }
+            else
+            {
+                if (string.IsNullOrEmpty(Model.ViewModel.PatientInitials) && !Model.IsSpecialist)
+                {
+                    <div class="alert alert-info">За да получите подтвърждаващ код, моля изпратете празен SMS на кратък номер 1234</div>
+                    @Html.EditorFor(m => m.ViewModel.ConfirmationCode)
+                }
+            }
 
             @if (string.IsNullOrEmpty(Model.ViewModel.FinalDiagnosisCode))
             {

@@ -23,7 +23,7 @@
         [Required]
         public string SenderId { get; set; }
 
-        public virtual Specialist Sender { get; set; }
+        public virtual User Sender { get; set; }
 
         public string ConsultantId { get; set; }
 
@@ -76,5 +76,7 @@
         public DateTime? RatedDate { get; set; }
 
         public float? Rating { get; set; }
+
+        public Guid ConfirmationCode { get; set; }
     }
 }

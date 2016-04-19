@@ -135,6 +135,8 @@
         public const string FinalDiagnosisDisplay = "Диагноза";
         public const string ConclusionDisplay = "Заключение";
         public const string TypeDisplay = "Тип";
+        public const string ConfirmationCodeDisplay = "Потвърждаващ код";
+        public const string ConfirmationCodeRequireText = "Потвърждаващия код е задължителен";
 
         // Urinalysis
         public const string SpecificGravityDisplay = "Специфично тегло";
