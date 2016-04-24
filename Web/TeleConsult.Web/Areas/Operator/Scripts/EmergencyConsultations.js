@@ -40,9 +40,14 @@
         var self = EmergencyConsultationViewModel;
 
         $('#btnSetSpecialist').on('click', self.setSpecialist);
+
         $('#btnCancel').on('click', function () {
             self.modal.modal('hide');
         });
+        
+        $('#btnSearch').on('click', self.search);
+
+        $('#btnClear').on('click', self.clear);
     },
 
     initHub: function () {
@@ -73,10 +78,20 @@
             params;
 
         params = {
-            Hospital: $('#searchHospital').val()
+            IsConsultation: $('#IsConsultation').val(),
+            HospitalName: $('#searchHospital').val(),
+            GenderId: $('#searchGender').val(),
+            SpecialityId: $('#searchSpeciality').val(),
         };
 
         self.grid.reload(params);
+    },
+
+    clear: function () {
+        var self = EmergencyConsultationViewModel;
+
+        $('#searchArea').find(':text, select').val('');
+        self.search();
     },
 
     chooseSpecialist: function (e) {

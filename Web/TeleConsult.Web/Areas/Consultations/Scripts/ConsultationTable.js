@@ -48,7 +48,7 @@
         self.grid.on('cellDataBound', function (e, $wrapper, id, column, record) {
             if ('Rating' === column.field) {
                 if (record.Rating !== null) {
-                    $wrapper.empty().closest('td').off('click');
+                    $wrapper.css('display', '').empty().closest('td').off('click');
                     var span = $('<span />').addClass('stars').html($('<span />').width(record.Rating * 8));
 
                     $wrapper.html(span);
@@ -84,9 +84,14 @@
         var self = ConsultationTableViewModel;
 
         $('#btnEvaluate').on('click', self.evaluate);
+
         $('#btnCancel').on('click', function () {
             self.modal.modal('hide');
         });
+
+        $('#btnSearch').on('click', self.search);
+
+        $('#btnClear').on('click', self.clear);
     },
 
     initHub: function () {
@@ -124,10 +129,20 @@
 
         params = {
             IsConsultation: $('#IsConsultation').val(),
-            Hospital: $('#searchHospital').val()
+            HospitalName: $('#searchHospital').val(),
+            GenderId: $('#searchGender').val(),
+            TypeId: $('#searchType').val(),
+            SpecialityId: $('#searchSpeciality').val(),
         };
 
         self.grid.reload(params);
+    },
+
+    clear: function () {
+        var self = ConsultationTableViewModel;
+
+        $('#searchArea').find(':text, select').val('');
+        self.search();
     },
 
     openEvaluateDialog: function (e) {

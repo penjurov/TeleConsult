@@ -36,6 +36,8 @@
 
         public IEnumerable<SelectListItem> Specialities { get; set; }
 
+        public IEnumerable<SelectListItem> AllSpecialities { get; set; }
+
         public IEnumerable<SelectListItem> VisualExaminationTypes { get; set; }
 
         public bool IsConsultation { get; set; }
@@ -51,27 +53,28 @@
             if (init)
             {
                 this.ViewModel = new ConsultationProxy();
-
                 this.CurrentSpecialistId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
-
                 this.IsSpecialist = HttpContext.Current.User.IsInRole(GlobalConstants.SpecialistRoleName);
             }
         }
 
-        public void BuildModel(int? id)
+        public void BuildModel(int? id = null, bool isConsultation = false)
         {
+            int? consultationGenderId = null;
+            int? consultationTypeId = null;
+            int? consultationSpecialityId = null;
+
             if (id.HasValue)
             {
                 this.ViewModel = this.RepoFactory.Get<ConsultationRepository>().GetProxyById(id.Value);
+                consultationGenderId = (int)this.ViewModel.PatientGender;
+                consultationTypeId = (int)this.ViewModel.ConsultationType;
+                consultationSpecialityId = this.ViewModel.SpecialityId;
                 var currentUserId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
-                this.IsConsultation = this.ViewModel.ConsultantId == currentUserId;
-            }
-            else
-            {
-                this.IsConsultation = false;
+                isConsultation = this.ViewModel.ConsultantId == currentUserId;
             }
 
-            var consultationGenderId = (int)this.ViewModel.PatientGender;
+            this.IsConsultation = isConsultation;
 
             this.Genders = Enum.GetValues(typeof(Gender)).Cast<Gender>()
                    .Select(v => new SelectListItem
@@ -81,8 +84,6 @@
                        Selected = (int)v == consultationGenderId
                    });
 
-            var consultationTypeId = (int)this.ViewModel.ConsultationType;
-
             this.Types = Enum.GetValues(typeof(ConsultationType)).Cast<ConsultationType>()
                 .Select(v => new SelectListItem
                 {
@@ -90,8 +91,6 @@
                     Value = ((int)v).ToString(),
                     Selected = (int)v == consultationTypeId
                 });
-
-            var consultationSpecialityId = this.ViewModel.SpecialityId;
 
             this.Specialities = this.RepoFactory.Get<ScheduleRepository>().GetForToday()
                 .Where(s => s.SpecialistId != this.CurrentSpecialistId)
@@ -102,6 +101,13 @@
                     Selected = s.Specialist.SpecialityId == consultationSpecialityId
                 })
                 .Distinct();
+
+            this.AllSpecialities = this.RepoFactory.Get<SpecialityRepository>().GetActive()
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Name
+                });
 
             this.VisualExaminationTypes = Enum.GetValues(typeof(VisualExaminationType)).Cast<VisualExaminationType>()
                 .Select(v => new SelectListItem

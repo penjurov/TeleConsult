@@ -21,14 +21,14 @@
         public ActionResult Received()
         {
             var model = this.LoadModel<ConsultationModel, bool>(true);
-            model.IsConsultation = true;
+            model.BuildModel(isConsultation: true);
             return this.View(model);
         }
 
         public ActionResult Sent()
         {
             var model = this.LoadModel<ConsultationModel, bool>(true);
-            model.IsConsultation = false;
+            model.BuildModel(isConsultation: false);
             return this.View(model);
         }
 

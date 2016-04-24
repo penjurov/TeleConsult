@@ -21,7 +21,7 @@
 
         public IEnumerable<ConsultationProxy> Get(ConsultationFilter filter)
         {
-            var result = this.All()
+            var result = this.GetFiltered(filter)
                 .Where(filter.IsConsultation, c => c.ConsultantId == filter.SpecialistId)
                 .Where(!filter.IsConsultation, c => c.SenderId == filter.SpecialistId)
                 .OrderBy(c => c.ModifiedDate);
@@ -38,7 +38,7 @@
 
         public IEnumerable<ConsultationProxy> GetEmergencyConsultations(ConsultationFilter filter)
         {
-            var result = this.All()
+            var result = this.GetFiltered(filter)
                 .Where(c => c.Type == ConsultationType.Emergency && c.Consultant == null)
                 .OrderBy(c => c.ModifiedDate);
 
@@ -64,6 +64,17 @@
             var result = this.All().Where(c => consultantIds.Contains(c.ConsultantId));
 
             return this.GetProxy(result.ToList());
+        }
+
+        private IQueryable<Consultation> GetFiltered(ConsultationFilter filter)
+        {
+            var result = this.All()
+                .Where(filter.HospitalName, c => c.Consultant != null && c.Consultant.Hospital.Name.Contains(filter.HospitalName))
+                .Where(filter.TypeId, c => (int)c.Type == filter.TypeId)
+                .Where(filter.GenderId, c => (int)c.Gender == filter.GenderId)
+                .Where(filter.SpecialityId, c => c.SpecialityId == filter.SpecialityId);
+
+            return result;
         }
 
         private IEnumerable<ConsultationProxy> GetProxy(List<Consultation> result)
