@@ -7,6 +7,7 @@
         public const string ProjectTitle = "Теле Консулт";
         public const string AdministratorRoleName = "Admin";
         public const string SpecialistRoleName = "Specialist";
+        public const string OperatorRoleName = "Operator";
         public const string InitialPassword = "123456";
 
         // Enums
@@ -27,6 +28,7 @@
 
         // Areas
         public const string AdminAreaName = "Admin";
+        public const string OperatorAreaName = "Operator";
         public const string ConsultationAreaName = "Consultations";
         public const string StatisticsAreaName = "Statistics";
 
@@ -42,6 +44,7 @@
         public const string SentConsultationsControllerTitle = "Изпратени";
         public const string RecievedConsultationsControllerTitle = "Получени";
         public const string StatisticsControllerTitle = "Статистика";
+        public const string EmergencyConsultationsControllerTitle = "Спешни консултации";
 
         // User
         public const string Login = "Вход";

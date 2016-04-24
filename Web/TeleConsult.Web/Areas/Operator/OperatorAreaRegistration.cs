@@ -1,23 +1,23 @@
-﻿namespace TeleConsult.Web.Areas.Statistics
+﻿namespace TeleConsult.Web.Areas.Operator
 {
     using System.Web.Mvc;
     using Common;
 
-    public class StatisticsAreaRegistration : AreaRegistration 
+    public class OperatorAreaRegistration : AreaRegistration 
     {
         public override string AreaName 
         {
             get 
             {
-                return GlobalConstants.StatisticsAreaName;
+                return GlobalConstants.OperatorAreaName;
             }
         }
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {
             context.MapRoute(
-                "Statistics_default",
-                "Statistics/{controller}/{action}/{id}",
+                "Operator_default",
+                "Operator/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional });
         }
     }

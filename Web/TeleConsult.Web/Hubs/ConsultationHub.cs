@@ -9,5 +9,11 @@
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ConsultationHub>();
             context.Clients.All.refresh(consultationId, consultantId, isInsert);
         }
+
+        public static void RefreshEmergency(int consultationId, bool isInsert)
+        {
+            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ConsultationHub>();
+            context.Clients.All.refreshEmergency(consultationId, isInsert);
+        }
     }
 }

@@ -67,10 +67,14 @@
 
             var store = new UserStore<User>(context);
             var manager = new UserManager<User>(store);
-            var user = new User { UserName = GlobalConstants.AdministratorRoleName };
 
-            manager.Create(user, GlobalConstants.InitialPassword);
-            manager.AddToRole(user.Id, GlobalConstants.AdministratorRoleName);
+            var administrator = new User { UserName = GlobalConstants.AdministratorRoleName };
+            manager.Create(administrator, GlobalConstants.InitialPassword);
+            manager.AddToRole(administrator.Id, GlobalConstants.AdministratorRoleName);
+
+            var operatorUser = new User { UserName = GlobalConstants.OperatorRoleName };
+            manager.Create(operatorUser, GlobalConstants.InitialPassword);
+            manager.AddToRole(operatorUser.Id, GlobalConstants.OperatorRoleName);
 
             context.SaveChanges();
         }
@@ -84,6 +88,7 @@
 
             context.Roles.Add(new IdentityRole { Name = GlobalConstants.AdministratorRoleName });
             context.Roles.Add(new IdentityRole { Name = GlobalConstants.SpecialistRoleName });
+            context.Roles.Add(new IdentityRole { Name = GlobalConstants.OperatorRoleName });
             context.SaveChanges();
         }
 

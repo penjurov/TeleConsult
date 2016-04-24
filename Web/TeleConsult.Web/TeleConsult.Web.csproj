@@ -254,6 +254,9 @@
     <Compile Include="Areas\Consultations\Controllers\ConsultationController.cs" />
     <Compile Include="Areas\Consultations\Controllers\MenuController.cs" />
     <Compile Include="Areas\Consultations\Models\ConsultationModel.cs" />
+    <Compile Include="Areas\Operator\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Operator\Models\EmergencyConsultationModel.cs" />
+    <Compile Include="Areas\Operator\OperatorAreaRegistration.cs" />
     <Compile Include="Areas\Statistics\Controllers\HomeController.cs" />
     <Compile Include="Areas\Statistics\Controllers\StatisticsBaseController.cs" />
     <Compile Include="Areas\Statistics\Models\StatisticsModel.cs" />
@@ -270,6 +273,7 @@
     <Compile Include="Infrastructure\Attributes\ValidateHeaderAntiForgeryTokenAttribute.cs" />
     <Compile Include="Infrastructure\Binders\DoubleModelBinder.cs" />
     <Compile Include="Infrastructure\Bundles\BundleCollectionExtensions.cs" />
+    <Compile Include="Infrastructure\IdentityExtensions\CustomIdentityExtensions.cs" />
     <Compile Include="Infrastructure\Logging\DataBaseLogger.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
     <Compile Include="Infrastructure\Unity\MvcUnityDependencyResolver.cs" />
@@ -300,6 +304,7 @@
     <Content Include="Areas\Consultations\Scripts\Consultation.js" />
     <Content Include="Areas\Consultations\Scripts\Urinalysis.js" />
     <Content Include="Areas\Consultations\Scripts\VisualExamination.js" />
+    <Content Include="Areas\Operator\Scripts\EmergencyConsultations.js" />
     <Content Include="Areas\Statistics\Scripts\BestStatistics.js" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-dialog.css" />
@@ -365,8 +370,10 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Areas\Statistics\Views\web.config" />
     <Content Include="Areas\Statistics\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Statistics\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Statistics\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Operator\Views\web.config" />
+    <Content Include="Areas\Operator\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Operator\Views\Home\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -407,8 +414,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />

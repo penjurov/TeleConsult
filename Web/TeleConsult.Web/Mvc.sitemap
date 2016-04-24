@@ -17,6 +17,9 @@
       <mvcSiteMapNode title="Получени консултации" controller="Consultation" action="Received"/>
       <mvcSiteMapNode title="Изпратени консултации" controller="Consultation" action="Sent"/>
     </mvcSiteMapNode>
+    <mvcSiteMapNode title="Спешни консултации" area="Operator" controller="Home" action="Index">
+
+    </mvcSiteMapNode>
     <mvcSiteMapNode title="Статистика" area="Statistics" controller="Home" action="Index">
 
     </mvcSiteMapNode>

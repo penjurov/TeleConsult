@@ -123,7 +123,8 @@
             params;
 
         params = {
-            IsConsultation: $('#IsConsultation').val()
+            IsConsultation: $('#IsConsultation').val(),
+            Hospital: $('#searchHospital').val()
         };
 
         self.grid.reload(params);

@@ -6,6 +6,7 @@
     using Filters.Consultations;
     using Helpers;
     using Microsoft.Practices.Unity;
+    using Models.Enumerations;
     using Proxies;
     using TeleConsult.Common.Helpers;
     using TeleConsult.Data.Models;
@@ -23,6 +24,22 @@
             var result = this.All()
                 .Where(filter.IsConsultation, c => c.ConsultantId == filter.SpecialistId)
                 .Where(!filter.IsConsultation, c => c.SenderId == filter.SpecialistId)
+                .OrderBy(c => c.ModifiedDate);
+
+            if (filter.SortBy == "PreliminaryDiagnosisDescription")
+            {
+                filter.SortBy = "PreliminaryDiagnosisCode";
+            }
+
+            filter.Count = result.Count();
+
+            return this.GetProxy(result.OrderByFilter(filter).PageByFilter(filter));
+        }
+
+        public IEnumerable<ConsultationProxy> GetEmergencyConsultations(ConsultationFilter filter)
+        {
+            var result = this.All()
+                .Where(c => c.Type == ConsultationType.Emergency && c.Consultant == null)
                 .OrderBy(c => c.ModifiedDate);
 
             if (filter.SortBy == "PreliminaryDiagnosisDescription")
@@ -62,7 +79,7 @@
                 Anamnesis = c.Anamnesis,
                 Conclusion = c.Conclusion,
                 ConsultationDate = c.AddedDate,
-                SpecialityId = c.Consultant.SpecialityId,
+                SpecialityId = c.SpecialityId,
                 PreliminaryDiagnosisCode = c.PreliminaryDiagnosisCode,
                 PreliminaryDiagnosisDescription = c.PreliminaryDiagnosis != null ? c.PreliminaryDiagnosis.Description : null,
                 FinalDiagnosisCode = c.FinalDiagnosisCode,

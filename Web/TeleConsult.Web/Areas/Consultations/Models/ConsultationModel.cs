@@ -52,39 +52,9 @@
             {
                 this.ViewModel = new ConsultationProxy();
 
-                this.Genders = Enum.GetValues(typeof(Gender)).Cast<Gender>()
-                    .Select(v => new SelectListItem
-                    {
-                        Text = v.GetDescription(),
-                        Value = ((int)v).ToString()
-                    });
-
-                this.Types = Enum.GetValues(typeof(ConsultationType)).Cast<ConsultationType>()
-                    .Select(v => new SelectListItem
-                    {
-                        Text = v.GetDescription(),
-                        Value = ((int)v).ToString()
-                    });
-
                 this.CurrentSpecialistId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
 
                 this.IsSpecialist = HttpContext.Current.User.IsInRole(GlobalConstants.SpecialistRoleName);
-
-                this.Specialities = this.RepoFactory.Get<ScheduleRepository>().GetForToday()
-                    .Where(s => s.SpecialistId != this.CurrentSpecialistId)
-                    .Select(s => new SelectListItem
-                    {
-                        Value = s.Specialist.SpecialityId.ToString(),
-                        Text = s.Specialist.SpecialityName
-                    })
-                    .Distinct();
-
-                this.VisualExaminationTypes = Enum.GetValues(typeof(VisualExaminationType)).Cast<VisualExaminationType>()
-                    .Select(v => new SelectListItem
-                    {
-                        Text = v.GetDescription(),
-                        Value = ((int)v).ToString()
-                    });
             }
         }
 
@@ -100,6 +70,45 @@
             {
                 this.IsConsultation = false;
             }
+
+            var consultationGenderId = (int)this.ViewModel.PatientGender;
+
+            this.Genders = Enum.GetValues(typeof(Gender)).Cast<Gender>()
+                   .Select(v => new SelectListItem
+                   {
+                       Text = v.GetDescription(),
+                       Value = ((int)v).ToString(),
+                       Selected = (int)v == consultationGenderId
+                   });
+
+            var consultationTypeId = (int)this.ViewModel.ConsultationType;
+
+            this.Types = Enum.GetValues(typeof(ConsultationType)).Cast<ConsultationType>()
+                .Select(v => new SelectListItem
+                {
+                    Text = v.GetDescription(),
+                    Value = ((int)v).ToString(),
+                    Selected = (int)v == consultationTypeId
+                });
+
+            var consultationSpecialityId = this.ViewModel.SpecialityId;
+
+            this.Specialities = this.RepoFactory.Get<ScheduleRepository>().GetForToday()
+                .Where(s => s.SpecialistId != this.CurrentSpecialistId)
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Specialist.SpecialityId.ToString(),
+                    Text = s.Specialist.SpecialityName,
+                    Selected = s.Specialist.SpecialityId == consultationSpecialityId
+                })
+                .Distinct();
+
+            this.VisualExaminationTypes = Enum.GetValues(typeof(VisualExaminationType)).Cast<VisualExaminationType>()
+                .Select(v => new SelectListItem
+                {
+                    Text = v.GetDescription(),
+                    Value = ((int)v).ToString(),
+                });
         }
 
         public List<ConsultationProxy> GetConsultations(ConsultationFilter filter)
@@ -153,7 +162,12 @@
                     {
                         if (!proxy.Id.HasValue || proxy.Id == 0)
                         {
-                            var consultantId = this.GetConsultantId(proxy.SpecialityId);
+                            string consultantId = null;
+
+                            if (proxy.ConsultationType == ConsultationType.Planned)
+                            {
+                                consultantId = this.GetConsultantId(proxy.SpecialityId);
+                            }
 
                             consultation = new Consultation
                             {
@@ -164,6 +178,7 @@
                                 Gender = proxy.PatientGender,
                                 PreliminaryDiagnosisCode = proxy.PreliminaryDiagnosisCode.ToUpper(),
                                 Anamnesis = proxy.Anamnesis,
+                                SpecialityId = proxy.SpecialityId,
                                 Type = proxy.ConsultationType,
                                 Stage = ConsultationStage.Sent,
                                 AddedDate = DateTime.Now,
@@ -188,6 +203,7 @@
                                 consultation.PreliminaryDiagnosisCode = proxy.PreliminaryDiagnosisCode.ToUpper();
                                 consultation.Anamnesis = proxy.Anamnesis;
                                 consultation.Type = proxy.ConsultationType;
+                                consultation.SpecialityId = proxy.SpecialityId;
                                 consultation.Stage = ConsultationStage.Sent;
                                 consultation.ModifiedDate = DateTime.Now;
 
@@ -222,6 +238,11 @@
 
                         ConsultationHub.Refresh(consultation.Id, consultation.ConsultantId, isInsert);
 
+                        if (consultation.Type == ConsultationType.Emergency)
+                        {
+                            ConsultationHub.RefreshEmergency(consultation.Id, isInsert);
+                        }
+
                         return consultation.Id;
                     }
                 }
@@ -236,6 +257,16 @@
             }
         }
 
+        public void Evaluate(int consultationId, float rating)
+        {
+            var repo = this.RepoFactory.Get<ConsultationRepository>();
+            var consultation = repo.GetById(consultationId);
+            consultation.RatedDate = DateTime.Now;
+            consultation.Rating = rating;
+
+            repo.SaveChanges();
+        }
+
         private bool CheckConfirmationCode(Guid confirmationCode)
         {
             var dummyCodeForTesting = new Guid("289A0486-AB6A-4D9F-B269-68691764F675");
@@ -247,16 +278,6 @@
             }
 
             return result;
-        }
-
-        public void Evaluate(int consultationId, float rating)
-        {
-            var repo = this.RepoFactory.Get<ConsultationRepository>();
-            var consultation = repo.GetById(consultationId);
-            consultation.RatedDate = DateTime.Now;
-            consultation.Rating = rating;
-
-            repo.SaveChanges();
         }
 
         private void SaveBloodExaminations(IEnumerable<BloodExaminationProxy> bloodExaminations, Consultation consultation)
@@ -386,7 +407,7 @@
             }
         }
 
-        private string GetConsultantId(int specialityId)
+        private string GetConsultantId(int? specialityId)
         {
             var filter = new SchedulesFilter
             {

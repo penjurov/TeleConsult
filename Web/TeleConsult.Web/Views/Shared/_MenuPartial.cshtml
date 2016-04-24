@@ -5,13 +5,17 @@
 }
 
 <ul class="nav navbar-nav">
-    @if (User.Identity.IsAuthenticated)
+    @if (User.Identity.IsAuthenticated && !User.IsInRole(GlobalConstants.OperatorRoleName))
     {
         <li>@Html.ActionLink(GlobalConstants.ConsultationsControllerTitle, ActionName, ControllerName, new { area = GlobalConstants.ConsultationAreaName }, null)</li>
     }
     @if (User.IsInRole(GlobalConstants.AdministratorRoleName))
     {
         <li>@Html.ActionLink(GlobalConstants.AdministrationControllerTitle, ActionName, ControllerName, new { area = GlobalConstants.AdminAreaName }, null)</li>
+    }
+    @if (User.IsInRole(GlobalConstants.OperatorRoleName))
+    {
+        <li>@Html.ActionLink(GlobalConstants.EmergencyConsultationsControllerTitle, ActionName, "Home", new { area = GlobalConstants.OperatorAreaName }, null)</li>
     }
     <li>@Html.ActionLink(GlobalConstants.StatisticsControllerTitle, ActionName, "Home", new { area = GlobalConstants.StatisticsAreaName }, null)</li>
 </ul>

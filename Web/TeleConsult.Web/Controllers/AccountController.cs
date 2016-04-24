@@ -14,6 +14,7 @@
     using TeleConsult.Data.Models;
     using TeleConsult.Web.Controllers.Base;
     using TeleConsult.Web.Models;
+    using Infrastructure.IdentityExtensions;
 
     [Authorize]
     public class AccountController : BaseController
@@ -497,6 +498,7 @@
         public ActionResult LogOff()
         {
             DataBaseLogger.Instance.Log(ActionType.Logout, AuthenticationManager.User.Identity.Name);
+            CustomIdentityExtensions.ClearDisplayName(AuthenticationManager.User);
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home", new { Area = "" });
         }

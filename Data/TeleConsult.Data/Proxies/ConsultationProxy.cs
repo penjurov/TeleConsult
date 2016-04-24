@@ -114,7 +114,7 @@
         [Required(ErrorMessage = GlobalConstants.SpecialityRequireText)]
         [DisplayName(GlobalConstants.SpecialityDisplay)]
         [UIHint("DropDownTemplate")]
-        public int SpecialityId { get; set; }
+        public int? SpecialityId { get; set; }
 
         [Required]
         [DisplayName(GlobalConstants.DateDisplay)]

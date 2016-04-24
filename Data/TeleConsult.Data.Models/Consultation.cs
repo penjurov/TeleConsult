@@ -59,6 +59,8 @@
 
         public string Conclusion { get; set; }
 
+        public int? SpecialityId { get; set; }
+
         [Required]
         public ConsultationType Type { get; set; }
 

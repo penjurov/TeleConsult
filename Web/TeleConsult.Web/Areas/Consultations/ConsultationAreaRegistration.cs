@@ -1,14 +1,15 @@
-﻿using System.Web.Mvc;
-
-namespace TeleConsult.Web.Areas.Consultations
+﻿namespace TeleConsult.Web.Areas.Consultations
 {
+    using System.Web.Mvc;
+    using Common;
+
     public class ConsultationAreaRegistration : AreaRegistration 
     {
         public override string AreaName 
         {
             get 
             {
-                return "Consultations";
+                return GlobalConstants.ConsultationAreaName;
             }
         }
 
@@ -17,8 +18,7 @@ namespace TeleConsult.Web.Areas.Consultations
             context.MapRoute(
                 "Consultation_default",
                 "Consultations/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
-            );
+                new { action = "Index", id = UrlParameter.Optional });
         }
     }
 }
