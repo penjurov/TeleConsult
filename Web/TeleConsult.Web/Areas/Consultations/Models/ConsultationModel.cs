@@ -151,14 +151,6 @@
                 {
                     var repo = this.RepoFactory.Get<ConsultationRepository>();
                     var currentUserId = this.RepoFactory.Get<UserRepository>().GetUserId(HttpContext.Current.User.Identity.Name);
-
-                    if (!HttpContext.Current.User.IsInRole(GlobalConstants.SpecialistRoleName))
-                    {
-                        if (!this.CheckConfirmationCode(proxy.ConfirmationCode))
-                        {
-                            throw new Exception("Грешен потвърждаващ код");
-                        }
-                    }
                     
                     Consultation consultation;
 
@@ -169,6 +161,14 @@
                         if (!proxy.Id.HasValue || proxy.Id == 0)
                         {
                             string consultantId = null;
+
+                            if (!HttpContext.Current.User.IsInRole(GlobalConstants.SpecialistRoleName))
+                            {
+                                if (!this.CheckConfirmationCode(proxy.ConfirmationCode))
+                                {
+                                    throw new Exception("Грешен потвърждаващ код");
+                                }
+                            }
 
                             if (proxy.ConsultationType == ConsultationType.Planned)
                             {
