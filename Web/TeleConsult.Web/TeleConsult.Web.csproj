@@ -314,6 +314,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.spacelab.css" />
     <Content Include="Content\bootstrap.spacelab.min.css" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\fullcalendar.css" />
     <Content Include="Content\grid-0.5.6.css" />
     <Content Include="Content\images\hospital.png" />
@@ -326,6 +327,16 @@
     <Content Include="Content\images\specialist.png" />
     <Content Include="Content\images\specialties.png" />
     <Content Include="Content\images\stars.png" />
+    <Content Include="Content\main\images\hospital.png" />
+    <Content Include="Content\main\images\Logo.png" />
+    <Content Include="Content\main\images\logs.png" />
+    <Content Include="Content\main\images\new-consultation.png" />
+    <Content Include="Content\main\images\recieved-consultations.png" />
+    <Content Include="Content\main\images\schedule.png" />
+    <Content Include="Content\main\images\sent-consultations.png" />
+    <Content Include="Content\main\images\specialist.png" />
+    <Content Include="Content\main\images\specialties.png" />
+    <Content Include="Content\main\images\stars.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -374,6 +385,10 @@
     <Content Include="Areas\Operator\Views\web.config" />
     <Content Include="Areas\Operator\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Operator\Views\Home\Index.cshtml" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="Properties\PublishProfiles\TeleConsult.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

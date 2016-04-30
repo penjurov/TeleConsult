@@ -52,7 +52,7 @@
                 Address = h.Address,
                 Phone = h.Phone,
                 IsDeleted = h.IsDeleted,
-                Rating = h.Specialists.Select(s => s.Consultations.Where(c => c.ConsultantId == s.Id).Select(c => c.Rating).Average()).Where(c => c.HasValue).Average(c => c.Value)
+                Rating = h.Specialists.Any() ? h.Specialists.Select(s => s.Consultations.Where(c => c.ConsultantId == s.Id).Select(c => c.Rating).Average()).Where(c => c.HasValue).Average(c => c.Value) : 0
             });
         }
     }
