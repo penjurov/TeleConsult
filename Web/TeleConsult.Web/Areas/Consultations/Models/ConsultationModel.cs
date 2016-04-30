@@ -94,13 +94,13 @@
 
             this.Specialities = this.RepoFactory.Get<ScheduleRepository>().GetForToday()
                 .Where(s => s.SpecialistId != this.CurrentSpecialistId)
+                .GroupBy(s => s.Specialist.SpecialityName)
                 .Select(s => new SelectListItem
                 {
-                    Value = s.Specialist.SpecialityId.ToString(),
-                    Text = s.Specialist.SpecialityName,
-                    Selected = s.Specialist.SpecialityId == consultationSpecialityId
-                })
-                .Distinct();
+                    Value = s.FirstOrDefault().Specialist.SpecialityId.ToString(),
+                    Text = s.FirstOrDefault().Specialist.SpecialityName,
+                    Selected = s.FirstOrDefault().Specialist.SpecialityId == consultationSpecialityId
+                });
 
             this.AllSpecialities = this.RepoFactory.Get<SpecialityRepository>().GetActive()
                 .Select(s => new SelectListItem
