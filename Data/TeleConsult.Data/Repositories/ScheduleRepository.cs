@@ -65,6 +65,12 @@
                 SpecialistSpeciality = s.Specialist.Speciality.Name
             }).ToList();
 
+            result.ForEach(r =>
+            {
+                r.StartDate = r.StartDate.HasValue ? TimeZoneInfo.ConvertTimeFromUtc(r.StartDate.Value, timeZone) : r.StartDate;
+                r.EndDate = r.EndDate.HasValue ? TimeZoneInfo.ConvertTimeFromUtc(r.EndDate.Value, timeZone) : r.EndDate;
+            });
+
             return result;
         }
     }

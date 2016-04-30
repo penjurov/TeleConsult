@@ -60,8 +60,8 @@
                     }
 
                     schedule.Description = proxy.Description;
-                    schedule.StartDate = proxy.StartDate.Value;
-                    schedule.EndDate = proxy.EndDate.Value;
+                    schedule.StartDate = proxy.StartDate.Value.ToUniversalTime();
+                    schedule.EndDate = proxy.EndDate.Value.ToUniversalTime();
                     schedule.SpecialistId = proxy.SpecialistId;
                     schedule.IsAllDay = proxy.IsAllDay;
 

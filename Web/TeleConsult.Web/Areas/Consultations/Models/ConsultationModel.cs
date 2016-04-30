@@ -417,7 +417,7 @@
         {
             var filter = new SchedulesFilter
             {
-                Date = DateTime.Now,
+                Date = DateTime.UtcNow,
                 SpecialityId = specialityId
             };
 
