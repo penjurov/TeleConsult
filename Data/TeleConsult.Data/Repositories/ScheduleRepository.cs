@@ -21,8 +21,9 @@
         public IEnumerable<ScheduleProxy> Get(SchedulesFilter filter)
         {
             var result = this.All()
-                .Where(filter.StartDate.HasValue, s => s.StartDate >= filter.StartDate)
-                .Where(filter.EndDate.HasValue, s => s.EndDate <= filter.EndDate)
+                .Where(filter.StartDate.HasValue && filter.EndDate.HasValue, s => s.StartDate >= filter.StartDate && s.EndDate <= filter.EndDate)
+                .Where(filter.StartDate.HasValue && !filter.EndDate.HasValue, s => s.StartDate >= filter.StartDate)
+                .Where(filter.EndDate.HasValue && !filter.StartDate.HasValue, s => s.EndDate <= filter.EndDate)
                 .Where(filter.Date.HasValue, s => s.StartDate <= filter.Date && filter.Date <= s.EndDate)
                 .Where(filter.SpecialistId, s => s.SpecialistId == filter.SpecialistId)
                 .Where(filter.Description, s => s.Description.Contains(filter.Description))

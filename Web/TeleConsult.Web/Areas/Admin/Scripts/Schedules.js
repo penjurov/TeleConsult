@@ -194,7 +194,9 @@
     fillCalendar: function (items) {
         var self = SchedulesViewModel,
             sourceArray = [],
-            $calendar = $(self.calendarId);
+            $calendar = $(self.calendarId),
+            dateParts,
+            timeParts;
 
         $.each(items, function (index, item) {
 
@@ -202,8 +204,13 @@
                 item.allDay = true;
             }
 
-            item.start = new Date(parseInt(item.StartDate.substr(6)));
-            item.end = new Date(parseInt(item.EndDate.substr(6)));
+            dateParts = item.StartDate.split(' ')[0].split('/');
+            timeParts = item.StartDate.split(' ')[1].split(':');
+            item.start = new Date(dateParts[2], parseInt(dateParts[1], 10) - 1, dateParts[0], timeParts[0], timeParts[1]);
+
+            dateParts = item.EndDate.split(' ')[0].split('/');
+            timeParts = item.EndDate.split(' ')[1].split(':');
+            item.end = new Date(dateParts[2], parseInt(dateParts[1], 10) - 1, dateParts[0], timeParts[0], timeParts[1]);
 
             item.title = item.SpecialistName + '; ' + item.SpecialistSpeciality;
 
